@@ -140,9 +140,9 @@ public class Engine extends AbstractExecutionThreadService {
 			reactionExecution.addState(state);
 
 			/* only run trigger if we have collected two states. */
+			Trigger trigger = nextReaction.trigger();
 			boolean triggerHit = false;
 			if (reactionExecution.previousState() != null) {
-				Trigger trigger = nextReaction.trigger();
 				logger.debug("Checking Trigger for changes...");
 				triggerHit = trigger.triggers(reactionExecution.currentState(), reactionExecution.previousState());
 			}
@@ -151,8 +151,9 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(String.format("Trigger was hit: %s.", triggerHit));
 			if (triggerHit) {
 				logger.info("Executing Action...");
-				nextReaction.action().execute(reactionExecution.currentState(), reactionExecution.previousState());
+				nextReaction.action().execute(trigger.trigger());
 			}
+
 		}
 	}
 

@@ -41,4 +41,13 @@ public interface Trigger {
 	 */
 	boolean triggers(State currentState, State previousState);
 
+	/**
+	 * Returns the object (or objects) that triggered a change. This method will
+	 * only return a meaningful value when {@link #triggers(State, State)}
+	 * returns {@code true}.
+	 *
+	 * @return The object that triggered a change
+	 */
+	Object trigger();
+
 }

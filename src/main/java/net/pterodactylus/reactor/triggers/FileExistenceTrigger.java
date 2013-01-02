@@ -44,4 +44,12 @@ public class FileExistenceTrigger implements Trigger {
 		return ((FileState) previousState).exists() != ((FileState) currentState).exists();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object trigger() {
+		return null;
+	}
+
 }

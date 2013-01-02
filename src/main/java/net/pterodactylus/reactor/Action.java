@@ -28,11 +28,9 @@ public interface Action {
 	/**
 	 * Performs the action.
 	 *
-	 * @param currentState
-	 *            The current state of a system
-	 * @param previousState
-	 *            The previous state of the system
+	 * @param trigger
+	 *            The object that triggered the action
 	 */
-	void execute(State currentState, State previousState);
+	void execute(Object trigger);
 
 }

@@ -42,4 +42,12 @@ public class FileStateModifiedTrigger implements Trigger {
 		return (currentFileState.exists() != previousFileState.exists()) || (currentFileState.size() != previousFileState.size()) || (currentFileState.modificationTime() != previousFileState.modificationTime());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object trigger() {
+		return null;
+	}
+
 }

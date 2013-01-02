@@ -35,4 +35,12 @@ public class AlwaysTrigger implements Trigger {
 		return true;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Object trigger() {
+		return true;
+	}
+
 }

@@ -31,8 +31,8 @@ public class StandardOutAction implements Action {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(State currentState, State previousState) {
-		System.out.println(String.format("currentState: %s, previousState: %s", currentState, previousState));
+	public void execute(Object trigger) {
+		System.out.println(String.format("Triggered by %s.", trigger));
 	}
 
 }
