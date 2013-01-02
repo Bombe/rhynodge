@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 
+import net.pterodactylus.reactor.Filter;
 import net.pterodactylus.reactor.Query;
 import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.Trigger;
@@ -129,6 +130,13 @@ public class Engine extends AbstractExecutionThreadService {
 				};
 			}
 			logger.debug(String.format("State is %s.", state));
+
+			/* convert states. */
+			for (Filter filter : nextReaction.filters()) {
+				net.pterodactylus.reactor.State newState = filter.filter(state);
+				logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
+				state = newState;
+			}
 			reactionExecution.addState(state);
 
 			/* only run trigger if we have collected two states. */
