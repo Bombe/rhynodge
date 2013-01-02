@@ -21,11 +21,9 @@ package net.pterodactylus.reactor;
  * An action is performed when a {@link Trigger} determines that two given
  * {@link State}s of a {@link Query} signify a change.
  *
- * @param <S>
- *            The type of the state
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public interface Action<S extends State> {
+public interface Action {
 
 	/**
 	 * Performs the action.
@@ -35,6 +33,6 @@ public interface Action<S extends State> {
 	 * @param previousState
 	 *            The previous state of the system
 	 */
-	void execute(S currentState, S previousState);
+	void execute(State currentState, State previousState);
 
 }

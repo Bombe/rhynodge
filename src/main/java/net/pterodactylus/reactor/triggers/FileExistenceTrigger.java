@@ -17,15 +17,18 @@
 
 package net.pterodactylus.reactor.triggers;
 
+import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
 import net.pterodactylus.reactor.states.FileState;
+
+import com.google.common.base.Preconditions;
 
 /**
  * A trigger that detects changes in the existence of a file.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class FileExistenceTrigger implements Trigger<FileState> {
+public class FileExistenceTrigger implements Trigger {
 
 	//
 	// TRIGGER METHODS
@@ -35,8 +38,10 @@ public class FileExistenceTrigger implements Trigger<FileState> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean triggers(FileState previousState, FileState currentState) {
-		return previousState.exists() != currentState.exists();
+	public boolean triggers(State previousState, State currentState) {
+		Preconditions.checkState(previousState instanceof FileState, "previousState is not a FileState");
+		Preconditions.checkState(currentState instanceof FileState, "currentState is not a FileState");
+		return ((FileState) previousState).exists() != ((FileState) currentState).exists();
 	}
 
 }

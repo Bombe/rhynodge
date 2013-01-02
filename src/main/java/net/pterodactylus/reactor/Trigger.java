@@ -25,11 +25,9 @@ import net.pterodactylus.reactor.states.FileState;
  * sizes but a trigger might only care about whether the file appeared or
  * disappeared since the last check.
  *
- * @param <S>
- *            The type of the state
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public interface Trigger<S extends State> {
+public interface Trigger {
 
 	/**
 	 * Checks whether the given states warrant a change trigger.
@@ -41,6 +39,6 @@ public interface Trigger<S extends State> {
 	 * @return {@code true} if the given states warrant a change trigger,
 	 *         {@code false} otherwise
 	 */
-	boolean triggers(S currentState, S previousState);
+	boolean triggers(State currentState, State previousState);
 
 }

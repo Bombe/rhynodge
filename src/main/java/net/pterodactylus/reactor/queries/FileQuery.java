@@ -22,6 +22,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import java.io.File;
 
 import net.pterodactylus.reactor.Query;
+import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.states.FileState;
 
 /**
@@ -29,7 +30,7 @@ import net.pterodactylus.reactor.states.FileState;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class FileQuery implements Query<FileState> {
+public class FileQuery implements Query {
 
 	/** The name of the file to query. */
 	private final String filename;
@@ -52,7 +53,7 @@ public class FileQuery implements Query<FileState> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public FileState state() {
+	public State state() {
 		File file = new File(filename);
 		if (!file.exists()) {
 			return new FileState(false, false, -1, -1);
