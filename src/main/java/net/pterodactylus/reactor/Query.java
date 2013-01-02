@@ -20,9 +20,11 @@ package net.pterodactylus.reactor;
 /**
  * A query is used to retrieve the current {@link State} of a system.
  *
+ * @param <S>
+ *            The type of the state
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public interface Query {
+public interface Query<S extends State> {
 
 	/**
 	 * Retrieves the current state of the system. The returned state is never
@@ -30,6 +32,6 @@ public interface Query {
 	 *
 	 * @return The current state of the system.
 	 */
-	public State state();
+	public S state();
 
 }
