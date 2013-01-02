@@ -42,6 +42,9 @@ public class Reaction<S extends State> {
 	/** The previous state of the query. */
 	private S previousState;
 
+	/** The interval in which to run queries (in milliseconds). */
+	private long updateInterval;
+
 	/**
 	 * Creates a new reaction.
 	 *
@@ -105,6 +108,27 @@ public class Reaction<S extends State> {
 	 */
 	public S previousState() {
 		return previousState;
+	}
+
+	/**
+	 * Returns the update interval of this reaction.
+	 *
+	 * @return The update interval of this reaction (in milliseconds)
+	 */
+	public long updateInterval() {
+		return updateInterval;
+	}
+
+	/**
+	 * Sets the update interval of this reaction.
+	 *
+	 * @param updateInterval
+	 *            The update interval of this reaction (in milliseconds)
+	 * @return This reaction
+	 */
+	public Reaction<?> setUpdateInterval(long updateInterval) {
+		this.updateInterval = updateInterval;
+		return this;
 	}
 
 }
