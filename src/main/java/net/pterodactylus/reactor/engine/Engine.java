@@ -27,6 +27,7 @@ import net.pterodactylus.reactor.Query;
 import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.Trigger;
 import net.pterodactylus.reactor.states.AbstractState;
+import net.pterodactylus.reactor.states.FailedState;
 
 import org.apache.log4j.Logger;
 
@@ -122,6 +123,9 @@ public class Engine extends AbstractExecutionThreadService {
 			try {
 				logger.debug("Querying system...");
 				state = query.state();
+				if (state == null) {
+					state = FailedState.INSTANCE;
+				}
 				logger.debug("System queried.");
 			} catch (Throwable t1) {
 				logger.warn("Querying system failed!", t1);
