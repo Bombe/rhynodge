@@ -1,8 +1,8 @@
 /**
  * Reactor main definitions.
  * <p>
- * A Reactor chain consists of three different elements: a
- * {@link net.pterodactylus.reactor.Query}, a
+ * A {@link net.pterodactylus.reactor.Reaction} consists of three different
+ * elements: a {@link net.pterodactylus.reactor.Query}, a
  * {@link net.pterodactylus.reactor.Trigger}, and an
  * {@link net.pterodactylus.reactor.Action}.
  * <p>
