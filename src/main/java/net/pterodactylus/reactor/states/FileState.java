@@ -114,4 +114,16 @@ public class FileState extends AbstractState {
 		return modificationTime;
 	}
 
+	//
+	// OBJECT METHODS
+	//
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s[exists=%s,readable=%s,size=%s,modificationTime=%d(%5$tc)", getClass().getSimpleName(), exists(), readable(), size(), modificationTime());
+	}
+
 }
