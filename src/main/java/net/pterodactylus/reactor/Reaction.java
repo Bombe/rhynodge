@@ -17,6 +17,11 @@
 
 package net.pterodactylus.reactor;
 
+import java.util.Collections;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
 /**
  * A {@code Reaction} binds together {@link Query}s, {@link Trigger}s, and
  * {@link Action}s, and it stores the intermediary {@link State}s.
@@ -27,6 +32,9 @@ public class Reaction {
 
 	/** The query to run. */
 	private final Query query;
+
+	/** The filters to run. */
+	private final List<Filter> filters = Lists.newArrayList();
 
 	/** The trigger to detect changes. */
 	private final Trigger trigger;
@@ -48,7 +56,24 @@ public class Reaction {
 	 *            The action to perform
 	 */
 	public Reaction(Query query, Trigger trigger, Action action) {
+		this(query, Collections.<Filter> emptyList(), trigger, action);
+	}
+
+	/**
+	 * Creates a new reaction.
+	 *
+	 * @param query
+	 *            The query to run
+	 * @param filters
+	 *            The filters to run
+	 * @param trigger
+	 *            The trigger to detect changes
+	 * @param action
+	 *            The action to perform
+	 */
+	public Reaction(Query query, List<Filter> filters, Trigger trigger, Action action) {
 		this.query = query;
+		this.filters.addAll(filters);
 		this.trigger = trigger;
 		this.action = action;
 	}
@@ -64,6 +89,15 @@ public class Reaction {
 	 */
 	public Query query() {
 		return query;
+	}
+
+	/**
+	 * Returns the filters to run.
+	 *
+	 * @return The filters to run
+	 */
+	public Iterable<Filter> filters() {
+		return filters;
 	}
 
 	/**
