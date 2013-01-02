@@ -17,11 +17,15 @@
 
 package net.pterodactylus.reactor.states;
 
+import java.nio.charset.Charset;
 import java.util.Iterator;
 import java.util.List;
 
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.states.TorrentState.TorrentFile;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
 
 import com.google.common.collect.Lists;
 
@@ -156,8 +160,75 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		}
 
 		//
+		// PRIVATE METHODS
+		//
+
+		/**
+		 * Generates an ID for this file. If a {@link #magnetUri} is set, an ID
+		 * is {@link #extractId(String) extracted} from it. Otherwise the magnet
+		 * URI is used. If the {@link #magnetUri} is not set, the
+		 * {@link #downloadUri} is used. If that is not set either, the name of
+		 * the file is returned.
+		 *
+		 * @return The generated ID
+		 */
+		private String generateId() {
+			if (magnetUri != null) {
+				String id = extractId(magnetUri);
+				if (id != null) {
+					return id;
+				}
+				return magnetUri;
+			}
+			return (downloadUri != null) ? downloadUri : name;
+		}
+
+		//
+		// STATIC METHODS
+		//
+
+		/**
+		 * Tries to extract the “exact target” of a magnet URI.
+		 *
+		 * @param magnetUri
+		 *            The magnet URI to extract the “xt” from
+		 * @return The extracted ID, or {@code null} if no ID could be found
+		 */
+		private static String extractId(String magnetUri) {
+			List<NameValuePair> parameters = URLEncodedUtils.parse(magnetUri.substring("magnet:?".length()), Charset.forName("UTF-8"));
+			for (NameValuePair parameter : parameters) {
+				if (parameter.getName().equals("xt")) {
+					return parameter.getValue();
+				}
+			}
+			return null;
+		}
+
+		//
 		// OBJECT METHODS
 		//
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int hashCode() {
+			return (generateId() != null) ? generateId().hashCode() : 0;
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public boolean equals(Object object) {
+			if (!(object instanceof TorrentFile)) {
+				return false;
+			}
+			if (generateId() != null) {
+				return generateId().equals(((TorrentFile) object).generateId());
+			}
+			return false;
+		}
 
 		/**
 		 * {@inheritDoc}
