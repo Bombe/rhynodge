@@ -23,8 +23,12 @@ import java.util.List;
 
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
+import net.pterodactylus.reactor.output.DefaultOutput;
+import net.pterodactylus.reactor.output.Output;
 import net.pterodactylus.reactor.states.TorrentState;
 import net.pterodactylus.reactor.states.TorrentState.TorrentFile;
+
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.collect.Lists;
 
@@ -38,6 +42,10 @@ public class NewTorrentTrigger implements Trigger {
 
 	/** The newly detected torrent files. */
 	private List<TorrentFile> torrentFiles = Lists.newArrayList();
+
+	//
+	// TRIGGER METHODS
+	//
 
 	/**
 	 * {@inheritDoc}
@@ -64,7 +72,56 @@ public class NewTorrentTrigger implements Trigger {
 	@Override
 	public Output output() {
 		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s)!", torrentFiles.size()));
+		output.addText("text/plain", getPlainTextList(torrentFiles));
+		output.addText("text/html", getHtmlTextList(torrentFiles));
 		return output;
+	}
+
+	//
+	// STATIC METHODS
+	//
+
+	/**
+	 * Generates a plain text list of torrent files.
+	 *
+	 * @param torrentFiles
+	 *            The torrent files to list
+	 * @return The generated plain text
+	 */
+	private static String getPlainTextList(List<TorrentFile> torrentFiles) {
+		StringBuilder plainText = new StringBuilder();
+		plainText.append("New Torrents:\n\n");
+		for (TorrentFile torrentFile : torrentFiles) {
+			plainText.append(torrentFile.name()).append('\n');
+			plainText.append('\t').append(torrentFile.size()).append('\n');
+			plainText.append('\t').append(torrentFile.magnetUri()).append('\n');
+			plainText.append('\t').append(torrentFile.downloadUri()).append('\n');
+			plainText.append('\n');
+		}
+		return plainText.toString();
+	}
+
+	/**
+	 * Generates an HTML list of the given torrent files.
+	 *
+	 * @param torrentFiles
+	 *            The torrent files to list
+	 * @return The generated HTML
+	 */
+	private static String getHtmlTextList(List<TorrentFile> torrentFiles) {
+		StringBuilder htmlText = new StringBuilder();
+		htmlText.append("<html><body>\n");
+		htmlText.append("<h1>New Torrents</h1>\n");
+		htmlText.append("<ul>\n");
+		for (TorrentFile torrentFile : torrentFiles) {
+			htmlText.append("<li><strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</strong></li>");
+			htmlText.append("<div>Size: ").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</div>");
+			htmlText.append(String.format("<div><a href=\"%s\">Magnet URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())));
+			htmlText.append(String.format("<div><a href=\"%s\">Download URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())));
+		}
+		htmlText.append("</ul>\n");
+		htmlText.append("</body></html>\n");
+		return htmlText.toString();
 	}
 
 }
