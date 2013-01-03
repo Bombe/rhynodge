@@ -19,6 +19,7 @@ package net.pterodactylus.reactor.actions;
 
 import net.pterodactylus.reactor.Action;
 import net.pterodactylus.reactor.State;
+import net.pterodactylus.reactor.output.Output;
 
 /**
  * {@link Action} that simply dumps all {@link State}s to standard output.
@@ -31,8 +32,8 @@ public class StandardOutAction implements Action {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(Object trigger) {
-		System.out.println(String.format("Triggered by %s.", trigger));
+	public void execute(Output output) {
+		System.out.println(String.format("Triggered by %s.", output.text("text/plain", -1)));
 	}
 
 }

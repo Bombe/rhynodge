@@ -20,6 +20,8 @@ package net.pterodactylus.reactor.triggers;
 import static com.google.common.base.Preconditions.checkState;
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
+import net.pterodactylus.reactor.output.DefaultOutput;
+import net.pterodactylus.reactor.output.Output;
 import net.pterodactylus.reactor.states.FileState;
 
 /**
@@ -46,8 +48,8 @@ public class FileStateModifiedTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object trigger() {
-		return null;
+	public Output output() {
+		return new DefaultOutput("File modified").addText("text/plain", "File modified").addText("text/html", "<div>File modified</div>");
 	}
 
 }

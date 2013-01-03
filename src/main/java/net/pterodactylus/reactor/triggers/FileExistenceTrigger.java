@@ -19,6 +19,8 @@ package net.pterodactylus.reactor.triggers;
 
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
+import net.pterodactylus.reactor.output.DefaultOutput;
+import net.pterodactylus.reactor.output.Output;
 import net.pterodactylus.reactor.states.FileState;
 
 import com.google.common.base.Preconditions;
@@ -48,8 +50,8 @@ public class FileExistenceTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object trigger() {
-		return null;
+	public Output output() {
+		return new DefaultOutput("File appeared/disappeared").addText("text/plain", "File appeared/disappeared").addText("text/html", "<div>File appeared/disappeared</div>");
 	}
 
 }

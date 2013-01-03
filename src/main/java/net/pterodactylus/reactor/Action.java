@@ -17,6 +17,8 @@
 
 package net.pterodactylus.reactor;
 
+import net.pterodactylus.reactor.output.Output;
+
 /**
  * An action is performed when a {@link Trigger} determines that two given
  * {@link State}s of a {@link Query} signify a change.
@@ -28,9 +30,9 @@ public interface Action {
 	/**
 	 * Performs the action.
 	 *
-	 * @param trigger
-	 *            The object that triggered the action
+	 * @param output
+	 *            The output for the action
 	 */
-	void execute(Object trigger);
+	void execute(Output output);
 
 }

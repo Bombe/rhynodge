@@ -29,6 +29,7 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
 import net.pterodactylus.reactor.Action;
+import net.pterodactylus.reactor.output.Output;
 
 /**
  * {@link Action} implementation that sends an email containing the triggering
@@ -71,7 +72,7 @@ public class EmailAction implements Action {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void execute(Object trigger) {
+	public void execute(Output output) {
 		Properties properties = System.getProperties();
 		properties.put("mail.smtp.host", hostname);
 		Session session = Session.getInstance(properties);

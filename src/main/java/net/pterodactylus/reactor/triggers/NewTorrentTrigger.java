@@ -62,8 +62,9 @@ public class NewTorrentTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object trigger() {
-		return torrentFiles;
+	public Output output() {
+		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s)!", torrentFiles.size()));
+		return output;
 	}
 
 }

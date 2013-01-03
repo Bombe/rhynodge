@@ -19,6 +19,8 @@ package net.pterodactylus.reactor.triggers;
 
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
+import net.pterodactylus.reactor.output.DefaultOutput;
+import net.pterodactylus.reactor.output.Output;
 
 /**
  * {@link Trigger} implementation that always triggers.
@@ -39,8 +41,8 @@ public class AlwaysTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Object trigger() {
-		return true;
+	public Output output() {
+		return new DefaultOutput("true").addText("text/plain", "true").addText("text/html", "<div>true</div>");
 	}
 
 }

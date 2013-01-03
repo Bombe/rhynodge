@@ -17,6 +17,7 @@
 
 package net.pterodactylus.reactor;
 
+import net.pterodactylus.reactor.output.Output;
 import net.pterodactylus.reactor.states.FileState;
 
 /**
@@ -42,12 +43,11 @@ public interface Trigger {
 	boolean triggers(State currentState, State previousState);
 
 	/**
-	 * Returns the object (or objects) that triggered a change. This method will
-	 * only return a meaningful value when {@link #triggers(State, State)}
-	 * returns {@code true}.
+	 * Returns the output of this trigger. This will only return a meaningful
+	 * value if {@link #triggers(State, State)} returns {@code true}.
 	 *
-	 * @return The object that triggered a change
+	 * @return The output of this trigger
 	 */
-	Object trigger();
+	Output output();
 
 }
