@@ -93,7 +93,8 @@ public class NewTorrentTrigger implements Trigger {
 		plainText.append("New Torrents:\n\n");
 		for (TorrentFile torrentFile : torrentFiles) {
 			plainText.append(torrentFile.name()).append('\n');
-			plainText.append('\t').append(torrentFile.size()).append('\n');
+			plainText.append('\t').append(torrentFile.size()).append(" in ").append(torrentFile.fileCount()).append(" file(s)\n");
+			plainText.append('\t').append(torrentFile.seedCount()).append(" seed(s), ").append(torrentFile.leechCount()).append(" leecher(s)\n");
 			plainText.append('\t').append(torrentFile.magnetUri()).append('\n');
 			plainText.append('\t').append(torrentFile.downloadUri()).append('\n');
 			plainText.append('\n');
@@ -115,7 +116,8 @@ public class NewTorrentTrigger implements Trigger {
 		htmlText.append("<ul>\n");
 		for (TorrentFile torrentFile : torrentFiles) {
 			htmlText.append("<li><strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</strong></li>");
-			htmlText.append("<div>Size: ").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</div>");
+			htmlText.append("<div>Size: <strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</strong> in <strong>").append(torrentFile.fileCount()).append("</strong> file(s)</div>");
+			htmlText.append("<div><strong>").append(torrentFile.seedCount()).append("</strong> seed(s), <strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>");
 			htmlText.append(String.format("<div><a href=\"%s\">Magnet URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())));
 			htmlText.append(String.format("<div><a href=\"%s\">Download URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())));
 		}
