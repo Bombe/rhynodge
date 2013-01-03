@@ -24,7 +24,9 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 import net.pterodactylus.reactor.Action;
 
@@ -75,10 +77,22 @@ public class EmailAction implements Action {
 		Session session = Session.getInstance(properties);
 		MimeMessage message = new MimeMessage(session);
 		try {
+			/* create message. */
 			message.setFrom(new InternetAddress(sender));
 			message.setRecipient(RecipientType.TO, new InternetAddress(recipient));
-			message.setSubject("Reaction Triggered!");
-			message.setText(String.valueOf(trigger));
+			message.setSubject(output.summary());
+
+			/* create text and html parts. */
+			MimeMultipart multipart = new MimeMultipart();
+			multipart.setSubType("alternative");
+			MimeBodyPart textPart = new MimeBodyPart();
+			textPart.setContent(output.text("text/plain", -1), "text/plain;charset=utf-8");
+			MimeBodyPart htmlPart = new MimeBodyPart();
+			htmlPart.setContent(output.text("text/html", -1), "text/html;charset=utf-8");
+			multipart.addBodyPart(textPart);
+			multipart.addBodyPart(htmlPart);
+			message.setContent(multipart);
+
 			Transport.send(message);
 		} catch (MessagingException me1) {
 			/* swallow. */
