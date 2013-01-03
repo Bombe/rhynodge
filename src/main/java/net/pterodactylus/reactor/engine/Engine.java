@@ -137,11 +137,15 @@ public class Engine extends AbstractExecutionThreadService {
 
 			/* convert states. */
 			for (Filter filter : nextReaction.filters()) {
-				net.pterodactylus.reactor.State newState = filter.filter(state);
-				logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
-				state = newState;
+				if (state.success()) {
+					net.pterodactylus.reactor.State newState = filter.filter(state);
+					logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
+					state = newState;
+				}
 			}
-			reactionExecution.addState(state);
+			if (state.success()) {
+				reactionExecution.addState(state);
+			}
 
 			/* only run trigger if we have collected two states. */
 			Trigger trigger = nextReaction.trigger();
