@@ -69,9 +69,12 @@ public class KickAssTorrentsFilter implements Filter {
 			String size = extractSize(dataRow);
 			String magnetUri = extractMagnetUri(dataRow);
 			String downloadUri;
+			int fileCount = extractFileCount(dataRow);
+			int seedCount = extractSeedCount(dataRow);
+			int leechCount = extractLeechCount(dataRow);
 			try {
 				downloadUri = new URI(((HtmlState) state).uri()).resolve(extractDownloadUri(dataRow)).toString();
-				TorrentFile torrentFile = new TorrentFile(name, size, magnetUri, downloadUri);
+				TorrentFile torrentFile = new TorrentFile(name, size, magnetUri, downloadUri, fileCount, seedCount, leechCount);
 				torrentState.addTorrentFile(torrentFile);
 			} catch (URISyntaxException use1) {
 				/* ignore; if uri was wrong, we wouldn’t be here. */
@@ -127,6 +130,39 @@ public class KickAssTorrentsFilter implements Filter {
 	 */
 	private static String extractDownloadUri(Element dataRow) {
 		return dataRow.select("a.idownload:not(.partner1Button)").attr("href");
+	}
+
+	/**
+	 * Extracts the file count from the given row.
+	 *
+	 * @param dataRow
+	 *            The row to extract the file count from
+	 * @return The extracted file count
+	 */
+	private static int extractFileCount(Element dataRow) {
+		return Integer.valueOf(dataRow.select("td:eq(2)").text());
+	}
+
+	/**
+	 * Extracts the seed count from the given row.
+	 *
+	 * @param dataRow
+	 *            The row to extract the seed count from
+	 * @return The extracted seed count
+	 */
+	private static int extractSeedCount(Element dataRow) {
+		return Integer.valueOf(dataRow.select("td:eq(4)").text());
+	}
+
+	/**
+	 * Extracts the leech count from the given row.
+	 *
+	 * @param dataRow
+	 *            The row to extract the leech count from
+	 * @return The extracted leech count
+	 */
+	private static int extractLeechCount(Element dataRow) {
+		return Integer.valueOf(dataRow.select("td:eq(5)").text());
 	}
 
 }

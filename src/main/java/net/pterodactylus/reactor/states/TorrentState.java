@@ -99,6 +99,15 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		/** The download URI of the file. */
 		private final String downloadUri;
 
+		/** The number of files in this torrent. */
+		private final int fileCount;
+
+		/** The number of seeds connected to this torrent. */
+		private final int seedCount;
+
+		/** The number of leechers connected to this torrent. */
+		private final int leechCount;
+
 		/**
 		 * Creates a new torrent file.
 		 *
@@ -110,12 +119,21 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		 *            The magnet URI of the file
 		 * @param downloadUri
 		 *            The download URI of the file
+		 * @param fileCount
+		 *            The number of files
+		 * @param seedCount
+		 *            The number of connected seeds
+		 * @param leechCount
+		 *            The number of connected leechers
 		 */
-		public TorrentFile(String name, String size, String magnetUri, String downloadUri) {
+		public TorrentFile(String name, String size, String magnetUri, String downloadUri, int fileCount, int seedCount, int leechCount) {
 			this.name = name;
 			this.size = size;
 			this.magnetUri = magnetUri;
 			this.downloadUri = downloadUri;
+			this.fileCount = fileCount;
+			this.seedCount = seedCount;
+			this.leechCount = leechCount;
 		}
 
 		//
@@ -157,6 +175,33 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		 */
 		public String downloadUri() {
 			return downloadUri;
+		}
+
+		/**
+		 * Returns the number of files in this torrent.
+		 *
+		 * @return The number of files in this torrent
+		 */
+		public int fileCount() {
+			return fileCount;
+		}
+
+		/**
+		 * Returns the number of seeds connected to this torrent.
+		 *
+		 * @return The number of connected seeds
+		 */
+		public int seedCount() {
+			return seedCount;
+		}
+
+		/**
+		 * Returns the number of leechers connected to this torrent.
+		 *
+		 * @return The number of connected leechers
+		 */
+		public int leechCount() {
+			return leechCount;
 		}
 
 		//
