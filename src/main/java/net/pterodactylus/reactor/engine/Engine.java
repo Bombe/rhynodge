@@ -78,6 +78,23 @@ public class Engine extends AbstractExecutionThreadService {
 		}
 	}
 
+	/**
+	 * Removes the reaction with the given name.
+	 *
+	 * @param name
+	 *            The name of the reaction to remove
+	 */
+	public void removeReaction(String name) {
+		synchronized (reactions) {
+			if (!reactions.containsKey(name)) {
+				return;
+			}
+			Reaction reaction = reactions.remove(name);
+			reactionExecutions.remove(reaction);
+			reactions.notifyAll();
+		}
+	}
+
 	//
 	// ABSTRACTSERVICE METHODS
 	//
