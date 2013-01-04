@@ -114,23 +114,23 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 				/* dump chain */
 				logger.debug(String.format(" Enabled: %s", chain.enabled()));
 
-				System.out.println(String.format(" Query: %s", chain.query().name()));
+				logger.debug(String.format(" Query: %s", chain.query().name()));
 				for (Parameter parameter : chain.query().parameters()) {
-					System.out.println(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 				}
 				for (Part filter : chain.filters()) {
-					System.out.println(String.format(" Filter: %s", filter.name()));
+					logger.debug(String.format(" Filter: %s", filter.name()));
 					for (Parameter parameter : filter.parameters()) {
-						System.out.println(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+						logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 					}
 				}
-				System.out.println(String.format(" Trigger: %s", chain.trigger().name()));
+				logger.debug(String.format(" Trigger: %s", chain.trigger().name()));
 				for (Parameter parameter : chain.trigger().parameters()) {
-					System.out.println(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 				}
-				System.out.println(String.format(" Action: %s", chain.action().name()));
+				logger.debug(String.format(" Action: %s", chain.action().name()));
 				for (Parameter parameter : chain.action().parameters()) {
-					System.out.println(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 				}
 
 				chains.put(xmlFile.getName(), chain);
