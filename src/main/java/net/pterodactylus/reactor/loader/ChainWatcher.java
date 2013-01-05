@@ -24,14 +24,16 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+
 import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.engine.Engine;
 import net.pterodactylus.reactor.loader.Chain.Parameter;
 import net.pterodactylus.reactor.loader.Chain.Part;
 
 import org.apache.log4j.Logger;
-import org.simpleframework.xml.Serializer;
-import org.simpleframework.xml.core.Persister;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
@@ -191,9 +193,15 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 	 * @return The parsed chain
 	 */
 	private static Chain parseXmlFile(File xmlFile) {
-		Serializer serializer = new Persister();
-		logger.debug(String.format("Reading %s...", xmlFile.getPath()));
-		return serializer.read(Chain.class, xmlFile);
+		try {
+			JAXBContext context = JAXBContext.newInstance(Chain.class);
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			logger.debug(String.format("Reading %s...", xmlFile.getPath()));
+			return (Chain) unmarshaller.unmarshal(xmlFile);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }

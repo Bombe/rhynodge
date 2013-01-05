@@ -17,18 +17,19 @@
 
 package net.pterodactylus.reactor.loader;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import org.simpleframework.xml.Element;
-import org.simpleframework.xml.ElementList;
-import org.simpleframework.xml.Root;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Model for chain definitions.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-@Root
+@XmlRootElement
 public class Chain {
 
 	/**
@@ -39,11 +40,11 @@ public class Chain {
 	public static class Parameter {
 
 		/** The name of the parameter. */
-		@Element
+		@XmlElement(required = true)
 		private String name;
 
 		/** The value of the parameter. */
-		@Element
+		@XmlElement(required = true)
 		private String value;
 
 		/**
@@ -103,12 +104,13 @@ public class Chain {
 	public static class Part {
 
 		/** The class name of the part. */
-		@Element(name = "class")
+		@XmlElement(required = true, name = "class")
 		private String name;
 
 		/** The parameters of the part. */
-		@ElementList(required = false, empty = false)
-		private List<Parameter> parameters;
+		@XmlElement(name = "parameter")
+		@XmlElementWrapper(name = "parameters")
+		private List<Parameter> parameters = new ArrayList<Parameter>();
 
 		/**
 		 * Returns the name of the part’s class.
@@ -167,27 +169,28 @@ public class Chain {
 	}
 
 	/** Whether this chain is enabled. */
-	@Element
+	@XmlElement(required = true)
 	private boolean enabled;
 
 	/** The query of the chain. */
-	@Element
+	@XmlElement(required = true)
 	private Part query;
 
 	/** The filters of the chain. */
-	@ElementList(required = false, empty = false)
-	private List<Part> filters;
+	@XmlElement(name = "filter")
+	@XmlElementWrapper(name = "filters")
+	private List<Part> filters = new ArrayList<Part>();
 
 	/** The trigger of the chain. */
-	@Element
+	@XmlElement(required = true)
 	private Part trigger;
 
 	/** The action of the chain. */
-	@Element
+	@XmlElement(required = true)
 	private Part action;
 
 	/** Interval between updates (in seconds). */
-	@Element
+	@XmlElement(required = true)
 	private int updateInterval;
 
 	/**
