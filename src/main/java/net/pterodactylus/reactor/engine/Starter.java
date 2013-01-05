@@ -26,6 +26,12 @@ import net.pterodactylus.reactor.loader.ChainWatcher;
  */
 public class Starter {
 
+	/**
+	 * JVM main entry method.
+	 *
+	 * @param arguments
+	 *            Command-line arguments
+	 */
 	public static void main(String... arguments) {
 
 		/* start the engine. */
