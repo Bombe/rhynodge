@@ -107,9 +107,9 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 			/* now parse all XML files. */
 			Map<String, Chain> chains = new HashMap<String, Chain>();
 			for (File xmlFile : xmlFiles) {
-				Serializer serializer = new Persister();
-				logger.debug(String.format("Reading %s...", xmlFile.getPath()));
-				Chain chain = serializer.read(Chain.class, xmlFile);
+
+				/* parse XML file. */
+				Chain chain = parseXmlFile(xmlFile);
 
 				/* dump chain */
 				logger.debug(String.format(" Enabled: %s", chain.enabled()));
@@ -177,6 +177,23 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 			/* wait before checking again. */
 			Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
 		}
+	}
+
+	//
+	// STATIC METHODS
+	//
+
+	/**
+	 * Parses the given XML file into a {@link Chain}.
+	 *
+	 * @param xmlFile
+	 *            The XML file to parse
+	 * @return The parsed chain
+	 */
+	private static Chain parseXmlFile(File xmlFile) {
+		Serializer serializer = new Persister();
+		logger.debug(String.format("Reading %s...", xmlFile.getPath()));
+		return serializer.read(Chain.class, xmlFile);
 	}
 
 }
