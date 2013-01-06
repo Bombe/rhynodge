@@ -21,8 +21,10 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import net.pterodactylus.reactor.Reaction;
@@ -156,6 +158,7 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 			logger.debug(String.format("Found %d enabled Chain(s).", enabledChains.size()));
 
 			/* check for removed chains. */
+			Set<String> chainsToRemove = new HashSet<String>();
 			for (Entry<String, Chain> loadedChain : loadedChains.entrySet()) {
 
 				/* skip chains that still exist. */
@@ -165,7 +168,12 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 
 				logger.info(String.format("Removing Chain: %s", loadedChain.getKey()));
 				engine.removeReaction(loadedChain.getKey());
-				loadedChains.remove(loadedChain.getKey());
+				chainsToRemove.add(loadedChain.getKey());
+			}
+
+			/* remove removed chains from loaded chains. */
+			for (String reactionName : chainsToRemove) {
+				loadedChains.remove(reactionName);
 			}
 
 			/* check for new chains. */
