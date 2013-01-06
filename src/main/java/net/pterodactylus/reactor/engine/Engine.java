@@ -136,7 +136,7 @@ public class Engine extends AbstractExecutionThreadService {
 			if (waitTime > 0) {
 				synchronized (reactions) {
 					try {
-						logger.debug(String.format("Waiting for %d milliseconds.", waitTime));
+						logger.info(String.format("Waiting until %tc.", lastStateTime + nextReaction.updateInterval()));
 						reactions.wait(waitTime);
 					} catch (InterruptedException ie1) {
 						/* we’re looping! */
