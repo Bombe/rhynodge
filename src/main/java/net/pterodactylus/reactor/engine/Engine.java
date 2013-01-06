@@ -177,14 +177,15 @@ public class Engine extends AbstractExecutionThreadService {
 			if (!state.success()) {
 				state.setFailCount(lastStateFailCount + 1);
 			}
+			net.pterodactylus.reactor.State lastSuccessfulState = stateManager.loadLastSuccessfulState(reactionName);
 			stateManager.saveState(reactionName, state);
 
 			/* only run trigger if we have collected two successful states. */
 			Trigger trigger = nextReaction.trigger();
 			boolean triggerHit = false;
-			if ((lastState != null) && lastState.success() && state.success()) {
+			if ((lastSuccessfulState != null) && lastSuccessfulState.success() && state.success()) {
 				logger.debug("Checking Trigger for changes...");
-				triggerHit = trigger.triggers(state, lastState);
+				triggerHit = trigger.triggers(state, lastSuccessfulState);
 			}
 
 			/* run action if trigger was hit. */
