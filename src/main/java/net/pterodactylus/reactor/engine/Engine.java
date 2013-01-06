@@ -118,7 +118,7 @@ public class Engine extends AbstractExecutionThreadService {
 			Reaction nextReaction;
 			synchronized (reactions) {
 				for (Entry<String, Reaction> reactionEntry : reactions.entrySet()) {
-					net.pterodactylus.reactor.State state = stateManager.loadState(reactionEntry.getKey());
+					net.pterodactylus.reactor.State state = stateManager.loadLastState(reactionEntry.getKey());
 					long stateTime = (state != null) ? state.time() : 0;
 					nextReactions.put(stateTime + reactionEntry.getValue().updateInterval(), Pair.of(reactionEntry.getKey(), reactionEntry.getValue()));
 				}
@@ -128,7 +128,7 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(String.format("Next Reaction: %s.", nextReaction));
 
 			/* wait until the next reaction has to run. */
-			net.pterodactylus.reactor.State lastState = stateManager.loadState(reactionName);
+			net.pterodactylus.reactor.State lastState = stateManager.loadLastState(reactionName);
 			long lastStateTime = (lastState != null) ? lastState.time() : 0;
 			int lastStateFailCount = (lastState != null) ? lastState.failCount() : 0;
 			long waitTime = (lastStateTime + nextReaction.updateInterval()) - System.currentTimeMillis();

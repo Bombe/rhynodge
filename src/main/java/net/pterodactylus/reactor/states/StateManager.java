@@ -60,14 +60,14 @@ public class StateManager {
 	//
 
 	/**
-	 * Loads the state with the given name.
+	 * Loads the last state with the given name.
 	 *
 	 * @param reactionName
 	 *            The name of the reaction
 	 * @return The loaded state, or {@code null} if the state could not be
 	 *         loaded
 	 */
-	public State loadState(String reactionName) {
+	public State loadLastState(String reactionName) {
 		File stateFile = stateFile(reactionName);
 		try {
 			State state = objectMapper.readValue(stateFile, AbstractState.class);
