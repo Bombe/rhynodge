@@ -19,6 +19,7 @@ package net.pterodactylus.reactor.engine;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.SortedMap;
 
 import net.pterodactylus.reactor.Filter;
@@ -27,7 +28,9 @@ import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.Trigger;
 import net.pterodactylus.reactor.states.AbstractState;
 import net.pterodactylus.reactor.states.FailedState;
+import net.pterodactylus.reactor.states.StateManager;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
 
 import com.google.common.collect.Maps;
@@ -43,13 +46,12 @@ public class Engine extends AbstractExecutionThreadService {
 	/** The logger. */
 	private static final Logger logger = Logger.getLogger(Engine.class);
 
+	/** The state manager. */
+	private final StateManager stateManager = new StateManager("states");
+
 	/** All defined reactions. */
 	/* synchronize on itself. */
 	private final Map<String, Reaction> reactions = new HashMap<String, Reaction>();
-
-	/** Reaction states. */
-	/* synchronize on reactions. */
-	private final Map<Reaction, ReactionExecution> reactionExecutions = Maps.newHashMap();
 
 	//
 	// ACCESSORS
@@ -66,14 +68,12 @@ public class Engine extends AbstractExecutionThreadService {
 	 *             if the engine already contains a {@link Reaction} with the
 	 *             given name
 	 */
-	@SuppressWarnings("synthetic-access")
 	public void addReaction(String name, Reaction reaction) {
 		synchronized (reactions) {
 			if (reactions.containsKey(name)) {
 				throw new IllegalStateException(String.format("Engine already contains a Reaction named “%s!”", name));
 			}
 			reactions.put(name, reaction);
-			reactionExecutions.put(reaction, new ReactionExecution());
 			reactions.notifyAll();
 		}
 	}
@@ -89,8 +89,7 @@ public class Engine extends AbstractExecutionThreadService {
 			if (!reactions.containsKey(name)) {
 				return;
 			}
-			Reaction reaction = reactions.remove(name);
-			reactionExecutions.remove(reaction);
+			reactions.remove(name);
 			reactions.notifyAll();
 		}
 	}
@@ -120,20 +119,24 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* find next reaction. */
-			SortedMap<Long, Reaction> nextReactions = Maps.newTreeMap();
+			SortedMap<Long, Pair<String, Reaction>> nextReactions = Maps.newTreeMap();
+			String reactionName;
 			Reaction nextReaction;
-			ReactionExecution reactionExecution;
 			synchronized (reactions) {
-				for (Reaction reaction : reactions.values()) {
-					nextReactions.put(reactionExecutions.get(reaction).lastExecutionTime() + reaction.updateInterval(), reaction);
+				for (Entry<String, Reaction> reactionEntry : reactions.entrySet()) {
+					net.pterodactylus.reactor.State state = stateManager.loadState(reactionEntry.getKey());
+					long stateTime = (state != null) ? state.time() : 0;
+					nextReactions.put(stateTime + reactionEntry.getValue().updateInterval(), Pair.of(reactionEntry.getKey(), reactionEntry.getValue()));
 				}
-				nextReaction = nextReactions.get(nextReactions.firstKey());
-				reactionExecution = reactionExecutions.get(nextReaction);
+				reactionName = nextReactions.get(nextReactions.firstKey()).getLeft();
+				nextReaction = nextReactions.get(nextReactions.firstKey()).getRight();
 			}
 			logger.debug(String.format("Next Reaction: %s.", nextReaction));
 
 			/* wait until the next reaction has to run. */
-			long waitTime = (reactionExecution.lastExecutionTime() + nextReaction.updateInterval()) - System.currentTimeMillis();
+			net.pterodactylus.reactor.State lastState = stateManager.loadState(reactionName);
+			long lastStateTime = (lastState != null) ? lastState.time() : 0;
+			long waitTime = (lastStateTime + nextReaction.updateInterval()) - System.currentTimeMillis();
 			logger.debug(String.format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
 				synchronized (reactions) {
@@ -150,7 +153,6 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* run reaction. */
-			reactionExecution.setLastExecutionTime(System.currentTimeMillis());
 			Query query = nextReaction.query();
 			net.pterodactylus.reactor.State state;
 			try {
@@ -177,15 +179,15 @@ public class Engine extends AbstractExecutionThreadService {
 				}
 			}
 			if (state.success()) {
-				reactionExecution.addState(state);
+				stateManager.saveState(reactionName, state);
 			}
 
 			/* only run trigger if we have collected two states. */
 			Trigger trigger = nextReaction.trigger();
 			boolean triggerHit = false;
-			if ((reactionExecution.previousState() != null) && state.success()) {
+			if ((lastState != null) && state.success()) {
 				logger.debug("Checking Trigger for changes...");
-				triggerHit = trigger.triggers(reactionExecution.currentState(), reactionExecution.previousState());
+				triggerHit = trigger.triggers(state, lastState);
 			}
 
 			/* run action if trigger was hit. */
@@ -196,90 +198,6 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 		}
-	}
-
-	/**
-	 * Stores execution states of a {@link Reaction}.
-	 *
-	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
-	 */
-	private static class ReactionExecution {
-
-		/** The time the reaction was last executed. */
-		private long lastExecutionTime;
-
-		/** The previous state of the reaction. */
-		private net.pterodactylus.reactor.State previousState;
-
-		/** The current state of the reaction. */
-		private net.pterodactylus.reactor.State currentState;
-
-		//
-		// ACCESSORS
-		//
-
-		/**
-		 * Returns the time the reaction was last executed. If the reaction was
-		 * not yet executed, this method returns {@code 0}.
-		 *
-		 * @return The last execution time of the reaction (in milliseconds
-		 *         since Jan 1, 1970 UTC)
-		 */
-		public long lastExecutionTime() {
-			return lastExecutionTime;
-		}
-
-		/**
-		 * Returns the current state of the reaction. If the reaction was not
-		 * yet executed, this method returns {@code null}.
-		 *
-		 * @return The current state of the reaction
-		 */
-		public net.pterodactylus.reactor.State currentState() {
-			return currentState;
-		}
-
-		/**
-		 * Returns the previous state of the reaction. If the reaction was not
-		 * yet executed at least twice, this method returns {@code null}.
-		 *
-		 * @return The previous state of the reaction
-		 */
-		public net.pterodactylus.reactor.State previousState() {
-			return previousState;
-		}
-
-		/**
-		 * Sets the last execution time of the reaction.
-		 *
-		 * @param lastExecutionTime
-		 *            The last execution time of the reaction (in milliseconds
-		 *            since Jan 1, 1970 UTC)
-		 * @return This execution
-		 */
-		public ReactionExecution setLastExecutionTime(long lastExecutionTime) {
-			this.lastExecutionTime = lastExecutionTime;
-			return this;
-		}
-
-		//
-		// ACTIONS
-		//
-
-		/**
-		 * Adds the given state as current state and moves the current state
-		 * into the previous state.
-		 *
-		 * @param state
-		 *            The new current state
-		 * @return This execution
-		 */
-		public ReactionExecution addState(net.pterodactylus.reactor.State state) {
-			previousState = currentState;
-			currentState = state;
-			return this;
-		}
-
 	}
 
 }
