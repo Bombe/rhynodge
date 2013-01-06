@@ -64,15 +64,9 @@ public class Engine extends AbstractExecutionThreadService {
 	 *            The name of the reaction
 	 * @param reaction
 	 *            The reaction to add to this engine
-	 * @throws IllegalStateException
-	 *             if the engine already contains a {@link Reaction} with the
-	 *             given name
 	 */
 	public void addReaction(String name, Reaction reaction) {
 		synchronized (reactions) {
-			if (reactions.containsKey(name)) {
-				throw new IllegalStateException(String.format("Engine already contains a Reaction named “%s!”", name));
-			}
 			reactions.put(name, reaction);
 			reactions.notifyAll();
 		}
