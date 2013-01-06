@@ -142,7 +142,7 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 				}
 
-				chains.put(configurationFile.getName(), chain);
+				chains.put(getReactionName(configurationFile.getName()), chain);
 			}
 
 			/* filter enabled chains. */
@@ -210,6 +210,17 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 			logger.info(String.format("Could not read %s.", configurationFile));
 		}
 		return null;
+	}
+
+	/**
+	 * Extracts the name of the reaction from the given filename.
+	 *
+	 * @param filename
+	 *            The filename to extract the reaction name from
+	 * @return The name of the reaction
+	 */
+	private static String getReactionName(String filename) {
+		return (filename.lastIndexOf(".") > -1) ? filename.substring(0, filename.lastIndexOf(".")) : filename;
 	}
 
 }
