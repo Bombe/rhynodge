@@ -25,6 +25,14 @@ package net.pterodactylus.reactor;
 public interface State {
 
 	/**
+	 * Returns the time when this state was retrieved.
+	 *
+	 * @return The time when this state was retrieved (in millseconds since Jan
+	 *         1, 1970 UTC)
+	 */
+	long time();
+
+	/**
 	 * Whether the state was successfully retrieved. This method should only
 	 * return {@code true} if a meaningful result could be retrieved; if e. g. a
 	 * service is currently not reachable, this method should return false

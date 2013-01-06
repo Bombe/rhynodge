@@ -27,6 +27,9 @@ import net.pterodactylus.reactor.State;
  */
 public abstract class AbstractState implements State {
 
+	/** The time of this state. */
+	private final long time;
+
 	/** Whether the state was successfully retrieved. */
 	private final boolean success;
 
@@ -71,6 +74,7 @@ public abstract class AbstractState implements State {
 	 *            The exception that occured while retrieving the state
 	 */
 	protected AbstractState(boolean success, Throwable exception) {
+		this.time = System.currentTimeMillis();
 		this.success = success;
 		this.exception = exception;
 	}
@@ -78,6 +82,14 @@ public abstract class AbstractState implements State {
 	//
 	// STATE METHODS
 	//
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public long time() {
+		return time;
+	}
 
 	/**
 	 * {@inheritDoc}
