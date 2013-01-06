@@ -42,6 +42,7 @@ public abstract class AbstractState implements State {
 	private final Throwable exception;
 
 	/** The number of consecutive failures. */
+	@JsonProperty
 	private int failCount;
 
 	/**
