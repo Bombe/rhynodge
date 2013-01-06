@@ -19,15 +19,20 @@ package net.pterodactylus.reactor.states;
 
 import net.pterodactylus.reactor.State;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 /**
  * Abstract implementation of a {@link State} that knows about the basic
  * attributes of a {@link State}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY, property = "@class")
 public abstract class AbstractState implements State {
 
 	/** The time of this state. */
+	@JsonProperty
 	private final long time;
 
 	/** Whether the state was successfully retrieved. */

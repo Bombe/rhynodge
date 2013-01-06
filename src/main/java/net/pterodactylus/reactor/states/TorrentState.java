@@ -27,6 +27,7 @@ import net.pterodactylus.reactor.states.TorrentState.TorrentFile;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 
 /**
@@ -38,7 +39,8 @@ import com.google.common.collect.Lists;
 public class TorrentState extends AbstractState implements Iterable<TorrentFile> {
 
 	/** The torrent files. */
-	private final List<TorrentFile> files = Lists.newArrayList();
+	@JsonProperty
+	private List<TorrentFile> files = Lists.newArrayList();
 
 	//
 	// ACCESSORS
@@ -88,25 +90,40 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	public static class TorrentFile {
 
 		/** The name of the file. */
+		@JsonProperty
 		private final String name;
 
 		/** The size of the file. */
+		@JsonProperty
 		private final String size;
 
 		/** The magnet URI of the file. */
+		@JsonProperty
 		private final String magnetUri;
 
 		/** The download URI of the file. */
+		@JsonProperty
 		private final String downloadUri;
 
 		/** The number of files in this torrent. */
+		@JsonProperty
 		private final int fileCount;
 
 		/** The number of seeds connected to this torrent. */
+		@JsonProperty
 		private final int seedCount;
 
 		/** The number of leechers connected to this torrent. */
+		@JsonProperty
 		private final int leechCount;
+
+		/**
+		 * No-arg constructor for deserialization.
+		 */
+		@SuppressWarnings("unused")
+		private TorrentFile() {
+			this(null, null, null, null, 0, 0, 0);
+		}
 
 		/**
 		 * Creates a new torrent file.
