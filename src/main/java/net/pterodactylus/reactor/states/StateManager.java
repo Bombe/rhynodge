@@ -68,18 +68,19 @@ public class StateManager {
 	 *         loaded
 	 */
 	public State loadLastState(String reactionName) {
-		File stateFile = stateFile(reactionName);
-		try {
-			State state = objectMapper.readValue(stateFile, AbstractState.class);
-			return state;
-		} catch (JsonParseException jpe1) {
-			logger.warn(String.format("State for Reaction “%s” could not be parsed.", reactionName), jpe1);
-		} catch (JsonMappingException jme1) {
-			logger.warn(String.format("State for Reaction “%s” could not be parsed.", reactionName), jme1);
-		} catch (IOException ioe1) {
-			logger.info(String.format("State for Reaction “%s” could not be found.", reactionName));
-		}
-		return null;
+		return loadLastState(reactionName, false);
+	}
+
+	/**
+	 * Loads the last state with the given name.
+	 *
+	 * @param reactionName
+	 *            The name of the reaction
+	 * @return The loaded state, or {@code null} if the state could not be
+	 *         loaded
+	 */
+	public State loadLastSuccessfulState(String reactionName) {
+		return loadLastState(reactionName, true);
 	}
 
 	/**
@@ -92,8 +93,12 @@ public class StateManager {
 	 */
 	public void saveState(String reactionName, State state) {
 		try {
-			File stateFile = stateFile(reactionName);
+			File stateFile = stateFile(reactionName, "last");
 			objectMapper.writeValue(stateFile, state);
+			if (state.success()) {
+				stateFile = stateFile(reactionName, "success");
+				objectMapper.writeValue(stateFile, state);
+			}
 		} catch (JsonGenerationException jge1) {
 			logger.warn(String.format("State for Reaction “%s” could not be generated.", reactionName), jge1);
 		} catch (JsonMappingException jme1) {
@@ -112,10 +117,38 @@ public class StateManager {
 	 *
 	 * @param reactionName
 	 *            The name of the reaction
+	 * @param suffix
+	 *            An additional suffix (may be {@code null}
 	 * @return The file for the state
 	 */
-	private File stateFile(String reactionName) {
-		return new File(directory, reactionName + ".json");
+	private File stateFile(String reactionName, String suffix) {
+		return new File(directory, reactionName + ((suffix != null) ? "." + suffix : "") + ".json");
+	}
+
+	/**
+	 * Load the given state for the reaction with the given name.
+	 *
+	 * @param reactionName
+	 *            The name of the reaction
+	 * @param successful
+	 *            {@code true} to load the last successful state, {@code false}
+	 *            to load the last state
+	 * @return The loaded state, or {@code null} if the state could not be
+	 *         loaded
+	 */
+	private State loadLastState(String reactionName, boolean successful) {
+		File stateFile = stateFile(reactionName, successful ? "success" : "last");
+		try {
+			State state = objectMapper.readValue(stateFile, AbstractState.class);
+			return state;
+		} catch (JsonParseException jpe1) {
+			logger.warn(String.format("State for Reaction “%s” could not be parsed.", reactionName), jpe1);
+		} catch (JsonMappingException jme1) {
+			logger.warn(String.format("State for Reaction “%s” could not be parsed.", reactionName), jme1);
+		} catch (IOException ioe1) {
+			logger.info(String.format("State for Reaction “%s” could not be found.", reactionName));
+		}
+		return null;
 	}
 
 }
