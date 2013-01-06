@@ -125,7 +125,7 @@ public class Engine extends AbstractExecutionThreadService {
 				reactionName = nextReactions.get(nextReactions.firstKey()).getLeft();
 				nextReaction = nextReactions.get(nextReactions.firstKey()).getRight();
 			}
-			logger.debug(String.format("Next Reaction: %s.", nextReaction));
+			logger.debug(String.format("Next Reaction: %s.", reactionName));
 
 			/* wait until the next reaction has to run. */
 			net.pterodactylus.reactor.State lastState = stateManager.loadLastState(reactionName);
