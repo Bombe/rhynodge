@@ -20,16 +20,13 @@ package net.pterodactylus.reactor.loader;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Model for chain definitions.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-@XmlRootElement
 public class Chain {
 
 	/**
@@ -40,11 +37,11 @@ public class Chain {
 	public static class Parameter {
 
 		/** The name of the parameter. */
-		@XmlElement(required = true)
+		@JsonProperty
 		private String name;
 
 		/** The value of the parameter. */
-		@XmlElement(required = true)
+		@JsonProperty
 		private String value;
 
 		/**
@@ -104,12 +101,11 @@ public class Chain {
 	public static class Part {
 
 		/** The class name of the part. */
-		@XmlElement(required = true, name = "class")
+		@JsonProperty(value = "class")
 		private String name;
 
 		/** The parameters of the part. */
-		@XmlElement(name = "parameter")
-		@XmlElementWrapper(name = "parameters")
+		@JsonProperty
 		private List<Parameter> parameters = new ArrayList<Parameter>();
 
 		/**
@@ -169,28 +165,27 @@ public class Chain {
 	}
 
 	/** Whether this chain is enabled. */
-	@XmlElement(required = true)
+	@JsonProperty
 	private boolean enabled;
 
 	/** The query of the chain. */
-	@XmlElement(required = true)
+	@JsonProperty
 	private Part query;
 
 	/** The filters of the chain. */
-	@XmlElement(name = "filter")
-	@XmlElementWrapper(name = "filters")
+	@JsonProperty
 	private List<Part> filters = new ArrayList<Part>();
 
 	/** The trigger of the chain. */
-	@XmlElement(required = true)
+	@JsonProperty
 	private Part trigger;
 
 	/** The action of the chain. */
-	@XmlElement(required = true)
+	@JsonProperty
 	private Part action;
 
 	/** Interval between updates (in seconds). */
-	@XmlElement(required = true)
+	@JsonProperty
 	private int updateInterval;
 
 	/**

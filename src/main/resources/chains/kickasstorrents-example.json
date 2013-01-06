@@ -1,0 +1,49 @@
+{
+	"enabled": true,
+
+	"query":
+		{
+			"class": "HttpQuery",
+			"parameters": [
+				{
+					"name": "url",
+					"value": "http://kat.ph/usearch/example%20words/?field=time_add&sorder=desc"
+				}
+			]
+		},
+
+	"filters": [
+		{
+			"class": "HtmlFilter"
+		},
+		{
+			"class": "KickAssTorrentsFilter"
+		}
+	],
+
+	"trigger":
+		{
+			"class": "NewTorrentTrigger"
+		},
+
+	"action":
+		{
+			"class": "EmailAction",
+			"parameters": [
+				{
+					"name": "smtpHostname",
+					"value": "smtp"
+				},
+				{
+					"name": "sender",
+					"value": "reactor@reactor.de"
+				},
+				{
+					"name": "recipient",
+					"value": "recipient@recipient.de"
+				}
+			]
+		},
+
+	"updateInterval": 3600
+}

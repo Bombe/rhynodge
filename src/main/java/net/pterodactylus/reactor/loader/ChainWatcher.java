@@ -19,14 +19,11 @@ package net.pterodactylus.reactor.loader;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.TimeUnit;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.engine.Engine;
@@ -35,13 +32,16 @@ import net.pterodactylus.reactor.loader.Chain.Part;
 
 import org.apache.log4j.Logger;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractExecutionThreadService;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 /**
- * Watches a directory for chain XML files and loads and unloads
+ * Watches a directory for chain configuration files and loads and unloads
  * {@link Reaction}s from the {@link Engine}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
@@ -51,13 +51,16 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 	/** The logger. */
 	private static final Logger logger = Logger.getLogger(ChainWatcher.class);
 
+	/** The JSON object mapper. */
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+
 	/** The reaction loader. */
 	private final ReactionLoader reactionLoader = new ReactionLoader();
 
 	/** The engine to load reactions with. */
 	private final Engine engine;
 
-	/** The directory to watch for chain XML files. */
+	/** The directory to watch for chain configuration files. */
 	private final String directory;
 
 	/**
@@ -95,23 +98,27 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 				continue;
 			}
 
-			/* list all files, scan for XMLs. */
+			/* list all files, scan for configuration files. */
 			logger.debug(String.format("Scanning %s...", directory));
-			File[] xmlFiles = directoryFile.listFiles(new FilenameFilter() {
+			File[] configurationFiles = directoryFile.listFiles(new FilenameFilter() {
 
 				@Override
 				public boolean accept(File dir, String name) {
-					return name.endsWith(".xml");
+					return name.endsWith(".json");
 				}
 			});
-			logger.debug(String.format("Found %d XML file(s), parsing...", xmlFiles.length));
+			logger.debug(String.format("Found %d configuration file(s), parsing...", configurationFiles.length));
 
 			/* now parse all XML files. */
 			Map<String, Chain> chains = new HashMap<String, Chain>();
-			for (File xmlFile : xmlFiles) {
+			for (File configurationFile : configurationFiles) {
 
 				/* parse XML file. */
-				Chain chain = parseXmlFile(xmlFile);
+				Chain chain = parseConfigurationFile(configurationFile);
+				if (chain == null) {
+					logger.warn(String.format("Could not parse %s.", configurationFile));
+					continue;
+				}
 
 				/* dump chain */
 				logger.debug(String.format(" Enabled: %s", chain.enabled()));
@@ -135,7 +142,7 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 				}
 
-				chains.put(xmlFile.getName(), chain);
+				chains.put(configurationFile.getName(), chain);
 			}
 
 			/* filter enabled chains. */
@@ -186,22 +193,23 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 	//
 
 	/**
-	 * Parses the given XML file into a {@link Chain}.
+	 * Parses the given configuration file into a {@link Chain}.
 	 *
-	 * @param xmlFile
-	 *            The XML file to parse
+	 * @param configurationFile
+	 *            The configuration file to parse
 	 * @return The parsed chain
 	 */
-	private static Chain parseXmlFile(File xmlFile) {
+	private static Chain parseConfigurationFile(File configurationFile) {
 		try {
-			JAXBContext context = JAXBContext.newInstance(Chain.class);
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			logger.debug(String.format("Reading %s...", xmlFile.getPath()));
-			return (Chain) unmarshaller.unmarshal(xmlFile);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			return null;
+			return objectMapper.readValue(configurationFile, Chain.class);
+		} catch (JsonParseException jpe1) {
+			logger.warn(String.format("Could not parse %s.", configurationFile), jpe1);
+		} catch (JsonMappingException jme1) {
+			logger.warn(String.format("Could not parse %s.", configurationFile), jme1);
+		} catch (IOException ioe1) {
+			logger.info(String.format("Could not read %s.", configurationFile));
 		}
+		return null;
 	}
 
 }
