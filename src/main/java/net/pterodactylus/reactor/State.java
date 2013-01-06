@@ -44,6 +44,25 @@ public interface State {
 	boolean success();
 
 	/**
+	 * Returns the number of consecutive failures. This method only returns a
+	 * meaningful number iff {@link #success()} returns {@code false}. If
+	 * {@link #success()} returns {@code false} for the first time after
+	 * returning {@code true} and this method is called after {@link #success()}
+	 * it will return {@code 1}.
+	 *
+	 * @return The number of consecutive failures
+	 */
+	int failCount();
+
+	/**
+	 * Sets the fail count of this state.
+	 *
+	 * @param failCount
+	 *            The fail count of this state
+	 */
+	void setFailCount(int failCount);
+
+	/**
 	 * If {@link #success()} returns {@code false}, this method may return a
 	 * {@link Throwable} to give some details for the reason why retrieving the
 	 * state was not possible. For example, network-based {@link Query}s might

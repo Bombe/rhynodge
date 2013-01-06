@@ -41,6 +41,9 @@ public abstract class AbstractState implements State {
 	/** The optional exception that occured while retrieving the state. */
 	private final Throwable exception;
 
+	/** The number of consecutive failures. */
+	private int failCount;
+
 	/**
 	 * Creates a new successful state.
 	 */
@@ -102,6 +105,22 @@ public abstract class AbstractState implements State {
 	@Override
 	public boolean success() {
 		return success;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public int failCount() {
+		return failCount;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setFailCount(int failCount) {
+		this.failCount = failCount;
 	}
 
 	/**

@@ -136,6 +136,7 @@ public class Engine extends AbstractExecutionThreadService {
 			/* wait until the next reaction has to run. */
 			net.pterodactylus.reactor.State lastState = stateManager.loadState(reactionName);
 			long lastStateTime = (lastState != null) ? lastState.time() : 0;
+			int lastStateFailCount = (lastState != null) ? lastState.failCount() : 0;
 			long waitTime = (lastStateTime + nextReaction.updateInterval()) - System.currentTimeMillis();
 			logger.debug(String.format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
@@ -179,14 +180,15 @@ public class Engine extends AbstractExecutionThreadService {
 					state = newState;
 				}
 			}
-			if (state.success()) {
-				stateManager.saveState(reactionName, state);
+			if (!state.success()) {
+				state.setFailCount(lastStateFailCount + 1);
 			}
+			stateManager.saveState(reactionName, state);
 
-			/* only run trigger if we have collected two states. */
+			/* only run trigger if we have collected two successful states. */
 			Trigger trigger = nextReaction.trigger();
 			boolean triggerHit = false;
-			if ((lastState != null) && state.success()) {
+			if ((lastState != null) && lastState.success() && state.success()) {
 				logger.debug("Checking Trigger for changes...");
 				triggerHit = trigger.triggers(state, lastState);
 			}
