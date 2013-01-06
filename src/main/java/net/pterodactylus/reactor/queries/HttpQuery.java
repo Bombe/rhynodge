@@ -72,7 +72,7 @@ public class HttpQuery implements Query {
 		InputStreamReader inputStreamReader = null;
 		try {
 			/* make request. */
-			get.addHeader("Accept-Encoding", "identity");
+			get.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Ubuntu/12.04 Chromium/20.0.1132.47 Chrome/20.0.1132.47 Safari/536.11");
 			HttpResponse response = httpClient.execute(get);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				return new FailedState();
