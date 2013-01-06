@@ -132,11 +132,11 @@ public class HttpState extends AbstractState {
 	 */
 	private static String extractCharset(String contentType) {
 		if (contentType == null) {
-			return "UTF-8";
+			return "ISO-8859-1";
 		}
 		HeaderElement headerElement = BasicHeaderValueParser.parseHeaderElement(contentType, new BasicHeaderValueParser());
 		NameValuePair charset = headerElement.getParameterByName("charset");
-		return (charset != null) ? charset.getValue() : "UTF-8";
+		return (charset != null) ? charset.getValue() : "ISO-8859-1";
 	}
 
 	//
