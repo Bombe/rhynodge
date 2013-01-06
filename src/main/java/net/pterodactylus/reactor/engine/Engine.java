@@ -153,6 +153,7 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* run reaction. */
+			logger.info(String.format("Running Query for %s...", reactionName));
 			Query query = nextReaction.query();
 			net.pterodactylus.reactor.State state;
 			try {
