@@ -19,12 +19,15 @@
 		},
 		{
 			"class": "KickAssTorrentsFilter"
+		},
+		{
+			"class": "EpisodeFilter"
 		}
 	],
 
 	"trigger":
 		{
-			"class": "NewTorrentTrigger"
+			"class": "NewEpisodeTrigger"
 		},
 
 	"action":
