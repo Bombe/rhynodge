@@ -72,7 +72,7 @@ public class NewTorrentTrigger implements Trigger {
 	 */
 	@Override
 	public Output output(Reaction reaction) {
-		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s)!", torrentFiles.size()));
+		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s) for “%s!”", torrentFiles.size(), reaction.name()));
 		output.addText("text/plain", getPlainTextList(torrentFiles));
 		output.addText("text/html", getHtmlTextList(torrentFiles));
 		return output;
