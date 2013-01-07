@@ -30,6 +30,9 @@ import com.google.common.collect.Lists;
  */
 public class Reaction {
 
+	/** The name of this reaction. */
+	private final String name;
+
 	/** The query to run. */
 	private final Query query;
 
@@ -48,6 +51,8 @@ public class Reaction {
 	/**
 	 * Creates a new reaction.
 	 *
+	 * @param name
+	 *            The name of the reaction
 	 * @param query
 	 *            The query to run
 	 * @param trigger
@@ -55,13 +60,15 @@ public class Reaction {
 	 * @param action
 	 *            The action to perform
 	 */
-	public Reaction(Query query, Trigger trigger, Action action) {
-		this(query, Collections.<Filter> emptyList(), trigger, action);
+	public Reaction(String name, Query query, Trigger trigger, Action action) {
+		this(name, query, Collections.<Filter> emptyList(), trigger, action);
 	}
 
 	/**
 	 * Creates a new reaction.
 	 *
+	 * @param name
+	 *            The name of the reaction
 	 * @param query
 	 *            The query to run
 	 * @param filters
@@ -71,7 +78,8 @@ public class Reaction {
 	 * @param action
 	 *            The action to perform
 	 */
-	public Reaction(Query query, List<Filter> filters, Trigger trigger, Action action) {
+	public Reaction(String name, Query query, List<Filter> filters, Trigger trigger, Action action) {
+		this.name = name;
 		this.query = query;
 		this.filters.addAll(filters);
 		this.trigger = trigger;
@@ -81,6 +89,16 @@ public class Reaction {
 	//
 	// ACCESSORS
 	//
+
+	/**
+	 * Returns the name of this reaction. This name is solely used for display
+	 * purposes and does not need to be unique.
+	 *
+	 * @return The name of this reaction
+	 */
+	public String name() {
+		return name;
+	}
 
 	/**
 	 * Returns the query to run.

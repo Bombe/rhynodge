@@ -70,7 +70,7 @@ public class ReactionLoader {
 		/* create action. */
 		Action action = createObject(chain.action().name(), "net.pterodactylus.reactor.actions", extractParameters(chain.action().parameters()));
 
-		return new Reaction(query, filters, trigger, action).setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));
+		return new Reaction(chain.name(), query, filters, trigger, action).setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));
 	}
 
 	//

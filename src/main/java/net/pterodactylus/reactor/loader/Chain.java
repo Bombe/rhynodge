@@ -168,6 +168,10 @@ public class Chain {
 	@JsonProperty
 	private boolean enabled;
 
+	/** The name of the chain. */
+	@JsonProperty
+	private String name;
+
 	/** The query of the chain. */
 	@JsonProperty
 	private Part query;
@@ -195,6 +199,15 @@ public class Chain {
 	 */
 	public boolean enabled() {
 		return enabled;
+	}
+
+	/**
+	 * Returns the name of the chain.
+	 *
+	 * @return The name of the chain
+	 */
+	public String name() {
+		return name;
 	}
 
 	/**
@@ -252,6 +265,7 @@ public class Chain {
 	@Override
 	public int hashCode() {
 		int hashCode = 0;
+		hashCode ^= name.hashCode();
 		hashCode ^= query.hashCode();
 		for (Part filter : filters) {
 			hashCode ^= filter.hashCode();
@@ -271,6 +285,9 @@ public class Chain {
 			return false;
 		}
 		Chain chain = (Chain) object;
+		if (!name.equals(chain.name)) {
+			return false;
+		}
 		if (!query.equals(chain.query)) {
 			return false;
 		}
