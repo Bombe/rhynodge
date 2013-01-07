@@ -192,7 +192,7 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(String.format("Trigger was hit: %s.", triggerHit));
 			if (triggerHit) {
 				logger.info("Executing Action...");
-				nextReaction.action().execute(trigger.output());
+				nextReaction.action().execute(trigger.output(nextReaction));
 			}
 
 		}

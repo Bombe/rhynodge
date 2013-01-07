@@ -46,8 +46,10 @@ public interface Trigger {
 	 * Returns the output of this trigger. This will only return a meaningful
 	 * value if {@link #triggers(State, State)} returns {@code true}.
 	 *
+	 * @param reaction
+	 *            The reaction being triggered
 	 * @return The output of this trigger
 	 */
-	Output output();
+	Output output(Reaction reaction);
 
 }

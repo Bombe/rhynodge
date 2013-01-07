@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkState;
 
 import java.util.List;
 
+import net.pterodactylus.reactor.Reaction;
 import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.Trigger;
 import net.pterodactylus.reactor.output.DefaultOutput;
@@ -70,7 +71,7 @@ public class NewTorrentTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Output output() {
+	public Output output(Reaction reaction) {
 		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s)!", torrentFiles.size()));
 		output.addText("text/plain", getPlainTextList(torrentFiles));
 		output.addText("text/html", getHtmlTextList(torrentFiles));
