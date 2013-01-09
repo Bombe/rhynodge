@@ -1,0 +1,50 @@
+{
+	"enabled": false,
+	"name": "Example Reaction",
+
+	"query":
+		{
+			"class": "HttpQuery",
+			"parameters": [
+				{
+					"name": "url",
+					"value": "http://thepiratebay.se/search/Example%20Words/0/3/0"
+				}
+			]
+		},
+
+	"filters": [
+		{
+			"class": "HtmlFilter"
+		},
+		{
+			"class": "PirateBayFilter"
+		}
+	],
+
+	"trigger":
+		{
+			"class": "NewTorrentTrigger"
+		},
+
+	"action":
+		{
+			"class": "EmailAction",
+			"parameters": [
+				{
+					"name": "smtpHostname",
+					"value": "smtp"
+				},
+				{
+					"name": "sender",
+					"value": "reactor@reactor.de"
+				},
+				{
+					"name": "recipient",
+					"value": "recipient@recipient.de"
+				}
+			]
+		},
+
+	"updateInterval": 3600
+}
