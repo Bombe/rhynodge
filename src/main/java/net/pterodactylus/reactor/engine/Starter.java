@@ -18,6 +18,10 @@
 package net.pterodactylus.reactor.engine;
 
 import net.pterodactylus.reactor.loader.ChainWatcher;
+import net.pterodactylus.reactor.states.StateManager;
+
+import com.lexicalscope.jewel.cli.CliFactory;
+import com.lexicalscope.jewel.cli.Option;
 
 /**
  * Reactor main starter class.
@@ -34,13 +38,46 @@ public class Starter {
 	 */
 	public static void main(String... arguments) {
 
-		/* start the engine. */
-		Engine engine = new Engine();
-		engine.start();
+		/* parse command line. */
+		Parameters parameters = CliFactory.parseArguments(Parameters.class, arguments);
+
+		/* create the state manager. */
+		StateManager stateManager = new StateManager(parameters.getStateDirectory());
+
+		/* create the engine. */
+		Engine engine = new Engine(stateManager);
 
 		/* start a watcher. */
-		ChainWatcher chainWatcher = new ChainWatcher(engine, "/home/bombe/Documents/Workspace/Reactor/src/main/resources/chains/");
+		ChainWatcher chainWatcher = new ChainWatcher(engine, parameters.getChainDirectory());
 		chainWatcher.start();
+
+		/* start the engine. */
+		engine.start();
+	}
+
+	/**
+	 * Definition of the command-line parameters.
+	 *
+	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+	 */
+	private static interface Parameters {
+
+		/**
+		 * Returns the directory to watch for chains.
+		 *
+		 * @return The chain directory
+		 */
+		@Option(defaultValue = "chains", shortName = "c", description = "The directory to watch for chains")
+		String getChainDirectory();
+
+		/**
+		 * Returns the directory to store states in.
+		 *
+		 * @return The states directory
+		 */
+		@Option(defaultValue = "states", shortName = "s", description = "The directory to store states in")
+		String getStateDirectory();
+
 	}
 
 }

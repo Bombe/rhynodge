@@ -47,11 +47,21 @@ public class Engine extends AbstractExecutionThreadService {
 	private static final Logger logger = Logger.getLogger(Engine.class);
 
 	/** The state manager. */
-	private final StateManager stateManager = new StateManager("states");
+	private final StateManager stateManager;
 
 	/** All defined reactions. */
 	/* synchronize on itself. */
 	private final Map<String, Reaction> reactions = new HashMap<String, Reaction>();
+
+	/**
+	 * Creates a new engine.
+	 *
+	 * @param stateManager
+	 *            The state manager
+	 */
+	public Engine(StateManager stateManager) {
+		this.stateManager = stateManager;
+	}
 
 	//
 	// ACCESSORS
