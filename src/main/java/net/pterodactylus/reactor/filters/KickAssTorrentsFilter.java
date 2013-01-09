@@ -17,18 +17,10 @@
 
 package net.pterodactylus.reactor.filters;
 
-import static com.google.common.base.Preconditions.checkState;
-
-import java.net.URI;
-import java.net.URISyntaxException;
-
 import net.pterodactylus.reactor.Filter;
-import net.pterodactylus.reactor.State;
 import net.pterodactylus.reactor.queries.HttpQuery;
-import net.pterodactylus.reactor.states.FailedState;
 import net.pterodactylus.reactor.states.HtmlState;
 import net.pterodactylus.reactor.states.TorrentState;
-import net.pterodactylus.reactor.states.TorrentState.TorrentFile;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,127 +33,73 @@ import org.jsoup.select.Elements;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class KickAssTorrentsFilter implements Filter {
+public class KickAssTorrentsFilter extends TorrentSiteFilter {
+
+	//
+	// TORRENTSITEFILTER METHODS
+	//
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public State filter(State state) {
-		if (!state.success()) {
-			return FailedState.from(state);
-		}
-		checkState(state instanceof HtmlState, "state is not an HtmlState but a %s", state.getClass().getName());
-
-		/* get result table. */
-		Document document = ((HtmlState) state).document();
-		Elements mainTable = document.select("table.data");
-		if (mainTable.isEmpty()) {
-			/* no main table? */
-			return new FailedState();
-		}
-
-		/* iterate over all rows. */
-		TorrentState torrentState = new TorrentState();
-		Elements dataRows = mainTable.select("tr:gt(0)");
-		for (Element dataRow : dataRows) {
-			String name = extractName(dataRow);
-			String size = extractSize(dataRow);
-			String magnetUri = extractMagnetUri(dataRow);
-			String downloadUri;
-			int fileCount = extractFileCount(dataRow);
-			int seedCount = extractSeedCount(dataRow);
-			int leechCount = extractLeechCount(dataRow);
-			try {
-				downloadUri = new URI(((HtmlState) state).uri()).resolve(extractDownloadUri(dataRow)).toString();
-				TorrentFile torrentFile = new TorrentFile(name, size, magnetUri, downloadUri, fileCount, seedCount, leechCount);
-				torrentState.addTorrentFile(torrentFile);
-			} catch (URISyntaxException use1) {
-				/* ignore; if uri was wrong, we wouldn’t be here. */
-			}
-		}
-
-		return torrentState;
+	protected Elements getDataRows(Document document) {
+		return document.select("table.data").select("tr:gt(0)");
 	}
 
-	//
-	// STATIC METHODS
-	//
-
 	/**
-	 * Extracts the name from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the name from
-	 * @return The extracted name
+	 * {@inheritDoc}
 	 */
-	private static String extractName(Element dataRow) {
+	@Override
+	protected String extractName(Element dataRow) {
 		return dataRow.select("div.torrentname a.normalgrey").text();
 	}
 
 	/**
-	 * Extracts the size from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the size from
-	 * @return The extracted size
+	 * {@inheritDoc}
 	 */
-	private static String extractSize(Element dataRow) {
+	@Override
+	protected String extractSize(Element dataRow) {
 		return dataRow.select("td:eq(1)").text();
 	}
 
 	/**
-	 * Extracts the magnet URI from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the magnet URI from
-	 * @return The extracted magnet URI
+	 * {@inheritDoc}
 	 */
-	private static String extractMagnetUri(Element dataRow) {
+	@Override
+	protected String extractMagnetUri(Element dataRow) {
 		return dataRow.select("a.imagnet").attr("href");
 	}
 
 	/**
-	 * Extracts the download URI from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the download URI from
-	 * @return The extracted download URI
+	 * {@inheritDoc}
 	 */
-	private static String extractDownloadUri(Element dataRow) {
+	@Override
+	protected String extractDownloadUri(Element dataRow) {
 		return dataRow.select("a.idownload:not(.partner1Button)").attr("href");
 	}
 
 	/**
-	 * Extracts the file count from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the file count from
-	 * @return The extracted file count
+	 * {@inheritDoc}
 	 */
-	private static int extractFileCount(Element dataRow) {
+	@Override
+	protected int extractFileCount(Element dataRow) {
 		return Integer.valueOf(dataRow.select("td:eq(2)").text());
 	}
 
 	/**
-	 * Extracts the seed count from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the seed count from
-	 * @return The extracted seed count
+	 * {@inheritDoc}
 	 */
-	private static int extractSeedCount(Element dataRow) {
+	@Override
+	protected int extractSeedCount(Element dataRow) {
 		return Integer.valueOf(dataRow.select("td:eq(4)").text());
 	}
 
 	/**
-	 * Extracts the leech count from the given row.
-	 *
-	 * @param dataRow
-	 *            The row to extract the leech count from
-	 * @return The extracted leech count
+	 * {@inheritDoc}
 	 */
-	private static int extractLeechCount(Element dataRow) {
+	@Override
+	protected int extractLeechCount(Element dataRow) {
 		return Integer.valueOf(dataRow.select("td:eq(5)").text());
 	}
 
