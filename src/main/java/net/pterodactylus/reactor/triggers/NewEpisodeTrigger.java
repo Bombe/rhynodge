@@ -116,7 +116,7 @@ public class NewEpisodeTrigger implements Trigger {
 		String summary;
 		if (!newEpisodes.isEmpty()) {
 			if (!changedEpisodes.isEmpty()) {
-				summary = String.format("%d new and %d changed Torrent(s) for “!”", newEpisodes.size(), changedEpisodes.size(), reaction.name());
+				summary = String.format("%d new and %d changed Torrent(s) for “%s!”", newEpisodes.size(), changedEpisodes.size(), reaction.name());
 			} else {
 				summary = String.format("%d new Torrent(s) for “%s!”", newEpisodes.size(), reaction.name());
 			}
