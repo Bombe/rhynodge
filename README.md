@@ -1,14 +1,14 @@
-# Reactor
+# Rhynodge
 
 ## Description
 
-Reactor is a tool that lets you periodically execute tasks that depend on certain conditions.
+Rhynodge is a tool that lets you periodically execute tasks that depend on certain conditions.
 
 Its concept is quite similar to websites like ifttt (“if this then that”): you evaluate an input condition (e. g. data from a website, Facebook or Twitter posts, incoming emails, existence of a file), and if it evaluates to “yes” you execute a certain action.
 
 ## Concepts
 
-The core of Reactor comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
+The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
 
 ### Query
 
@@ -34,4 +34,4 @@ If a trigger found a change, the action is then executed. Again, an action can b
 
 ## Configuration
 
-Reactor’s configuration uses JSON files (I tried using XML first but apparently polymorphic deserialization is something that is not easily done with XML parsers). The format of a ``Chain`` configuration is pretty straight-forward and can be seen in the example configuration files.
+Rhynodge’s configuration uses JSON files (I tried using XML first but apparently polymorphic deserialization is something that is not easily done with XML parsers). The format of a ``Chain`` configuration is pretty straight-forward and can be seen in the example configuration files.
