@@ -65,12 +65,16 @@ public abstract class TorrentSiteFilter implements Filter {
 			String name = extractName(dataRow);
 			String size = extractSize(dataRow);
 			String magnetUri = extractMagnetUri(dataRow);
-			String downloadUri;
+			String downloadUri = extractDownloadUri(dataRow);
 			int fileCount = extractFileCount(dataRow);
 			int seedCount = extractSeedCount(dataRow);
 			int leechCount = extractLeechCount(dataRow);
 			try {
-				downloadUri = new URI(((HtmlState) state).uri()).resolve(URLEncoder.encode(extractDownloadUri(dataRow), "UTF-8").replace("%2F", "/")).toString();
+				if ((downloadUri != null) && (downloadUri.length() > 0)) {
+					downloadUri = new URI(((HtmlState) state).uri()).resolve(URLEncoder.encode(downloadUri, "UTF-8").replace("%2F", "/")).toString();
+				} else {
+					downloadUri = null;
+				}
 				TorrentFile torrentFile = new TorrentFile(name, size, magnetUri, downloadUri, fileCount, seedCount, leechCount);
 				torrentState.addTorrentFile(torrentFile);
 			} catch (URISyntaxException use1) {
