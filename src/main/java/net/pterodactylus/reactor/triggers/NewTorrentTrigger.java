@@ -96,8 +96,12 @@ public class NewTorrentTrigger implements Trigger {
 			plainText.append(torrentFile.name()).append('\n');
 			plainText.append('\t').append(torrentFile.size()).append(" in ").append(torrentFile.fileCount()).append(" file(s)\n");
 			plainText.append('\t').append(torrentFile.seedCount()).append(" seed(s), ").append(torrentFile.leechCount()).append(" leecher(s)\n");
-			plainText.append('\t').append(torrentFile.magnetUri()).append('\n');
-			plainText.append('\t').append(torrentFile.downloadUri()).append('\n');
+			if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+				plainText.append('\t').append(torrentFile.magnetUri()).append('\n');
+			}
+			if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+				plainText.append('\t').append(torrentFile.downloadUri()).append('\n');
+			}
 			plainText.append('\n');
 		}
 		return plainText.toString();
@@ -119,8 +123,12 @@ public class NewTorrentTrigger implements Trigger {
 			htmlText.append("<li><strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</strong></li>");
 			htmlText.append("<div>Size: <strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</strong> in <strong>").append(torrentFile.fileCount()).append("</strong> file(s)</div>");
 			htmlText.append("<div><strong>").append(torrentFile.seedCount()).append("</strong> seed(s), <strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>");
-			htmlText.append(String.format("<div><a href=\"%s\">Magnet URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())));
-			htmlText.append(String.format("<div><a href=\"%s\">Download URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())));
+			if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+				htmlText.append(String.format("<div><a href=\"%s\">Magnet URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())));
+			}
+			if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+				htmlText.append(String.format("<div><a href=\"%s\">Download URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())));
+			}
 		}
 		htmlText.append("</ul>\n");
 		htmlText.append("</body></html>\n");
