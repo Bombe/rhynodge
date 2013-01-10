@@ -152,8 +152,12 @@ public class NewEpisodeTrigger implements Trigger {
 				stringBuilder.append("- ").append(episode.identifier()).append("\n");
 				for (TorrentFile torrentFile : episode) {
 					stringBuilder.append("  - ").append(torrentFile.name()).append(", ").append(torrentFile.size()).append("\n");
-					stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
-					stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					}
 				}
 			}
 		}
@@ -163,8 +167,12 @@ public class NewEpisodeTrigger implements Trigger {
 				stringBuilder.append("- ").append(episode.identifier()).append("\n");
 				for (TorrentFile torrentFile : episode) {
 					stringBuilder.append("  - ").append(torrentFile.name()).append(", ").append(torrentFile.size()).append("\n");
-					stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
-					stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					}
 				}
 			}
 		}
@@ -199,8 +207,14 @@ public class NewEpisodeTrigger implements Trigger {
 					htmlBuilder.append("<strong>").append(torrentFile.fileCount()).append("</strong> file(s), ");
 					htmlBuilder.append("<strong>").append(torrentFile.seedCount()).append("</strong> seed(s), ");
 					htmlBuilder.append("<strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>\n");
-					htmlBuilder.append("<div><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
-					htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a></div>\n");
+					htmlBuilder.append("<div>");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a>");
+					}
+					htmlBuilder.append("</div>\n");
 				}
 				htmlBuilder.append("</ul>\n");
 			}
@@ -219,8 +233,14 @@ public class NewEpisodeTrigger implements Trigger {
 					htmlBuilder.append("<strong>").append(torrentFile.fileCount()).append("</strong> file(s), ");
 					htmlBuilder.append("<strong>").append(torrentFile.seedCount()).append("</strong> seed(s), ");
 					htmlBuilder.append("<strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>\n");
-					htmlBuilder.append("<div><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
-					htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a></div>\n");
+					htmlBuilder.append("<div>");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a>");
+					}
+					htmlBuilder.append("</div>\n");
 				}
 				htmlBuilder.append("</ul>\n");
 			}

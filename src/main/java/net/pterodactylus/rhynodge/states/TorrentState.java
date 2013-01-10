@@ -179,7 +179,8 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		/**
 		 * Returns the magnet URI of the file.
 		 *
-		 * @return The magnet URI of the file
+		 * @return The magnet URI of the file, or {@code null} if there is no
+		 *         magnet URI for this torrent file
 		 */
 		public String magnetUri() {
 			return magnetUri;
@@ -188,7 +189,8 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		/**
 		 * Returns the download URI of the file.
 		 *
-		 * @return The download URI of the file
+		 * @return The download URI of the file, or {@code null} if there is no
+		 *         download URI for this torrent file
 		 */
 		public String downloadUri() {
 			return downloadUri;
