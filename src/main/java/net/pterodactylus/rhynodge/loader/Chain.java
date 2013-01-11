@@ -184,6 +184,10 @@ public class Chain {
 	@JsonProperty
 	private Part trigger;
 
+	/** A combination of query, filters, and a trigger. */
+	@JsonProperty
+	private Part watcher;
+
 	/** The action of the chain. */
 	@JsonProperty
 	private Part action;
@@ -235,6 +239,15 @@ public class Chain {
 	 */
 	public Part trigger() {
 		return trigger;
+	}
+
+	/**
+	 * Returns an optional watcher.
+	 *
+	 * @return The watcher of this chain
+	 */
+	public Part watcher() {
+		return watcher;
 	}
 
 	/**

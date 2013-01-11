@@ -125,19 +125,23 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 				/* dump chain */
 				logger.debug(String.format(" Enabled: %s", chain.enabled()));
 
-				logger.debug(String.format(" Query: %s", chain.query().name()));
-				for (Parameter parameter : chain.query().parameters()) {
-					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
-				}
-				for (Part filter : chain.filters()) {
-					logger.debug(String.format(" Filter: %s", filter.name()));
-					for (Parameter parameter : filter.parameters()) {
+				if (chain.watcher() != null) {
+					logger.debug(String.format("Reaction: %s", chain.watcher().name()));
+				} else {
+					logger.debug(String.format(" Query: %s", chain.query().name()));
+					for (Parameter parameter : chain.query().parameters()) {
 						logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 					}
-				}
-				logger.debug(String.format(" Trigger: %s", chain.trigger().name()));
-				for (Parameter parameter : chain.trigger().parameters()) {
-					logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+					for (Part filter : chain.filters()) {
+						logger.debug(String.format(" Filter: %s", filter.name()));
+						for (Parameter parameter : filter.parameters()) {
+							logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+						}
+					}
+					logger.debug(String.format(" Trigger: %s", chain.trigger().name()));
+					for (Parameter parameter : chain.trigger().parameters()) {
+						logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
+					}
 				}
 				logger.debug(String.format(" Action: %s", chain.action().name()));
 				for (Parameter parameter : chain.action().parameters()) {

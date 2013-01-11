@@ -28,6 +28,7 @@ import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.Trigger;
+import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.loader.Chain.Parameter;
 import net.pterodactylus.rhynodge.loader.Chain.Part;
 
@@ -55,6 +56,15 @@ public class ReactionLoader {
 			throw new IllegalArgumentException("Chain is not enabled.");
 		}
 
+		/* create action. */
+		Action action = createObject(chain.action().name(), "net.pterodactylus.rhynodge.actions", extractParameters(chain.action().parameters()));
+
+		/* do we have a reaction defined? */
+		if (chain.watcher() != null) {
+			Watcher watcher = createObject(chain.watcher().name(), "net.pterodactylus.rhynodge.watchers", extractParameters(chain.watcher().parameters()));
+			return new Reaction(chain.name(), watcher.query(), watcher.filters(), watcher.trigger(), action);
+		}
+
 		/* create query. */
 		Query query = createObject(chain.query().name(), "net.pterodactylus.rhynodge.queries", extractParameters(chain.query().parameters()));
 
@@ -66,9 +76,6 @@ public class ReactionLoader {
 
 		/* create trigger. */
 		Trigger trigger = createObject(chain.trigger().name(), "net.pterodactylus.rhynodge.triggers", extractParameters(chain.trigger().parameters()));
-
-		/* create action. */
-		Action action = createObject(chain.action().name(), "net.pterodactylus.rhynodge.actions", extractParameters(chain.action().parameters()));
 
 		return new Reaction(chain.name(), query, filters, trigger, action).setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));
 	}
