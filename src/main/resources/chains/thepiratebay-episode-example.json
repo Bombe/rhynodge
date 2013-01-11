@@ -1,0 +1,36 @@
+{
+	"enabled": false,
+	"name": "Pirate Bay Episode Reaction",
+
+	"watcher":
+		{
+			"class": "PirateBayEpisodeWatcher",
+			"parameters": [
+				{
+					"name": "searchTerms",
+					"value": "Some Funny Stuff"
+				}
+			]
+		},
+
+	"action":
+		{
+			"class": "EmailAction",
+			"parameters": [
+				{
+					"name": "smtpHostname",
+					"value": "smtp"
+				},
+				{
+					"name": "sender",
+					"value": "rhynodge@rhynodge.net"
+				},
+				{
+					"name": "recipient",
+					"value": "recipient@recipient.de"
+				}
+			]
+		},
+
+	"updateInterval": 3600
+}
