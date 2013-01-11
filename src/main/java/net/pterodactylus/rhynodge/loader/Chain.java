@@ -279,11 +279,15 @@ public class Chain {
 	public int hashCode() {
 		int hashCode = 0;
 		hashCode ^= name.hashCode();
-		hashCode ^= query.hashCode();
-		for (Part filter : filters) {
-			hashCode ^= filter.hashCode();
+		if (watcher != null) {
+			hashCode ^= watcher.hashCode();
+		} else {
+			hashCode ^= query.hashCode();
+			for (Part filter : filters) {
+				hashCode ^= filter.hashCode();
+			}
+			hashCode ^= trigger.hashCode();
 		}
-		hashCode ^= trigger.hashCode();
 		hashCode ^= action.hashCode();
 		hashCode ^= updateInterval;
 		return hashCode;
@@ -301,19 +305,25 @@ public class Chain {
 		if (!name.equals(chain.name)) {
 			return false;
 		}
-		if (!query.equals(chain.query)) {
-			return false;
-		}
-		if (filters.size() != chain.filters.size()) {
-			return false;
-		}
-		for (int filterIndex = 0; filterIndex < filters.size(); ++filterIndex) {
-			if (!filters.get(filterIndex).equals(chain.filters.get(filterIndex))) {
+		if (watcher != null) {
+			if (!watcher.equals(chain.watcher)) {
 				return false;
 			}
-		}
-		if (!trigger.equals(chain.trigger)) {
-			return false;
+		} else {
+			if (!query.equals(chain.query)) {
+				return false;
+			}
+			if (filters.size() != chain.filters.size()) {
+				return false;
+			}
+			for (int filterIndex = 0; filterIndex < filters.size(); ++filterIndex) {
+				if (!filters.get(filterIndex).equals(chain.filters.get(filterIndex))) {
+					return false;
+				}
+			}
+			if (!trigger.equals(chain.trigger)) {
+				return false;
+			}
 		}
 		if (!action.equals(chain.action)) {
 			return false;
