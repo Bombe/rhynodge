@@ -56,28 +56,40 @@ public class ReactionLoader {
 			throw new IllegalArgumentException("Chain is not enabled.");
 		}
 
+		Reaction reaction;
+
 		/* create action. */
 		Action action = createObject(chain.action().name(), "net.pterodactylus.rhynodge.actions", extractParameters(chain.action().parameters()));
 
 		/* do we have a reaction defined? */
 		if (chain.watcher() != null) {
+
+			/* create watcher. */
 			Watcher watcher = createObject(chain.watcher().name(), "net.pterodactylus.rhynodge.watchers", extractParameters(chain.watcher().parameters()));
-			return new Reaction(chain.name(), watcher.query(), watcher.filters(), watcher.trigger(), action);
+
+			/* create reaction. */
+			reaction = new Reaction(chain.name(), watcher.query(), watcher.filters(), watcher.trigger(), action);
+
+		} else {
+
+			/* create query. */
+			Query query = createObject(chain.query().name(), "net.pterodactylus.rhynodge.queries", extractParameters(chain.query().parameters()));
+
+			/* create filters. */
+			List<Filter> filters = new ArrayList<Filter>();
+			for (Part filterPart : chain.filters()) {
+				filters.add(ReactionLoader.<Filter> createObject(filterPart.name(), "net.pterodactylus.rhynodge.filters", extractParameters(filterPart.parameters())));
+			}
+
+			/* create trigger. */
+			Trigger trigger = createObject(chain.trigger().name(), "net.pterodactylus.rhynodge.triggers", extractParameters(chain.trigger().parameters()));
+
+			/* create reaction. */
+			reaction = new Reaction(chain.name(), query, filters, trigger, action);
 		}
 
-		/* create query. */
-		Query query = createObject(chain.query().name(), "net.pterodactylus.rhynodge.queries", extractParameters(chain.query().parameters()));
-
-		/* create filters. */
-		List<Filter> filters = new ArrayList<Filter>();
-		for (Part filterPart : chain.filters()) {
-			filters.add(ReactionLoader.<Filter> createObject(filterPart.name(), "net.pterodactylus.rhynodge.filters", extractParameters(filterPart.parameters())));
-		}
-
-		/* create trigger. */
-		Trigger trigger = createObject(chain.trigger().name(), "net.pterodactylus.rhynodge.triggers", extractParameters(chain.trigger().parameters()));
-
-		return new Reaction(chain.name(), query, filters, trigger, action).setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));
+		reaction.setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));
+		return reaction;
 	}
 
 	//
