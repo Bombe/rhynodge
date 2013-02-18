@@ -262,7 +262,7 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 			List<NameValuePair> parameters = URLEncodedUtils.parse(magnetUri.substring("magnet:?".length()), Charset.forName("UTF-8"));
 			for (NameValuePair parameter : parameters) {
 				if (parameter.getName().equals("xt")) {
-					return parameter.getValue();
+					return parameter.getValue().toLowerCase();
 				}
 			}
 			return null;
