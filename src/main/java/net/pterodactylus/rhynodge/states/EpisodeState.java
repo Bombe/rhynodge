@@ -98,7 +98,7 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 	 *
 	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
 	 */
-	public static class Episode implements Iterable<TorrentFile> {
+	public static class Episode implements Comparable<Episode>, Iterable<TorrentFile> {
 
 		/** The season of the episode. */
 		@JsonProperty
@@ -197,6 +197,26 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 		@Override
 		public Iterator<TorrentFile> iterator() {
 			return torrentFiles.iterator();
+		}
+
+		/**
+		 * {@inheritDoc}
+		 */
+		@Override
+		public int compareTo(Episode episode) {
+			if (season() < episode.season()) {
+				return -1;
+			}
+			if (season() > episode.season()) {
+				return 1;
+			}
+			if (episode() < episode.episode()) {
+				return -1;
+			}
+			if (episode() > episode.episode()) {
+				return 1;
+			}
+			return 0;
 		}
 
 		//
