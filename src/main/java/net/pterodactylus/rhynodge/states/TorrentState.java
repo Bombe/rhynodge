@@ -44,6 +44,23 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	@JsonProperty
 	private List<TorrentFile> files = Lists.newArrayList();
 
+	/**
+	 * Creates a new torrent state without torrent files.
+	 */
+	public TorrentState() {
+		this(Collections.<TorrentFile> emptySet());
+	}
+
+	/**
+	 * Creates a new torrent state containing the given torrent files.
+	 *
+	 * @param torrentFiles
+	 *            The torrent files
+	 */
+	public TorrentState(Collection<TorrentFile> torrentFiles) {
+		files.addAll(torrentFiles);
+	}
+
 	//
 	// ACCESSORS
 	//
