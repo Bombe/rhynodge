@@ -19,6 +19,7 @@ package net.pterodactylus.rhynodge.queries;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.concurrent.TimeUnit;
 
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.State;
@@ -31,6 +32,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
 import com.google.common.io.Closeables;
@@ -73,6 +75,8 @@ public class HttpQuery implements Query {
 		try {
 			/* make request. */
 			get.addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/536.11 (KHTML, like Gecko) Ubuntu/12.04 Chromium/20.0.1132.47 Chrome/20.0.1132.47 Safari/536.11");
+			HttpConnectionParams.setConnectionTimeout(get.getParams(), (int) TimeUnit.SECONDS.toMillis(300));
+			HttpConnectionParams.setSoTimeout(get.getParams(), (int) TimeUnit.SECONDS.toMillis(300));
 			HttpResponse response = httpClient.execute(get);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
 				return new FailedState();
