@@ -188,14 +188,20 @@ public class Engine extends AbstractExecutionThreadService {
 				state.setFailCount(lastStateFailCount + 1);
 			}
 			net.pterodactylus.rhynodge.State lastSuccessfulState = stateManager.loadLastSuccessfulState(reactionName);
-			stateManager.saveState(reactionName, state);
 
-			/* only run trigger if we have collected two successful states. */
-			Trigger trigger = nextReaction.trigger();
+			/* merge states. */
 			boolean triggerHit = false;
+			Trigger trigger = nextReaction.trigger();
 			if ((lastSuccessfulState != null) && lastSuccessfulState.success() && state.success()) {
-				logger.debug("Checking Trigger for changes...");
-				triggerHit = trigger.triggers(state, lastSuccessfulState);
+				net.pterodactylus.rhynodge.State newState = trigger.mergeStates(lastSuccessfulState, state);
+
+				/* save new state. */
+				stateManager.saveState(reactionName, newState);
+
+				triggerHit = trigger.triggers();
+			} else {
+				/* save first or error state. */
+				stateManager.saveState(reactionName, state);
 			}
 
 			/* run action if trigger was hit. */

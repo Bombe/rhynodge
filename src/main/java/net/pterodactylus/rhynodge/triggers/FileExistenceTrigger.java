@@ -33,6 +33,9 @@ import com.google.common.base.Preconditions;
  */
 public class FileExistenceTrigger implements Trigger {
 
+	/** Whether a change is triggered. */
+	private boolean triggered;
+
 	//
 	// TRIGGER METHODS
 	//
@@ -41,10 +44,19 @@ public class FileExistenceTrigger implements Trigger {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean triggers(State previousState, State currentState) {
+	public State mergeStates(State previousState, State currentState) {
 		Preconditions.checkState(previousState instanceof FileState, "previousState is not a FileState");
 		Preconditions.checkState(currentState instanceof FileState, "currentState is not a FileState");
-		return ((FileState) previousState).exists() != ((FileState) currentState).exists();
+		triggered = ((FileState) previousState).exists() != ((FileState) currentState).exists();
+		return currentState;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean triggers() {
+		return triggered;
 	}
 
 	/**

@@ -34,16 +34,28 @@ import net.pterodactylus.rhynodge.states.FileState;
  */
 public class FileStateModifiedTrigger implements Trigger {
 
+	/** Whether a change was triggered. */
+	private boolean triggered;
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean triggers(State currentState, State previousState) {
+	public State mergeStates(State previousState, State currentState) {
 		checkState(currentState instanceof FileState, "currentState is not a FileState but a %s", currentState.getClass());
 		checkState(previousState instanceof FileState, "previousState is not a FileState but a %s", currentState.getClass());
 		FileState currentFileState = (FileState) currentState;
 		FileState previousFileState = (FileState) previousState;
-		return (currentFileState.exists() != previousFileState.exists()) || (currentFileState.size() != previousFileState.size()) || (currentFileState.modificationTime() != previousFileState.modificationTime());
+		triggered = (currentFileState.exists() != previousFileState.exists()) || (currentFileState.size() != previousFileState.size()) || (currentFileState.modificationTime() != previousFileState.modificationTime());
+		return currentState;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean triggers() {
+		return triggered;
 	}
 
 	/**

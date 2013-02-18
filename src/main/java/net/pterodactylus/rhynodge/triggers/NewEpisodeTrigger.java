@@ -20,6 +20,8 @@ package net.pterodactylus.rhynodge.triggers;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
@@ -32,8 +34,11 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Ordering;
+import com.google.common.collect.Sets;
 
 /**
  * {@link Trigger} implementation that compares two {@link EpisodeState}s for
@@ -44,67 +49,58 @@ import com.google.common.collect.Collections2;
 public class NewEpisodeTrigger implements Trigger {
 
 	/** All new episodes. */
-	private Collection<Episode> newEpisodes;
+	private final Collection<Episode> newEpisodes = Sets.newHashSet();
 
 	/** All changed episodes. */
-	private Collection<Episode> changedEpisodes;
+	private final Collection<Episode> changedEpisodes = Sets.newHashSet();
+
+	/** All episodes. */
+	private final Collection<Episode> allEpisodes = Sets.newHashSet();
 
 	//
 	// TRIGGER METHODS
 	//
 
 	/**
+	 * {@inheritDocs}
+	 */
+	@Override
+	public State mergeStates(State previousState, State currentState) {
+		checkState(currentState instanceof EpisodeState, "currentState is not a EpisodeState but a %s", currentState.getClass().getName());
+		checkState(previousState instanceof EpisodeState, "previousState is not a EpisodeState but a %s", currentState.getClass().getName());
+		newEpisodes.clear();
+		changedEpisodes.clear();
+		this.allEpisodes.clear();
+		Map<Episode, Episode> allEpisodes = FluentIterable.from(((EpisodeState) previousState).episodes()).toMap(new Function<Episode, Episode>() {
+
+			@Override
+			public Episode apply(Episode episode) {
+				return episode;
+			}
+		});
+		for (Episode episode : ((EpisodeState) currentState).episodes()) {
+			if (!allEpisodes.containsKey(episode)) {
+				allEpisodes.put(episode, episode);
+				newEpisodes.add(episode);
+			}
+			for (TorrentFile torrentFile : episode.torrentFiles()) {
+				int oldSize = allEpisodes.get(episode).torrentFiles().size();
+				allEpisodes.get(episode).addTorrentFile(torrentFile);
+				int newSize = allEpisodes.get(episode).torrentFiles().size();
+				if (!newEpisodes.contains(episode) && (oldSize != newSize)) {
+					changedEpisodes.add(episode);
+				}
+			}
+		}
+		this.allEpisodes.addAll(allEpisodes.values());
+		return new EpisodeState(this.allEpisodes);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean triggers(State currentState, State previousState) {
-		checkState(currentState instanceof EpisodeState, "currentState is not a EpisodeState but a %s", currentState.getClass().getName());
-		checkState(previousState instanceof EpisodeState, "previousState is not a EpisodeState but a %s", currentState.getClass().getName());
-		final EpisodeState currentEpisodeState = (EpisodeState) currentState;
-		final EpisodeState previousEpisodeState = (EpisodeState) previousState;
-
-		newEpisodes = Collections2.filter(currentEpisodeState.episodes(), new Predicate<Episode>() {
-
-			@Override
-			public boolean apply(Episode episode) {
-				return !previousEpisodeState.episodes().contains(episode);
-			}
-		});
-
-		changedEpisodes = Collections2.filter(currentEpisodeState.episodes(), new Predicate<Episode>() {
-
-			@Override
-			public boolean apply(Episode episode) {
-				if (!previousEpisodeState.episodes().contains(episode)) {
-					return false;
-				}
-
-				/* find previous episode. */
-				final Episode previousEpisode = findPreviousEpisode(episode);
-
-				/* compare the list of torrent files. */
-				Collection<TorrentFile> newTorrentFiles = Collections2.filter(episode.torrentFiles(), new Predicate<TorrentFile>() {
-
-					@Override
-					public boolean apply(TorrentFile torrentFile) {
-						return !previousEpisode.torrentFiles().contains(torrentFile);
-					}
-				});
-
-				return !newTorrentFiles.isEmpty();
-			}
-
-			private Episode findPreviousEpisode(Episode episode) {
-				for (Episode previousStateEpisode : previousEpisodeState) {
-					if (previousStateEpisode.equals(episode)) {
-						return previousStateEpisode;
-					}
-				}
-				return null;
-			}
-
-		});
-
+	public boolean triggers() {
 		return !newEpisodes.isEmpty() || !changedEpisodes.isEmpty();
 	}
 
@@ -124,8 +120,8 @@ public class NewEpisodeTrigger implements Trigger {
 			summary = String.format("%d changed Torrent(s) for “%s!”", changedEpisodes.size(), reaction.name());
 		}
 		DefaultOutput output = new DefaultOutput(summary);
-		output.addText("text/plain", generatePlainText(reaction, newEpisodes, changedEpisodes));
-		output.addText("text/html", generateHtmlText(reaction, newEpisodes, changedEpisodes));
+		output.addText("text/plain", generatePlainText(reaction, newEpisodes, changedEpisodes, allEpisodes));
+		output.addText("text/html", generateHtmlText(reaction, newEpisodes, changedEpisodes, allEpisodes));
 		return output;
 	}
 
@@ -142,9 +138,11 @@ public class NewEpisodeTrigger implements Trigger {
 	 *            The new episodes
 	 * @param changedEpisodes
 	 *            The changed episodes
+	 * @param allEpisodes
+	 *            All episodes
 	 * @return The plain text output
 	 */
-	private static String generatePlainText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes) {
+	private static String generatePlainText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes, Collection<Episode> allEpisodes) {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (!newEpisodes.isEmpty()) {
 			stringBuilder.append(reaction.name()).append(" - New Episodes\n\n");
@@ -176,6 +174,27 @@ public class NewEpisodeTrigger implements Trigger {
 				}
 			}
 		}
+		/* list all known episodes. */
+		stringBuilder.append(reaction.name()).append(" - All Known Episodes\n\n");
+		ImmutableMap<Integer, Collection<Episode>> episodesBySeason = FluentIterable.from(allEpisodes).index(new Function<Episode, Integer>() {
+
+			@Override
+			public Integer apply(Episode episode) {
+				return episode.season();
+			}
+		}).asMap();
+		for (Entry<Integer, Collection<Episode>> seasonEntry : episodesBySeason.entrySet()) {
+			stringBuilder.append("  Season ").append(seasonEntry.getKey()).append("\n\n");
+			for (Episode episode : Ordering.natural().sortedCopy(seasonEntry.getValue())) {
+				stringBuilder.append("    Episode ").append(episode.episode()).append("\n");
+				for (TorrentFile torrentFile : episode) {
+					stringBuilder.append("      Size: ").append(torrentFile.size());
+					stringBuilder.append(" in ").append(torrentFile.fileCount()).append(" file(s): ");
+					stringBuilder.append(torrentFile.magnetUri());
+				}
+			}
+		}
+
 		return stringBuilder.toString();
 	}
 
@@ -188,9 +207,11 @@ public class NewEpisodeTrigger implements Trigger {
 	 *            The new episodes
 	 * @param changedEpisodes
 	 *            The changed episodes
+	 * @param allEpisodes
+	 *            All episodes
 	 * @return The HTML output
 	 */
-	private static String generateHtmlText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes) {
+	private static String generateHtmlText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes, Collection<Episode> allEpisodes) {
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("<html><body>\n");
 		htmlBuilder.append("<h1>").append(StringEscapeUtils.escapeHtml4(reaction.name())).append("</h1>\n");

@@ -20,6 +20,7 @@ package net.pterodactylus.rhynodge.triggers;
 import static com.google.common.base.Preconditions.checkState;
 
 import java.util.List;
+import java.util.Set;
 
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
@@ -32,6 +33,7 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 
 /**
  * {@link Trigger} implementation that is triggered by {@link TorrentFile}s that
@@ -41,30 +43,44 @@ import com.google.common.collect.Lists;
  */
 public class NewTorrentTrigger implements Trigger {
 
+	/** All known torrents. */
+	private final Set<TorrentFile> allTorrentFiles = Sets.newHashSet();
+
 	/** The newly detected torrent files. */
-	private List<TorrentFile> torrentFiles = Lists.newArrayList();
+	private final List<TorrentFile> newTorrentFiles = Lists.newArrayList();
 
 	//
 	// TRIGGER METHODS
 	//
 
 	/**
-	 * {@inheritDoc}
+	 * {@inheritDocs}
 	 */
 	@Override
-	public boolean triggers(State currentState, State previousState) {
+	public State mergeStates(State previousState, State currentState) {
 		checkState(currentState instanceof TorrentState, "currentState is not a TorrentState but a %s", currentState.getClass().getName());
 		checkState(previousState instanceof TorrentState, "previousState is not a TorrentState but a %s", currentState.getClass().getName());
 		TorrentState currentTorrentState = (TorrentState) currentState;
 		TorrentState previousTorrentState = (TorrentState) previousState;
-		torrentFiles.clear();
+
+		allTorrentFiles.clear();
+		newTorrentFiles.clear();
+		allTorrentFiles.addAll(previousTorrentState.torrentFiles());
 		for (TorrentFile torrentFile : currentTorrentState) {
-			torrentFiles.add(torrentFile);
+			if (allTorrentFiles.add(torrentFile)) {
+				newTorrentFiles.add(torrentFile);
+			}
 		}
-		for (TorrentFile torrentFile : previousTorrentState) {
-			torrentFiles.remove(torrentFile);
-		}
-		return !torrentFiles.isEmpty();
+
+		return new TorrentState(allTorrentFiles);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean triggers() {
+		return !newTorrentFiles.isEmpty();
 	}
 
 	/**
@@ -72,9 +88,9 @@ public class NewTorrentTrigger implements Trigger {
 	 */
 	@Override
 	public Output output(Reaction reaction) {
-		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s) for “%s!”", torrentFiles.size(), reaction.name()));
-		output.addText("text/plain", getPlainTextList(torrentFiles));
-		output.addText("text/html", getHtmlTextList(torrentFiles));
+		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s) for “%s!”", newTorrentFiles.size(), reaction.name()));
+		output.addText("text/plain", getPlainTextList(newTorrentFiles));
+		output.addText("text/html", getHtmlTextList(newTorrentFiles));
 		return output;
 	}
 

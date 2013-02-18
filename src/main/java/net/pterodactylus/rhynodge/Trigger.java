@@ -31,20 +31,31 @@ import net.pterodactylus.rhynodge.states.FileState;
 public interface Trigger {
 
 	/**
-	 * Checks whether the given states warrant a change trigger.
+	 * Merges the current state into the previous state, returning the merged
+	 * state.
 	 *
-	 * @param currentState
-	 *            The current state of a system
 	 * @param previousState
 	 *            The previous state of the system
-	 * @return {@code true} if the given states warrant a change trigger,
+	 * @param currentState
+	 *            The current state of a system
+	 * @return The new state, containing a meaningful merge between the previous
+	 *         and the current state
+	 */
+	State mergeStates(State previousState, State currentState);
+
+	/**
+	 * Checks whether the states given to {@link #mergeStates(State, State)}
+	 * warrant a change trigger.
+	 *
+	 * @return {@code true} if the states given to
+	 *         {@link #mergeStates(State, State)} warrant a change trigger,
 	 *         {@code false} otherwise
 	 */
-	boolean triggers(State currentState, State previousState);
+	boolean triggers();
 
 	/**
 	 * Returns the output of this trigger. This will only return a meaningful
-	 * value if {@link #triggers(State, State)} returns {@code true}.
+	 * value if {@link #triggers()} returns {@code true}.
 	 *
 	 * @param reaction
 	 *            The reaction being triggered

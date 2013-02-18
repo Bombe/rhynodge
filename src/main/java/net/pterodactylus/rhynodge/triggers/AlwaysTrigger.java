@@ -32,9 +32,21 @@ public class AlwaysTrigger implements Trigger {
 
 	/**
 	 * {@inheritDoc}
+	 * <p>
+	 * This implementation returns the current state.
 	 */
 	@Override
-	public boolean triggers(State currentState, State previousState) {
+	public State mergeStates(State previousState, State currentState) {
+		return currentState;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 * <p>
+	 * This implementation always returns {@code true}.
+	 */
+	@Override
+	public boolean triggers() {
 		return true;
 	}
 
