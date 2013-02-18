@@ -18,6 +18,8 @@
 package net.pterodactylus.rhynodge.states;
 
 import java.nio.charset.Charset;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -45,6 +47,15 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	//
 	// ACCESSORS
 	//
+
+	/**
+	 * Returns all torrent files of this state.
+	 *
+	 * @return All torrent files of this state
+	 */
+	public Collection<TorrentFile> torrentFiles() {
+		return Collections.unmodifiableList(files);
+	}
 
 	/**
 	 * Adds a torrent file to this state.
