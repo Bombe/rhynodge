@@ -29,6 +29,7 @@ import net.pterodactylus.rhynodge.states.EpisodeState.Episode;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Function;
 
 /**
  * {@link State} implementation that stores episodes of TV shows, parsed via
@@ -99,6 +100,15 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
 	 */
 	public static class Episode implements Comparable<Episode>, Iterable<TorrentFile> {
+
+		/** Function to extract the season of an episode. */
+		public static final Function<Episode, Integer> BY_SEASON = new Function<Episode, Integer>() {
+
+			@Override
+			public Integer apply(Episode episode) {
+				return episode.season();
+			}
+		};
 
 		/** The season of the episode. */
 		@JsonProperty
