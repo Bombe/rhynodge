@@ -19,7 +19,8 @@ package net.pterodactylus.rhynodge.filters;
 
 import static com.google.common.base.Preconditions.checkState;
 
-import java.util.LinkedHashMap;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,7 +58,7 @@ public class EpisodeFilter implements Filter {
 		checkState(state instanceof TorrentState, "state is not a TorrentState but a %s!", state.getClass());
 
 		TorrentState torrentState = (TorrentState) state;
-		LinkedHashMap<Episode, Episode> episodes = new LinkedHashMap<Episode, Episode>();
+		Map<Episode, Episode> episodes = new HashMap<Episode, Episode>();
 		for (TorrentFile torrentFile : torrentState) {
 			Episode episode = extractEpisode(torrentFile);
 			if (episode == null) {
