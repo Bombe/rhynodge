@@ -33,6 +33,7 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
 /**
@@ -146,7 +147,7 @@ public class NewTorrentTrigger implements Trigger {
 		htmlBuilder.append("</tr>\n");
 		htmlBuilder.append("</thead>\n");
 		htmlBuilder.append("<tbody>\n");
-		for (TorrentFile torrentFile : allTorrentFiles) {
+		for (TorrentFile torrentFile : sortNewFirst().sortedCopy(allTorrentFiles)) {
 			if (newTorrentFiles.contains(torrentFile)) {
 				htmlBuilder.append("<tr style=\"color: #008000; font-weight: bold;\">");
 			} else {
@@ -165,6 +166,29 @@ public class NewTorrentTrigger implements Trigger {
 		htmlBuilder.append("</table>\n");
 		htmlBuilder.append("</body></html>\n");
 		return htmlBuilder.toString();
+	}
+
+	/**
+	 * Returns an ordering that sorts torrent files by whether they are new
+	 * (according to {@link #newTorrentFiles}) or not. New files will be sorted
+	 * first.
+	 *
+	 * @return An ordering for “new files first”
+	 */
+	private Ordering<TorrentFile> sortNewFirst() {
+		return new Ordering<TorrentFile>() {
+
+			@Override
+			public int compare(TorrentFile leftTorrentFile, TorrentFile rightTorrentFile) {
+				if (newTorrentFiles.contains(leftTorrentFile) && !newTorrentFiles.contains(rightTorrentFile)) {
+					return -1;
+				}
+				if (!newTorrentFiles.contains(leftTorrentFile) && newTorrentFiles.contains(rightTorrentFile)) {
+					return 1;
+				}
+				return 0;
+			}
+		};
 	}
 
 }
