@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
 
@@ -72,13 +73,13 @@ public class NewEpisodeTrigger implements Trigger {
 		newEpisodes.clear();
 		changedEpisodes.clear();
 		this.allEpisodes.clear();
-		Map<Episode, Episode> allEpisodes = FluentIterable.from(((EpisodeState) previousState).episodes()).toMap(new Function<Episode, Episode>() {
+		Map<Episode, Episode> allEpisodes = Maps.newHashMap(FluentIterable.from(((EpisodeState) previousState).episodes()).toMap(new Function<Episode, Episode>() {
 
 			@Override
 			public Episode apply(Episode episode) {
 				return episode;
 			}
-		});
+		}));
 		for (Episode episode : ((EpisodeState) currentState).episodes()) {
 			if (!allEpisodes.containsKey(episode)) {
 				allEpisodes.put(episode, episode);
