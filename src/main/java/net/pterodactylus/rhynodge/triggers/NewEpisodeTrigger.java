@@ -233,7 +233,7 @@ public class NewEpisodeTrigger implements Trigger {
 			for (Episode episode : seasonEntry.getValue()) {
 				for (TorrentFile torrentFile : episode) {
 					if (newEpisodes.contains(episode)) {
-						htmlBuilder.append("<tr style=\"background-color: #eeffee;\">");
+						htmlBuilder.append("<tr style=\"color: #008000; font-weight: bold;\">");
 					} else if (newTorrentFiles.contains(torrentFile)) {
 						htmlBuilder.append("<tr style=\"color: #008000;\">");
 					} else {
