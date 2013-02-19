@@ -89,15 +89,16 @@ public class NewEpisodeTrigger implements Trigger {
 				allEpisodes.put(episode, episode);
 				newEpisodes.add(episode);
 			}
+			Episode existingEpisode = allEpisodes.get(episode);
 			for (TorrentFile torrentFile : Lists.newArrayList(episode.torrentFiles())) {
-				int oldSize = allEpisodes.get(episode).torrentFiles().size();
-				allEpisodes.get(episode).addTorrentFile(torrentFile);
-				int newSize = allEpisodes.get(episode).torrentFiles().size();
+				int oldSize = existingEpisode.torrentFiles().size();
+				existingEpisode.addTorrentFile(torrentFile);
+				int newSize = existingEpisode.torrentFiles().size();
 				if (oldSize != newSize) {
 					newTorrentFiles.add(torrentFile);
 				}
-				if (!newEpisodes.contains(episode) && (oldSize != newSize)) {
-					changedEpisodes.add(episode);
+				if (!newEpisodes.contains(existingEpisode) && (oldSize != newSize)) {
+					changedEpisodes.add(existingEpisode);
 				}
 			}
 		}
