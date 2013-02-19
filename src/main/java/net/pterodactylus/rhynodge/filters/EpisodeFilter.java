@@ -63,7 +63,9 @@ public class EpisodeFilter implements Filter {
 			if (episode == null) {
 				continue;
 			}
-			episodes.put(episode, episode);
+			if (!episodes.containsKey(episode)) {
+				episodes.put(episode, episode);
+			}
 			episode = episodes.get(episode);
 			episode.addTorrentFile(torrentFile);
 		}
