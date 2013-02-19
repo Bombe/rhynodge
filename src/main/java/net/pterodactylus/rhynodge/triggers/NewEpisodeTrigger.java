@@ -37,6 +37,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Ordering;
 import com.google.common.collect.Sets;
@@ -85,7 +86,7 @@ public class NewEpisodeTrigger implements Trigger {
 				allEpisodes.put(episode, episode);
 				newEpisodes.add(episode);
 			}
-			for (TorrentFile torrentFile : episode.torrentFiles()) {
+			for (TorrentFile torrentFile : Lists.newArrayList(episode.torrentFiles())) {
 				int oldSize = allEpisodes.get(episode).torrentFiles().size();
 				allEpisodes.get(episode).addTorrentFile(torrentFile);
 				int newSize = allEpisodes.get(episode).torrentFiles().size();
