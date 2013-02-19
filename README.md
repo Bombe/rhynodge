@@ -10,6 +10,21 @@ Its concept is quite similar to websites like ifttt (“if this then that”): y
 
 Rhynodge’s configuration uses JSON files (I tried using XML first but apparently polymorphic deserialization is something that is not easily done with XML parsers). The format of a ``Chain`` configuration is pretty straight-forward and can be seen in the example configuration files.
 
+## Running Rhynodge
+
+Rhynodge uses Maven as build and dependency management tool. Maven can also run Rhynodge:
+
+> $ mvn clean compile exec:java
+
+Rhynodge accepts the following command-line parameters:
+
+- ``--chains <directory>``, ``-c <directory>``: directory to load chain configurations from.
+- ``--states <directory>``, ``-s <directory>``: directory to store states in.
+
+Both directories need to be created before running Rhynodge.
+
+Rhynodge also periodically scans the chains directory to find changed or new chain configuration files. New files will be added to the running instance, changed files will be reloaded, and removing files will remove the corresponding job from Rhynodge.
+
 ## Internal Concepts
 
 The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
@@ -41,4 +56,3 @@ A ``Watcher`` does not do any processing but instead offers a ``Query``, a list 
 ### Action
 
 If a trigger found a change, the action is then executed. Again, an action can be almost anything: it can send an email, it can execute programs, print documents, initiate phone calls, take a picture from a webcam — anything you can program can be used an an action.
-
