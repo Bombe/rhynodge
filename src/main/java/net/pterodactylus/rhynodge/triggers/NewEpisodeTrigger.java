@@ -48,14 +48,15 @@ import com.google.common.collect.Sets;
  */
 public class NewEpisodeTrigger implements Trigger {
 
+	/** All episodes. */
+	private final Collection<Episode> allEpisodes = Sets.newHashSet();
+
 	/** All new episodes. */
 	private final Collection<Episode> newEpisodes = Sets.newHashSet();
 
 	/** All changed episodes. */
 	private final Collection<Episode> changedEpisodes = Sets.newHashSet();
 
-	/** All episodes. */
-	private final Collection<Episode> allEpisodes = Sets.newHashSet();
 
 	//
 	// TRIGGER METHODS
