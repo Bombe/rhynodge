@@ -130,8 +130,8 @@ public class NewEpisodeTrigger implements Trigger {
 			summary = String.format("%d changed Torrent(s) for “%s!”", changedEpisodes.size(), reaction.name());
 		}
 		DefaultOutput output = new DefaultOutput(summary);
-		output.addText("text/plain", generatePlainText(reaction, newEpisodes, changedEpisodes, allEpisodes));
-		output.addText("text/html", generateHtmlText(reaction, newEpisodes, changedEpisodes, allEpisodes));
+		output.addText("text/plain", generatePlainText(reaction));
+		output.addText("text/html", generateHtmlText(reaction));
 		return output;
 	}
 
@@ -144,15 +144,9 @@ public class NewEpisodeTrigger implements Trigger {
 	 *
 	 * @param reaction
 	 *            The reaction that was triggered
-	 * @param newEpisodes
-	 *            The new episodes
-	 * @param changedEpisodes
-	 *            The changed episodes
-	 * @param allEpisodes
-	 *            All episodes
 	 * @return The plain text output
 	 */
-	private static String generatePlainText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes, Collection<Episode> allEpisodes) {
+	private String generatePlainText(Reaction reaction) {
 		StringBuilder stringBuilder = new StringBuilder();
 		if (!newEpisodes.isEmpty()) {
 			stringBuilder.append(reaction.name()).append(" - New Episodes\n\n");
@@ -213,15 +207,9 @@ public class NewEpisodeTrigger implements Trigger {
 	 *
 	 * @param reaction
 	 *            The reaction that was triggered
-	 * @param newEpisodes
-	 *            The new episodes
-	 * @param changedEpisodes
-	 *            The changed episodes
-	 * @param allEpisodes
-	 *            All episodes
 	 * @return The HTML output
 	 */
-	private static String generateHtmlText(Reaction reaction, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes, Collection<Episode> allEpisodes) {
+	private String generateHtmlText(Reaction reaction) {
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("<html><body>\n");
 		htmlBuilder.append("<h1>").append(StringEscapeUtils.escapeHtml4(reaction.name())).append("</h1>\n");
