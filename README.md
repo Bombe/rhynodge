@@ -6,7 +6,7 @@ Rhynodge is a tool that lets you periodically execute tasks that depend on certa
 
 Its concept is quite similar to websites like ifttt (“if this then that”): you evaluate an input condition (e. g. data from a website, Facebook or Twitter posts, incoming emails, existence of a file), and if it evaluates to “yes” you execute a certain action.
 
-## Concepts
+## Internal Concepts
 
 The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
 
