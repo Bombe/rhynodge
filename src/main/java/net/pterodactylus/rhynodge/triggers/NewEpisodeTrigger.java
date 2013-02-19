@@ -212,59 +212,6 @@ public class NewEpisodeTrigger implements Trigger {
 	private String generateHtmlText(Reaction reaction) {
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("<html><body>\n");
-		htmlBuilder.append("<h1>").append(StringEscapeUtils.escapeHtml4(reaction.name())).append("</h1>\n");
-		if (!newEpisodes.isEmpty()) {
-			htmlBuilder.append("<h2>New Episodes</h2>\n");
-			htmlBuilder.append("<ul>\n");
-			for (Episode episode : newEpisodes) {
-				htmlBuilder.append("<li>Season ").append(episode.season()).append(", Episode ").append(episode.episode()).append("</li>\n");
-				htmlBuilder.append("<ul>\n");
-				for (TorrentFile torrentFile : episode) {
-					htmlBuilder.append("<li>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</li>\n");
-					htmlBuilder.append("<div>");
-					htmlBuilder.append("<strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</strong>, ");
-					htmlBuilder.append("<strong>").append(torrentFile.fileCount()).append("</strong> file(s), ");
-					htmlBuilder.append("<strong>").append(torrentFile.seedCount()).append("</strong> seed(s), ");
-					htmlBuilder.append("<strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>\n");
-					htmlBuilder.append("<div>");
-					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
-						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
-					}
-					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
-						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a>");
-					}
-					htmlBuilder.append("</div>\n");
-				}
-				htmlBuilder.append("</ul>\n");
-			}
-			htmlBuilder.append("</ul>\n");
-		}
-		if (!changedEpisodes.isEmpty()) {
-			htmlBuilder.append("<h2>Changed Episodes</h2>\n");
-			htmlBuilder.append("<ul>\n");
-			for (Episode episode : changedEpisodes) {
-				htmlBuilder.append("<li>Season ").append(episode.season()).append(", Episode ").append(episode.episode()).append("</li>\n");
-				htmlBuilder.append("<ul>\n");
-				for (TorrentFile torrentFile : episode) {
-					htmlBuilder.append("<li>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</li>\n");
-					htmlBuilder.append("<div>");
-					htmlBuilder.append("<strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</strong>, ");
-					htmlBuilder.append("<strong>").append(torrentFile.fileCount()).append("</strong> file(s), ");
-					htmlBuilder.append("<strong>").append(torrentFile.seedCount()).append("</strong> seed(s), ");
-					htmlBuilder.append("<strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>\n");
-					htmlBuilder.append("<div>");
-					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
-						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Magnet</a> ");
-					}
-					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
-						htmlBuilder.append("<a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Download</a>");
-					}
-					htmlBuilder.append("</div>\n");
-				}
-				htmlBuilder.append("</ul>\n");
-			}
-			htmlBuilder.append("</ul>\n");
-		}
 		htmlBuilder.append("</body></html>\n");
 		return htmlBuilder.toString();
 	}
