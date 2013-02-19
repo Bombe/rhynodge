@@ -6,6 +6,10 @@ Rhynodge is a tool that lets you periodically execute tasks that depend on certa
 
 Its concept is quite similar to websites like ifttt (“if this then that”): you evaluate an input condition (e. g. data from a website, Facebook or Twitter posts, incoming emails, existence of a file), and if it evaluates to “yes” you execute a certain action.
 
+## Configuration
+
+Rhynodge’s configuration uses JSON files (I tried using XML first but apparently polymorphic deserialization is something that is not easily done with XML parsers). The format of a ``Chain`` configuration is pretty straight-forward and can be seen in the example configuration files.
+
 ## Internal Concepts
 
 The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
@@ -38,6 +42,3 @@ A ``Watcher`` does not do any processing but instead offers a ``Query``, a list 
 
 If a trigger found a change, the action is then executed. Again, an action can be almost anything: it can send an email, it can execute programs, print documents, initiate phone calls, take a picture from a webcam — anything you can program can be used an an action.
 
-## Configuration
-
-Rhynodge’s configuration uses JSON files (I tried using XML first but apparently polymorphic deserialization is something that is not easily done with XML parsers). The format of a ``Chain`` configuration is pretty straight-forward and can be seen in the example configuration files.
