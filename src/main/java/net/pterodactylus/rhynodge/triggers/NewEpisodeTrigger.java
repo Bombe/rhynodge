@@ -136,7 +136,7 @@ public class NewEpisodeTrigger implements Trigger {
 	}
 
 	//
-	// STATIC METHODS
+	// PRIVATE METHODS
 	//
 
 	/**

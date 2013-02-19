@@ -95,7 +95,7 @@ public class NewTorrentTrigger implements Trigger {
 	}
 
 	//
-	// STATIC METHODS
+	// PRIVATE METHODS
 	//
 
 	/**
