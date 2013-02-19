@@ -59,6 +59,8 @@ public class NewEpisodeTrigger implements Trigger {
 	/** All changed episodes. */
 	private final Collection<Episode> changedEpisodes = Sets.newHashSet();
 
+	/** All new torrent files. */
+	private final Collection<TorrentFile> newTorrentFiles = Sets.newHashSet();
 
 	//
 	// TRIGGER METHODS
@@ -74,6 +76,7 @@ public class NewEpisodeTrigger implements Trigger {
 		newEpisodes.clear();
 		changedEpisodes.clear();
 		this.allEpisodes.clear();
+		newTorrentFiles.clear();
 		Map<Episode, Episode> allEpisodes = Maps.newHashMap(FluentIterable.from(((EpisodeState) previousState).episodes()).toMap(new Function<Episode, Episode>() {
 
 			@Override
@@ -90,6 +93,9 @@ public class NewEpisodeTrigger implements Trigger {
 				int oldSize = allEpisodes.get(episode).torrentFiles().size();
 				allEpisodes.get(episode).addTorrentFile(torrentFile);
 				int newSize = allEpisodes.get(episode).torrentFiles().size();
+				if (oldSize != newSize) {
+					newTorrentFiles.add(torrentFile);
+				}
 				if (!newEpisodes.contains(episode) && (oldSize != newSize)) {
 					changedEpisodes.add(episode);
 				}
