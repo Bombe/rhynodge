@@ -212,6 +212,52 @@ public class NewEpisodeTrigger implements Trigger {
 	private String generateHtmlText(Reaction reaction) {
 		StringBuilder htmlBuilder = new StringBuilder();
 		htmlBuilder.append("<html><body>\n");
+		/* show all known episodes. */
+		htmlBuilder.append("<table>\n<caption>All Known Episodes</caption>\n");
+		htmlBuilder.append("<thead>\n");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>Season</th>");
+		htmlBuilder.append("<th>Episode</th>");
+		htmlBuilder.append("<th>Filename</th>");
+		htmlBuilder.append("<th>Size</th>");
+		htmlBuilder.append("<th>File(s)</th>");
+		htmlBuilder.append("<th>Seeds</th>");
+		htmlBuilder.append("<th>Leechers</th>");
+		htmlBuilder.append("<th>Magnet</th>");
+		htmlBuilder.append("<th>Download</th>");
+		htmlBuilder.append("</tr>\n");
+		htmlBuilder.append("</thead>\n");
+		htmlBuilder.append("<tbody>\n");
+		Episode lastEpisode = null;
+		for (Entry<Integer, Collection<Episode>> seasonEntry : FluentIterable.from(Ordering.natural().reverse().sortedCopy(allEpisodes)).index(Episode.BY_SEASON).asMap().entrySet()) {
+			for (Episode episode : seasonEntry.getValue()) {
+				for (TorrentFile torrentFile : episode) {
+					if (newEpisodes.contains(episode)) {
+						htmlBuilder.append("<tr style=\"background-color: #eeffee;\">");
+					} else if (newTorrentFiles.contains(torrentFile)) {
+						htmlBuilder.append("<tr style=\"color: #008000;\">");
+					} else {
+						htmlBuilder.append("<tr>");
+					}
+					if ((lastEpisode == null) || !lastEpisode.equals(episode)) {
+						htmlBuilder.append("<td>").append(episode.season()).append("</td><td>").append(episode.episode()).append("</td>");
+					} else {
+						htmlBuilder.append("<td colspan=\"2\"></td>");
+					}
+					htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</td>");
+					htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.fileCount()).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.seedCount()).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.leechCount()).append("</td>");
+					htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Link</a></td>");
+					htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Link</a></td>");
+					htmlBuilder.append("</tr>\n");
+					lastEpisode = episode;
+				}
+			}
+		}
+		htmlBuilder.append("</tbody>\n");
+		htmlBuilder.append("</table>\n");
 		htmlBuilder.append("</body></html>\n");
 		return htmlBuilder.toString();
 	}
