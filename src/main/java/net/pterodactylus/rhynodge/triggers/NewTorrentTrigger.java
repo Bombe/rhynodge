@@ -131,24 +131,40 @@ public class NewTorrentTrigger implements Trigger {
 	 * @return The generated HTML
 	 */
 	private String getHtmlTextList(Reaction reaction) {
-		StringBuilder htmlText = new StringBuilder();
-		htmlText.append("<html><body>\n");
-		htmlText.append("<h1>New Torrents</h1>\n");
-		htmlText.append("<ul>\n");
-		for (TorrentFile torrentFile : torrentFiles) {
-			htmlText.append("<li><strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</strong></li>");
-			htmlText.append("<div>Size: <strong>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</strong> in <strong>").append(torrentFile.fileCount()).append("</strong> file(s)</div>");
-			htmlText.append("<div><strong>").append(torrentFile.seedCount()).append("</strong> seed(s), <strong>").append(torrentFile.leechCount()).append("</strong> leecher(s)</div>");
-			if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
-				htmlText.append(String.format("<div><a href=\"%s\">Magnet URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())));
+		StringBuilder htmlBuilder = new StringBuilder();
+		htmlBuilder.append("<html><body>\n");
+		htmlBuilder.append("<table>\n<caption>All Known Torrents</caption>\n");
+		htmlBuilder.append("<thead>\n");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>Filename</th>");
+		htmlBuilder.append("<th>Size</th>");
+		htmlBuilder.append("<th>File(s)</th>");
+		htmlBuilder.append("<th>Seeds</th>");
+		htmlBuilder.append("<th>Leechers</th>");
+		htmlBuilder.append("<th>Magnet</th>");
+		htmlBuilder.append("<th>Download</th>");
+		htmlBuilder.append("</tr>\n");
+		htmlBuilder.append("</thead>\n");
+		htmlBuilder.append("<tbody>\n");
+		for (TorrentFile torrentFile : allTorrentFiles) {
+			if (newTorrentFiles.contains(torrentFile)) {
+				htmlBuilder.append("<tr style=\"color: #008000; font-weight: bold;\">");
+			} else {
+				htmlBuilder.append("<tr>");
 			}
-			if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
-				htmlText.append(String.format("<div><a href=\"%s\">Download URI</a></div>", StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())));
-			}
+			htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</td>");
+			htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.fileCount()).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.seedCount()).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.leechCount()).append("</td>");
+			htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Link</a></td>");
+			htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Link</a></td>");
+			htmlBuilder.append("</tr>\n");
 		}
-		htmlText.append("</ul>\n");
-		htmlText.append("</body></html>\n");
-		return htmlText.toString();
+		htmlBuilder.append("</tbody>\n");
+		htmlBuilder.append("</table>\n");
+		htmlBuilder.append("</body></html>\n");
+		return htmlBuilder.toString();
 	}
 
 }
