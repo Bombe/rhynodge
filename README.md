@@ -28,6 +28,12 @@ A trigger decides if, given the current state and the previous state, a notewort
 
 The result of a ``Trigger`` is an ``Output``.
 
+### Watcher
+
+A watcher combines a query, a list of filters, and a trigger into a single unit which can be configured a lot easier than the separate components. For example, you could have a “Twitter” that finds new status updates for a username and that only needs to be configured with that username; the rest of the configuration is contained in the watcher.
+
+A ``Watcher`` does not do any processing but instead offers a ``Query``, a list of ``Filter``s, and a ``Trigger``.
+
 ### Action
 
 If a trigger found a change, the action is then executed. Again, an action can be almost anything: it can send an email, it can execute programs, print documents, initiate phone calls, take a picture from a webcam — anything you can program can be used an an action.
