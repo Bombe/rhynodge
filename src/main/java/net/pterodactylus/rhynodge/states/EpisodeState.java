@@ -194,7 +194,9 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 		 *            The torrent file to add
 		 */
 		public void addTorrentFile(TorrentFile torrentFile) {
-			torrentFiles.add(torrentFile);
+			if (!torrentFiles.contains(torrentFile)) {
+				torrentFiles.add(torrentFile);
+			}
 		}
 
 		//
