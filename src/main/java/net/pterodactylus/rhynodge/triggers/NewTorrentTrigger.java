@@ -89,8 +89,8 @@ public class NewTorrentTrigger implements Trigger {
 	@Override
 	public Output output(Reaction reaction) {
 		DefaultOutput output = new DefaultOutput(String.format("Found %d new Torrent(s) for “%s!”", newTorrentFiles.size(), reaction.name()));
-		output.addText("text/plain", getPlainTextList(newTorrentFiles));
-		output.addText("text/html", getHtmlTextList(newTorrentFiles));
+		output.addText("text/plain", getPlainTextList(reaction));
+		output.addText("text/html", getHtmlTextList(reaction));
 		return output;
 	}
 
@@ -101,14 +101,14 @@ public class NewTorrentTrigger implements Trigger {
 	/**
 	 * Generates a plain text list of torrent files.
 	 *
-	 * @param torrentFiles
-	 *            The torrent files to list
+	 * @param reaction
+	 *            The reaction that was triggered
 	 * @return The generated plain text
 	 */
-	private static String getPlainTextList(List<TorrentFile> torrentFiles) {
+	private String getPlainTextList(Reaction reaction) {
 		StringBuilder plainText = new StringBuilder();
 		plainText.append("New Torrents:\n\n");
-		for (TorrentFile torrentFile : torrentFiles) {
+		for (TorrentFile torrentFile : newTorrentFiles) {
 			plainText.append(torrentFile.name()).append('\n');
 			plainText.append('\t').append(torrentFile.size()).append(" in ").append(torrentFile.fileCount()).append(" file(s)\n");
 			plainText.append('\t').append(torrentFile.seedCount()).append(" seed(s), ").append(torrentFile.leechCount()).append(" leecher(s)\n");
@@ -126,11 +126,11 @@ public class NewTorrentTrigger implements Trigger {
 	/**
 	 * Generates an HTML list of the given torrent files.
 	 *
-	 * @param torrentFiles
-	 *            The torrent files to list
+	 * @param reaction
+	 *            The reaction that was triggered
 	 * @return The generated HTML
 	 */
-	private static String getHtmlTextList(List<TorrentFile> torrentFiles) {
+	private String getHtmlTextList(Reaction reaction) {
 		StringBuilder htmlText = new StringBuilder();
 		htmlText.append("<html><body>\n");
 		htmlText.append("<h1>New Torrents</h1>\n");
