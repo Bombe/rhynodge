@@ -56,6 +56,7 @@ public abstract class ComicSiteFilter implements Filter {
 			for (String imageUrl : imageUrls) {
 				comic.addImageUrl(imageUrl);
 			}
+			comicState.add(comic);
 		}
 
 		return comicState;
