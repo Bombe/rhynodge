@@ -112,7 +112,7 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		 * @return The URLs of this comic’s images
 		 */
 		public List<String> imageUrls() {
-			return imageUrls();
+			return imageUrls;
 		}
 
 		/**
