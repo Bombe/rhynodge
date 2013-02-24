@@ -22,6 +22,7 @@ import java.util.List;
 
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
 
 /**
@@ -33,6 +34,7 @@ import com.google.common.collect.Lists;
 public class ComicState extends AbstractState implements Iterable<Comic> {
 
 	/** The comics in this state. */
+	@JsonProperty
 	private final List<Comic> comics = Lists.newArrayList();
 
 	/**
@@ -82,9 +84,11 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 	public static class Comic implements Iterable<String> {
 
 		/** The title of the comic. */
+		@JsonProperty
 		private final String title;
 
 		/** The URLs of the comic’s images. */
+		@JsonProperty
 		private final List<String> imageUrls = Lists.newArrayList();
 
 		/**
@@ -93,7 +97,7 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		 * @param title
 		 * 		The title of the comic
 		 */
-		public Comic(String title) {
+		public Comic(@JsonProperty("title") String title) {
 			this.title = title;
 		}
 
