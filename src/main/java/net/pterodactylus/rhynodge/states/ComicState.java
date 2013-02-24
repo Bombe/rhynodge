@@ -33,7 +33,7 @@ import com.google.common.collect.Lists;
 public class ComicState extends AbstractState implements Iterable<Comic> {
 
 	/** The comics in this state. */
-	private List<Comic> comics = Lists.newArrayList();
+	private final List<Comic> comics = Lists.newArrayList();
 
 	/**
 	 * Returns the list of comics contained in this state.
