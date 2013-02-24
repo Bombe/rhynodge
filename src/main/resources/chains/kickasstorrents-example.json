@@ -18,7 +18,7 @@
 			"class": "HtmlFilter"
 		},
 		{
-			"class": "KickAssTorrentsFilter"
+			"class": "torrents.KickAssTorrentsFilter"
 		},
 		{
 			"class": "EpisodeFilter"

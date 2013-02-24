@@ -15,9 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.pterodactylus.rhynodge.filters;
+package net.pterodactylus.rhynodge.filters.torrents;
 
 import net.pterodactylus.rhynodge.Filter;
+import net.pterodactylus.rhynodge.filters.TorrentSiteFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.TorrentState;

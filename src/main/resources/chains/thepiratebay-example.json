@@ -18,7 +18,7 @@
 			"class": "HtmlFilter"
 		},
 		{
-			"class": "PirateBayFilter"
+			"class": "torrents.PirateBayFilter"
 		}
 	],
 

@@ -15,16 +15,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.pterodactylus.rhynodge.filters;
+package net.pterodactylus.rhynodge.filters.torrents;
 
 import java.util.regex.Pattern;
+
+import net.pterodactylus.rhynodge.filters.TorrentSiteFilter;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
- * {@link TorrentSiteFilter} implementation that can parse
+ * {@link net.pterodactylus.rhynodge.filters.TorrentSiteFilter} implementation that can parse
  * {@code thepiratebay.se} result pages.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>

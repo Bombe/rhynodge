@@ -27,7 +27,7 @@ import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
-import net.pterodactylus.rhynodge.filters.KickAssTorrentsFilter;
+import net.pterodactylus.rhynodge.filters.torrents.KickAssTorrentsFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
 
