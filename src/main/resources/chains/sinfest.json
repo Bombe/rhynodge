@@ -1,0 +1,30 @@
+{
+	"enabled": false,
+	"name": "Sinfest",
+
+	"watcher":
+		{
+			"class": "SinfestWatcher"
+		},
+
+	"action":
+		{
+			"class": "EmailAction",
+			"parameters": [
+				{
+					"name": "smtpHostname",
+					"value": "smtp"
+				},
+				{
+					"name": "sender",
+					"value": "rhynodge@rhynodge.net"
+				},
+				{
+					"name": "recipient",
+					"value": "recipient@recipient.de"
+				}
+			]
+		},
+
+	"updateInterval": 14400
+}
