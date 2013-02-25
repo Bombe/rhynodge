@@ -86,4 +86,16 @@ public abstract class ComicSiteFilter implements Filter {
 	 */
 	protected abstract List<String> extractImageUrls(Document document);
 
+	/**
+	 * Extracts the image comments from the given document. The elements of this
+	 * last and of the list returned by {@link #extractImageUrls(org.jsoup.nodes.Document)}
+	 * are paired up and added as {@link Strip}s. If the list returned by this
+	 * method has less elements, an empty string is used for the remaining images.
+	 *
+	 * @param document
+	 * 		The document to extract the image comments from
+	 * @return The extracted image comments
+	 */
+	protected abstract List<String> extractImageComments(Document document);
+
 }

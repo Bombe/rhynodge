@@ -67,4 +67,9 @@ public class SinfestComicFilter extends ComicSiteFilter {
 		}).toList() : Collections.<String>emptyList();
 	}
 
+	@Override
+	protected List<String> extractImageComments(Document document) {
+		return Collections.emptyList();
+	}
+
 }
