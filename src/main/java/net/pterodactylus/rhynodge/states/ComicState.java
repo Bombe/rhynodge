@@ -81,15 +81,15 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 	 *
 	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
 	 */
-	public static class Comic implements Iterable<String> {
+	public static class Comic implements Iterable<Strip> {
 
 		/** The title of the comic. */
 		@JsonProperty
 		private final String title;
 
-		/** The URLs of the comic’s images. */
+		/** The strips of the comic. */
 		@JsonProperty
-		private final List<String> imageUrls = Lists.newArrayList();
+		private final List<Strip> strips = Lists.newArrayList();
 
 		/**
 		 * Creates a new comic with the given title.
@@ -111,23 +111,23 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		}
 
 		/**
-		 * Returns the URLs of this comic’s images.
+		 * Returns the strips of this comic.
 		 *
-		 * @return The URLs of this comic’s images
+		 * @return The strips of this comic
 		 */
-		public List<String> imageUrls() {
-			return imageUrls;
+		public List<Strip> strips() {
+			return strips;
 		}
 
 		/**
-		 * Adds an image URL to this comic.
+		 * Adds a strip to this comic.
 		 *
-		 * @param imageUrl
-		 * 		The URL of the comic image to add
+		 * @param strip
+		 * 		The strip to add
 		 * @return This comic
 		 */
-		public Comic addImageUrl(String imageUrl) {
-			imageUrls.add(imageUrl);
+		public Comic add(Strip strip) {
+			strips.add(strip);
 			return this;
 		}
 
@@ -136,8 +136,8 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		//
 
 		@Override
-		public Iterator<String> iterator() {
-			return imageUrls.iterator();
+		public Iterator<Strip> iterator() {
+			return strips.iterator();
 		}
 
 		//
@@ -146,7 +146,7 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 
 		@Override
 		public int hashCode() {
-			return title.hashCode() ^ imageUrls().hashCode();
+			return title.hashCode() ^ strips().hashCode();
 		}
 
 		@Override
@@ -155,12 +155,83 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 				return false;
 			}
 			Comic comic = (Comic) object;
-			return title().equals(comic.title()) && imageUrls().equals(comic.imageUrls());
+			return title().equals(comic.title()) && strips().equals(comic.strips());
 		}
 
 		@Override
 		public String toString() {
-			return String.format("Comic[title=%s,imageUrls=%s]", title(), imageUrls());
+			return String.format("Comic[title=%s,strips=%s]", title(), strips());
+		}
+
+	}
+
+	/**
+	 * A strip is a single image that belongs to a comic.
+	 *
+	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+	 */
+	public static class Strip {
+
+		/** The URL of the image. */
+		@JsonProperty
+		private final String imageUrl;
+
+		/** The comment of the image. */
+		@JsonProperty
+		private final String comment;
+
+		/**
+		 * Creates a new strip.
+		 *
+		 * @param imageUrl
+		 * 		The URL of the image
+		 * @param comment
+		 * 		The comment of the image
+		 */
+		public Strip(@JsonProperty("imageUrl") String imageUrl, @JsonProperty("comment") String comment) {
+			this.imageUrl = imageUrl;
+			this.comment = comment;
+		}
+
+		/**
+		 * Returns the URL of the image.
+		 *
+		 * @return The URL of the image
+		 */
+		public String imageUrl() {
+			return imageUrl;
+		}
+
+		/**
+		 * Returns the comment of the image.
+		 *
+		 * @return The comment of the image
+		 */
+		public String comment() {
+			return comment;
+		}
+
+		//
+		// OBJECT METHODS
+		//
+
+		@Override
+		public int hashCode() {
+			return imageUrl().hashCode() ^ comment().hashCode();
+		}
+
+		@Override
+		public boolean equals(Object object) {
+			if (!(object instanceof Strip)) {
+				return false;
+			}
+			Strip strip = (Strip) object;
+			return imageUrl().equals(strip.imageUrl()) && comment().equals(strip.comment());
+		}
+
+		@Override
+		public String toString() {
+			return String.format("Strip[imageUrl=%s,comment=%s]", imageUrl(), comment());
 		}
 
 	}

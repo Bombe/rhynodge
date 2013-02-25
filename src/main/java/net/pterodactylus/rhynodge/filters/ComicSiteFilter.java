@@ -25,6 +25,7 @@ import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
+import net.pterodactylus.rhynodge.states.ComicState.Strip;
 import net.pterodactylus.rhynodge.states.HtmlState;
 
 import com.google.common.base.Optional;
@@ -49,12 +50,17 @@ public abstract class ComicSiteFilter implements Filter {
 		/* extract comics. */
 		Optional<String> title = extractTitle(htmlState.document());
 		List<String> imageUrls = extractImageUrls(htmlState.document());
+		List<String> imageComments = extractImageComments(htmlState.document());
 
 		/* store comic, if found, into state. */
 		if (title.isPresent() && !imageUrls.isEmpty()) {
 			Comic comic = new Comic(title.get());
+			int imageCounter = 0;
 			for (String imageUrl : imageUrls) {
-				comic.addImageUrl(imageUrl);
+				String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
+				Strip strip = new Strip(imageUrl, imageComment);
+				imageCounter++;
+				comic.add(strip);
 			}
 			comicState.add(comic);
 		}

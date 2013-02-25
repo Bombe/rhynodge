@@ -28,9 +28,11 @@ import net.pterodactylus.rhynodge.output.DefaultOutput;
 import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
+import net.pterodactylus.rhynodge.states.ComicState.Strip;
 
 import com.google.common.collect.Lists;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * {@link Trigger} implementation that detects the presence of new {@link
@@ -97,8 +99,11 @@ public class NewComicTrigger implements Trigger {
 
 		for (Comic newComic : newComics) {
 			text.append("Comic Found: ").append(newComic.title()).append("\n\n");
-			for (String imageUrl : newComic) {
-				text.append("Image: ").append(imageUrl).append("\n");
+			for (Strip strip : newComic) {
+				text.append("Image: ").append(strip.imageUrl()).append("\n");
+				if (!StringUtils.isBlank(strip.comment())) {
+					text.append("Comment: ").append(strip.comment()).append("\n");
+				}
 			}
 			text.append("\n\n");
 		}
@@ -117,8 +122,11 @@ public class NewComicTrigger implements Trigger {
 
 		for (Comic newComic : newComics) {
 			html.append("<h1>").append(StringEscapeUtils.escapeHtml4(newComic.title())).append("</h1>\n");
-			for (String imageUrl : newComic) {
-				html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(imageUrl)).append("\"></div>\n");
+			for (Strip strip : newComic) {
+				html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(strip.imageUrl()));
+				html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+				html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+				html.append("\"></div>\n");
 			}
 		}
 
