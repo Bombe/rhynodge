@@ -121,16 +121,28 @@ public class NewComicTrigger implements Trigger {
 		html.append("<body>");
 
 		for (Comic newComic : newComics) {
-			html.append("<h1>").append(StringEscapeUtils.escapeHtml4(newComic.title())).append("</h1>\n");
-			for (Strip strip : newComic) {
-				html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(strip.imageUrl()));
-				html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
-				html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
-				html.append("\"></div>\n");
-			}
+			generateComicHtml(html, newComic);
 		}
 
 		return html.append("</body>").toString();
+	}
+
+	/**
+	 * Generates the HTML for a single comic.
+	 *
+	 * @param html
+	 * 		The string builder to append the HTML to
+	 * @param comic
+	 * 		The comic to render
+	 */
+	private void generateComicHtml(StringBuilder html, Comic comic) {
+		html.append("<h1>").append(StringEscapeUtils.escapeHtml4(comic.title())).append("</h1>\n");
+		for (Strip strip : comic) {
+			html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(strip.imageUrl()));
+			html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+			html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+			html.append("\"></div>\n");
+		}
 	}
 
 }
