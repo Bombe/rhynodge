@@ -19,6 +19,8 @@ package net.pterodactylus.rhynodge.triggers;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.pterodactylus.rhynodge.Reaction;
@@ -125,6 +127,19 @@ public class NewComicTrigger implements Trigger {
 
 		for (Comic newComic : newComics) {
 			generateComicHtml(html, newComic);
+		}
+
+		List<Comic> latestComics = new ArrayList<Comic>(mergedComicState.comics());
+		Collections.reverse(latestComics);
+		int comicCount = 0;
+		for (Comic comic : latestComics) {
+			if (newComics.contains(comic)) {
+				continue;
+			}
+			generateComicHtml(html, comic);
+			if (++comicCount == 7) {
+				break;
+			}
 		}
 
 		return html.append("</body>").toString();
