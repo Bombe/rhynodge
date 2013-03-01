@@ -45,6 +45,9 @@ public class NewComicTrigger implements Trigger {
 	/** The new comics. */
 	private final List<Comic> newComics = Lists.newArrayList();
 
+	/** The latest comic state. */
+	private ComicState mergedComicState;
+
 	@Override
 	public State mergeStates(State previousState, State currentState) {
 		checkArgument(previousState instanceof ComicState, "previous state must be a comic state");
@@ -54,7 +57,7 @@ public class NewComicTrigger implements Trigger {
 		ComicState currentComicState = (ComicState) currentState;
 
 		/* copy old state into new state. */
-		ComicState mergedComicState = new ComicState();
+		mergedComicState = new ComicState();
 		for (Comic comic : previousComicState) {
 			mergedComicState.add(comic);
 		}
