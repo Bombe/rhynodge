@@ -19,6 +19,8 @@ package net.pterodactylus.rhynodge.filters;
 
 import static com.google.common.base.Preconditions.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import net.pterodactylus.rhynodge.Filter;
@@ -58,9 +60,14 @@ public abstract class ComicSiteFilter implements Filter {
 			int imageCounter = 0;
 			for (String imageUrl : imageUrls) {
 				String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
-				Strip strip = new Strip(imageUrl, imageComment);
-				imageCounter++;
-				comic.add(strip);
+				try {
+					URI stripUri = new URI(htmlState.uri()).resolve(imageUrl);
+					Strip strip = new Strip(stripUri.toString(), imageComment);
+					imageCounter++;
+					comic.add(strip);
+				} catch (URISyntaxException use1) {
+					throw new IllegalStateException(String.format("Could not resolve image URL “%s” against base URL “%s”.", imageUrl, htmlState.uri()), use1);
+				}
 			}
 			comicState.add(comic);
 		}
