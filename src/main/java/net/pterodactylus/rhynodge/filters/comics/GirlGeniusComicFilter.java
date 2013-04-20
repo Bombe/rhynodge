@@ -41,7 +41,7 @@ public class GirlGeniusComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageElements = document.select("#MainTable img[alt='Comic']");
+		Elements imageElements = document.select("#MainTable img[alt=Comic]");
 		return imageElements.hasAttr("src") ? Arrays.asList(imageElements.attr("src")) : Collections.<String>emptyList();
 	}
 
