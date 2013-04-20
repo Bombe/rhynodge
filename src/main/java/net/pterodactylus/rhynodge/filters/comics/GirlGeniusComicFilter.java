@@ -17,14 +17,16 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.FluentIterable;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -42,7 +44,13 @@ public class GirlGeniusComicFilter extends ComicSiteFilter {
 	@Override
 	protected List<String> extractImageUrls(Document document) {
 		Elements imageElements = document.select("#MainTable img[alt=Comic]");
-		return imageElements.hasAttr("src") ? Arrays.asList(imageElements.attr("src")) : Collections.<String>emptyList();
+		return imageElements.hasAttr("src") ? FluentIterable.from(imageElements).transform(new Function<Element, String>() {
+
+			@Override
+			public String apply(Element imageElement) {
+				return imageElement.attr("src");
+			}
+		}).toList() : Collections.<String>emptyList();
 	}
 
 	@Override
