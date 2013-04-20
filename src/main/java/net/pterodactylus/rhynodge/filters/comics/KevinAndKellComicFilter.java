@@ -29,7 +29,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 /**
- * TODO
+ * {@link ComicSiteFilter} implementation that can parse Kevin and Kell comics.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
