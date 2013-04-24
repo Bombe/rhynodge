@@ -42,7 +42,7 @@ public class CtrlAltDelComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTags = document.select(".content img");
+		Elements imageTags = document.select("#content img");
 		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
 
 			@Override
@@ -54,7 +54,7 @@ public class CtrlAltDelComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
-		Elements imageTags = document.select(".content img");
+		Elements imageTags = document.select("#content img");
 		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
 
 			@Override
