@@ -1,5 +1,5 @@
 /*
- * rhynodge - CyanideAndHappinessWatcher.java - Copyright © 2013 David Roden
+ * rhynodge - SaturdayMorningBreakfastCerealWatcher.java - Copyright © 2013 David Roden
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,8 @@ import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
- * {@link Watcher} implementation that watches for new Cyanide and Happiness
- * comics.
+ * {@link Watcher} implementation that watches for new Saturday Morning
+ * Breakfast Cereal comics.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */

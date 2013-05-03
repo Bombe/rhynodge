@@ -29,7 +29,8 @@ import com.google.common.collect.FluentIterable;
 import org.jsoup.nodes.Document;
 
 /**
- * TODO
+ * {@link ComicSiteFilter} implementation that can parse Saturday Morning
+ * Breakfast Cereal.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
