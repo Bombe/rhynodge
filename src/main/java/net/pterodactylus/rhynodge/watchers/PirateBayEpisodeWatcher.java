@@ -24,6 +24,7 @@ import java.util.List;
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Trigger;
+import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.torrents.PirateBayFilter;
@@ -33,7 +34,7 @@ import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
 import com.google.common.collect.ImmutableList;
 
 /**
- * {@Watcher} implementation that watches The Pirate Bay for new episodes.
+ * {@link Watcher} implementation that watches The Pirate Bay for new episodes.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */

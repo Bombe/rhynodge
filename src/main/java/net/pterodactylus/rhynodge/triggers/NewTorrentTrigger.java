@@ -55,7 +55,7 @@ public class NewTorrentTrigger implements Trigger {
 	//
 
 	/**
-	 * {@inheritDocs}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public State mergeStates(State previousState, State currentState) {

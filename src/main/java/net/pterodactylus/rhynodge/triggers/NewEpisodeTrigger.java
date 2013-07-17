@@ -67,7 +67,7 @@ public class NewEpisodeTrigger implements Trigger {
 	//
 
 	/**
-	 * {@inheritDocs}
+	 * {@inheritDoc}
 	 */
 	@Override
 	public State mergeStates(State previousState, State currentState) {
