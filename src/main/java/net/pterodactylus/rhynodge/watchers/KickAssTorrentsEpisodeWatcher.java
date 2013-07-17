@@ -77,7 +77,7 @@ public class KickAssTorrentsEpisodeWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.<Filter> of(new HtmlFilter(), new KickAssTorrentsFilter(), new EpisodeFilter());
+		return ImmutableList.of(new HtmlFilter(), new KickAssTorrentsFilter(), new EpisodeFilter());
 	}
 
 	/**

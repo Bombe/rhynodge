@@ -75,7 +75,7 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.<Filter> of(new HtmlFilter(), new PirateBayFilter(), new EpisodeFilter());
+		return ImmutableList.of(new HtmlFilter(), new PirateBayFilter(), new EpisodeFilter());
 	}
 
 	/**
