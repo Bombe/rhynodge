@@ -43,7 +43,7 @@ public class SaturdayMorningBreakfastCerealComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		String imageUrl = document.select(".comicboxcenter img").get(1).attr("src");
+		String imageUrl = document.select("#comicimage img").get(1).attr("src");
 		String afterImageUrl = document.select("#aftercomic img").attr("src");
 		return FluentIterable.from(Arrays.asList(imageUrl, afterImageUrl)).filter(new Predicate<String>() {
 
