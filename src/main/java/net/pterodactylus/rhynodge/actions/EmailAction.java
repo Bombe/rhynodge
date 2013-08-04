@@ -81,7 +81,7 @@ public class EmailAction implements Action {
 			/* create message. */
 			message.setFrom(new InternetAddress(sender));
 			message.setRecipient(RecipientType.TO, new InternetAddress(recipient));
-			message.setSubject(output.summary());
+			message.setSubject(output.summary(), "UTF-8");
 
 			/* create text and html parts. */
 			MimeMultipart multipart = new MimeMultipart();
