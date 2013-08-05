@@ -37,13 +37,13 @@ public class KevinAndKellComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		Elements captionElements = document.select("#caption");
+		Elements captionElements = document.select("#comicstripCaption");
 		return Optional.fromNullable(StringEscapeUtils.unescapeHtml4(captionElements.text()));
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTag = document.select("#comicstrip");
+		Elements imageTag = document.select("#comicstrip img");
 		return imageTag.hasAttr("src") ? Arrays.asList(imageTag.attr("src")) : Collections.<String>emptyList();
 	}
 
