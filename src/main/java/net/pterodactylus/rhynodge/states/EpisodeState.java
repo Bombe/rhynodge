@@ -106,7 +106,7 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 
 			@Override
 			public Integer apply(Episode episode) {
-				return episode.season();
+				return (episode != null ) ? episode.season() : -1;
 			}
 		};
 
