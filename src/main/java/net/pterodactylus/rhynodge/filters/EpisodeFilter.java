@@ -19,10 +19,9 @@ package net.pterodactylus.rhynodge.filters;
 
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.collect.FluentIterable.from;
 import static java.util.Arrays.asList;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -35,7 +34,10 @@ import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.TorrentState;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
 
 /**
  * {@link Filter} implementation that extracts {@link Episode} information from
@@ -63,24 +65,42 @@ public class EpisodeFilter implements Filter {
 		checkState(state instanceof TorrentState, "state is not a TorrentState but a %s!", state.getClass());
 
 		TorrentState torrentState = (TorrentState) state;
-		Map<Episode, Episode> episodes = new HashMap<Episode, Episode>();
+		final Multimap<Episode, TorrentFile> episodes = HashMultimap.create();
 		for (TorrentFile torrentFile : torrentState) {
 			Optional<Episode> episode = extractEpisode(torrentFile);
 			if (!episode.isPresent()) {
 				continue;
 			}
-			if (!episodes.containsKey(episode.get())) {
-				episodes.put(episode.get(), episode.get());
-			}
-			episodes.get(episode.get()).addTorrentFile(torrentFile);
+			episodes.put(episode.get(), torrentFile);
 		}
 
-		return new EpisodeState(episodes.values());
+		return new EpisodeState(from(episodes.keySet()).transform(episodeFiller(episodes)).toSet());
 	}
 
 	//
 	// STATIC METHODS
 	//
+
+	/**
+	 * Returns a function that creates an {@link Episode} that contains all {@link
+	 * TorrentFile}s.
+	 *
+	 * @param episodeTorrents
+	 * 		A multimap mapping episodes to torrent files.
+	 * @return The function that performs the extraction of torrent files
+	 */
+	private static Function<Episode, Episode> episodeFiller(final Multimap<Episode, TorrentFile> episodeTorrents) {
+		return new Function<Episode, Episode>() {
+			@Override
+			public Episode apply(Episode episode) {
+				Episode completeEpisode = new Episode(episode.season(), episode.episode());
+				for (TorrentFile torrentFile : episodeTorrents.get(episode)) {
+					completeEpisode.addTorrentFile(torrentFile);
+				}
+				return completeEpisode;
+			}
+		};
+	}
 
 	/**
 	 * Extracts episode information from the given torrent file.
