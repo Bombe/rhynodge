@@ -43,7 +43,7 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 public class EpisodeFilter implements Filter {
 
 	/** The pattern to parse episode information from the filename. */
-	private static final Collection<Pattern> episodePatterns = asList(Pattern.compile("S(\\d{2})E(\\d{2})"), Pattern.compile("[^\\d](\\d{1,2})x(\\d{2})[^\\d]"));
+	private static final Collection<Pattern> episodePatterns = asList(Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})"), Pattern.compile("[^\\d](\\d{1,2})x(\\d{2})[^\\d]"));
 
 	//
 	// FILTER METHODS
