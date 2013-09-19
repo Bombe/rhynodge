@@ -18,9 +18,11 @@
 package net.pterodactylus.rhynodge.filters;
 
 import static com.google.common.base.Preconditions.checkState;
+import static java.util.Arrays.asList;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Collection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,7 +43,7 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 public class EpisodeFilter implements Filter {
 
 	/** The pattern to parse episode information from the filename. */
-	private static Pattern episodePattern = Pattern.compile("S(\\d{2})E(\\d{2})|[^\\d](\\d{1,2})x(\\d{2})[^\\d]");
+	private static final Collection<Pattern> episodePatterns = asList(Pattern.compile("S(\\d{2})E(\\d{2})"), Pattern.compile("[^\\d](\\d{1,2})x(\\d{2})[^\\d]"));
 
 	//
 	// FILTER METHODS
@@ -87,19 +89,18 @@ public class EpisodeFilter implements Filter {
 	 *         information could be found
 	 */
 	private static Episode extractEpisode(TorrentFile torrentFile) {
-		Matcher matcher = episodePattern.matcher(torrentFile.name());
-		if (!matcher.find()) {
-			return null;
+		for (Pattern episodePattern : episodePatterns) {
+			Matcher matcher = episodePattern.matcher(torrentFile.name());
+			if (!matcher.find() || matcher.groupCount() < 2) {
+				continue;
+			}
+			String seasonString = matcher.group(1);
+			String episodeString = matcher.group(2);
+			int season = Integer.valueOf(seasonString);
+			int episode = Integer.valueOf(episodeString);
+			return new Episode(season, episode);
 		}
-		String seasonString = matcher.group(1);
-		String episodeString = matcher.group(2);
-		if ((seasonString == null) && (episodeString == null)) {
-			seasonString = matcher.group(3);
-			episodeString = matcher.group(4);
-		}
-		int season = Integer.valueOf(seasonString);
-		int episode = Integer.valueOf(episodeString);
-		return new Episode(season, episode);
+		return null;
 	}
 
 }
