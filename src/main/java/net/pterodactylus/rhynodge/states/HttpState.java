@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import static java.util.Arrays.copyOf;
+
 import java.io.UnsupportedEncodingException;
 
 import net.pterodactylus.rhynodge.State;
@@ -61,7 +63,7 @@ public class HttpState extends AbstractState {
 		this.uri = uri;
 		this.protocolCode = protocolCode;
 		this.contentType = contentType;
-		this.rawResult = rawResult;
+		this.rawResult = copyOf(rawResult, rawResult.length);
 	}
 
 	//
@@ -101,7 +103,7 @@ public class HttpState extends AbstractState {
 	 * @return The raw result of the reply
 	 */
 	public byte[] rawResult() {
-		return rawResult;
+		return copyOf(rawResult, rawResult.length);
 	}
 
 	/**
