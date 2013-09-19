@@ -17,6 +17,7 @@
 
 package net.pterodactylus.rhynodge.filters;
 
+import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Preconditions.checkState;
 import static java.util.Arrays.asList;
 
@@ -33,6 +34,8 @@ import net.pterodactylus.rhynodge.states.EpisodeState.Episode;
 import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.TorrentState;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
+
+import com.google.common.base.Optional;
 
 /**
  * {@link Filter} implementation that extracts {@link Episode} information from
@@ -62,15 +65,14 @@ public class EpisodeFilter implements Filter {
 		TorrentState torrentState = (TorrentState) state;
 		Map<Episode, Episode> episodes = new HashMap<Episode, Episode>();
 		for (TorrentFile torrentFile : torrentState) {
-			Episode episode = extractEpisode(torrentFile);
-			if (episode == null) {
+			Optional<Episode> episode = extractEpisode(torrentFile);
+			if (!episode.isPresent()) {
 				continue;
 			}
-			if (!episodes.containsKey(episode)) {
-				episodes.put(episode, episode);
+			if (!episodes.containsKey(episode.get())) {
+				episodes.put(episode.get(), episode.get());
 			}
-			episode = episodes.get(episode);
-			episode.addTorrentFile(torrentFile);
+			episodes.get(episode.get()).addTorrentFile(torrentFile);
 		}
 
 		return new EpisodeState(episodes.values());
@@ -84,11 +86,11 @@ public class EpisodeFilter implements Filter {
 	 * Extracts episode information from the given torrent file.
 	 *
 	 * @param torrentFile
-	 *            The torrent file to extract the episode information from
-	 * @return The extracted episode information, or {@code null} if no episode
-	 *         information could be found
+	 * 		The torrent file to extract the episode information from
+	 * @return The extracted episode information, or {@link Optional#absent()} if
+	 *         no episode information could be found
 	 */
-	private static Episode extractEpisode(TorrentFile torrentFile) {
+	private static Optional<Episode> extractEpisode(TorrentFile torrentFile) {
 		for (Pattern episodePattern : episodePatterns) {
 			Matcher matcher = episodePattern.matcher(torrentFile.name());
 			if (!matcher.find() || matcher.groupCount() < 2) {
@@ -98,9 +100,9 @@ public class EpisodeFilter implements Filter {
 			String episodeString = matcher.group(2);
 			int season = Integer.valueOf(seasonString);
 			int episode = Integer.valueOf(episodeString);
-			return new Episode(season, episode);
+			return Optional.of(new Episode(season, episode));
 		}
-		return null;
+		return absent();
 	}
 
 }
