@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge.watchers;
 
+import static net.pterodactylus.rhynodge.filters.BlacklistFilter.createDefaultBlacklistFilter;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -76,7 +78,7 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.of(new HtmlFilter(), new PirateBayFilter(), new EpisodeFilter());
+		return ImmutableList.of(new HtmlFilter(), new PirateBayFilter(), createDefaultBlacklistFilter(), new EpisodeFilter());
 	}
 
 	/**

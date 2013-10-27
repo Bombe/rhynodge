@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge.watchers;
 
+import static net.pterodactylus.rhynodge.filters.BlacklistFilter.createDefaultBlacklistFilter;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -77,7 +79,7 @@ public class KickAssTorrentsEpisodeWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.of(new HtmlFilter(), new KickAssTorrentsFilter(), new EpisodeFilter());
+		return ImmutableList.of(new HtmlFilter(), new KickAssTorrentsFilter(), createDefaultBlacklistFilter(), new EpisodeFilter());
 	}
 
 	/**
