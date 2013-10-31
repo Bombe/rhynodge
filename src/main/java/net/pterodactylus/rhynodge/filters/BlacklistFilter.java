@@ -99,6 +99,7 @@ public class BlacklistFilter implements Filter {
             "-TASTE",
             "-THC",
             "-UnKnOwN",
+            "-UNiQUE",
             "-W00D"
         ));
 	}
