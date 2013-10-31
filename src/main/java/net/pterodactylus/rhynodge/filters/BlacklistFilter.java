@@ -71,7 +71,36 @@ public class BlacklistFilter implements Filter {
 	}
 
 	public static BlacklistFilter createDefaultBlacklistFilter() {
-		return new BlacklistFilter(asList("-juggs", "-MAX", "-3LT0N", "-Haggebulle", "-FooKaS", "-HELLRAZ0R", "-PLAYNOW", "-UnKnOwN", "-EDAW", "-NYDIC", "-TASTE", "-AQOS", "-AMIABLE", "-NoGRP", "-TAMILROCKERS", "-ADTRG", "-LEGi0N", "-DiRTYMARY", "-SUFFiCE", "-CM", "-AXED", "-AN0NYM0US", "-S4A", "-MiLLENiUM", "-SPARKS", "-P2P", "-W00D", "-THC"));
+		return new BlacklistFilter(asList(
+            "-3LT0N",
+            "-ADTRG",
+            "-AMIABLE",
+            "-AN0NYM0US",
+            "-AQOS",
+            "-AXED",
+            "-CM",
+            "-DiRTYMARY",
+            "-EDAW",
+            "-FooKaS",
+            "-Haggebulle",
+            "-HELLRAZ0R",
+            "-juggs",
+            "-LEGi0N",
+            "-MAX",
+            "-MiLLENiUM",
+            "-NoGRP",
+            "-NYDIC",
+            "-P2P",
+            "-PLAYNOW",
+            "-S4A",
+            "-SPARKS",
+            "-SUFFiCE",
+            "-TAMILROCKERS",
+            "-TASTE",
+            "-THC",
+            "-UnKnOwN",
+            "-W00D"
+        ));
 	}
 
 }
