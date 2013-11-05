@@ -17,14 +17,19 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
-import java.util.Arrays;
+import static com.google.common.collect.FluentIterable.from;
+import static java.util.Arrays.asList;
+import static java.util.Collections.emptyList;
+
 import java.util.Collections;
 import java.util.List;
 
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
+import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -43,12 +48,17 @@ public class GeneralProtectionFaultComicFilter extends ComicSiteFilter {
 	@Override
 	protected List<String> extractImageUrls(Document document) {
 		Elements imageElements = document.select(".content img[alt~=.Comic.for]");
-		return imageElements.hasAttr("src") ? Arrays.asList(imageElements.attr("src")) : Collections.<String>emptyList();
+		return from(imageElements).transformAndConcat(new Function<Element, Iterable<String>>() {
+			@Override
+			public Iterable<String> apply(Element element) {
+				return ((element != null) && element.hasAttr("src")) ? asList(element.attr("src")) : Collections.<String>emptyList();
+			}
+		}).toList();
 	}
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
-		return Collections.emptyList();
+		return emptyList();
 	}
 
 }
