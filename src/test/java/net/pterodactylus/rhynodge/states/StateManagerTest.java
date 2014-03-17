@@ -2,6 +2,8 @@ package net.pterodactylus.rhynodge.states;
 
 import static com.google.common.base.Charsets.UTF_8;
 import static com.google.common.base.Objects.equal;
+import static org.apache.log4j.Level.OFF;
+import static org.apache.log4j.Logger.getLogger;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import org.hamcrest.Matchers;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -29,6 +32,11 @@ public class StateManagerTest {
 	public TemporaryFolder tempFolder = new TemporaryFolder();
 	private final File statePath;
 	private final StateManager stateManager;
+
+	@BeforeClass
+	public static void deactivateLogging() {
+		getLogger(StateManager.class).setLevel(OFF);
+	}
 
 	public StateManagerTest() throws IOException {
 		tempFolder.create();
