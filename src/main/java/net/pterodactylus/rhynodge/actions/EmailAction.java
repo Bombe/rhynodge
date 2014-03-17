@@ -17,12 +17,16 @@
 
 package net.pterodactylus.rhynodge.actions;
 
+import static java.lang.System.getProperties;
+import static javax.mail.Session.getInstance;
+
 import java.util.Properties;
 
 import javax.mail.Message.RecipientType;
 import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.Transport;
+import javax.mail.URLName;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -30,6 +34,8 @@ import javax.mail.internet.MimeMultipart;
 
 import net.pterodactylus.rhynodge.Action;
 import net.pterodactylus.rhynodge.output.Output;
+
+import com.sun.mail.smtp.SMTPTransport;
 
 /**
  * {@link Action} implementation that sends an email containing the triggering
@@ -39,14 +45,14 @@ import net.pterodactylus.rhynodge.output.Output;
  */
 public class EmailAction implements Action {
 
-	/** The name of the SMTP host. */
-	private final String hostname;
-
 	/** The email address of the sender. */
 	private final String sender;
 
 	/** The email address of the recipient. */
 	private final String recipient;
+
+	private final Transport transport;
+	private final Session session;
 
 	/**
 	 * Creates a new email action.
@@ -59,9 +65,12 @@ public class EmailAction implements Action {
 	 *            The email address of the recipient
 	 */
 	public EmailAction(String hostname, String sender, String recipient) {
-		this.hostname = hostname;
 		this.sender = sender;
 		this.recipient = recipient;
+		Properties properties = getProperties();
+		properties.put("mail.smtp.host", hostname);
+		session = getInstance(properties);
+		transport = new SMTPTransport(session, new URLName("smtp", hostname, 25, null, "", ""));
 	}
 
 	//
@@ -73,9 +82,6 @@ public class EmailAction implements Action {
 	 */
 	@Override
 	public void execute(Output output) {
-		Properties properties = System.getProperties();
-		properties.put("mail.smtp.host", hostname);
-		Session session = Session.getInstance(properties);
 		MimeMessage message = new MimeMessage(session);
 		try {
 			/* create message. */
@@ -94,7 +100,7 @@ public class EmailAction implements Action {
 			multipart.addBodyPart(htmlPart);
 			message.setContent(multipart);
 
-			Transport.send(message);
+			transport.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException me1) {
 			/* swallow. */
 		}
