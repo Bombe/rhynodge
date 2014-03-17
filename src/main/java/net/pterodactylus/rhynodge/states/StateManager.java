@@ -96,8 +96,9 @@ public class StateManager {
 	 *            The state to save
 	 */
 	public void saveState(String reactionName, State state) {
+		File stateFile = null;
 		try {
-			File stateFile = stateFile(reactionName, "last");
+			stateFile = stateFile(reactionName, "last");
 			objectMapper.writeValue(stateFile, state);
 			if (state.success()) {
 				stateFile = stateFile(reactionName, "success");
@@ -105,10 +106,13 @@ public class StateManager {
 			}
 		} catch (JsonGenerationException jge1) {
 			logger.warn(String.format("State for Reaction “%s” could not be generated.", reactionName), jge1);
+			stateFile.delete();
 		} catch (JsonMappingException jme1) {
 			logger.warn(String.format("State for Reaction “%s” could not be generated.", reactionName), jme1);
+			stateFile.delete();
 		} catch (IOException ioe1) {
 			logger.warn(String.format("State for Reaction “%s” could not be written.", reactionName));
+			stateFile.delete();
 		}
 	}
 
