@@ -35,6 +35,7 @@ import javax.mail.internet.MimeMultipart;
 import net.pterodactylus.rhynodge.Action;
 import net.pterodactylus.rhynodge.output.Output;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.sun.mail.smtp.SMTPTransport;
 
 /**
@@ -71,6 +72,14 @@ public class EmailAction implements Action {
 		properties.put("mail.smtp.host", hostname);
 		session = getInstance(properties);
 		transport = new SMTPTransport(session, new URLName("smtp", hostname, 25, null, "", ""));
+	}
+
+	@VisibleForTesting
+	EmailAction(Transport transport, String sender, String recipient) {
+		this.transport = transport;
+		this.sender = sender;
+		this.recipient = recipient;
+		this.session = getInstance(getProperties());
 	}
 
 	//
