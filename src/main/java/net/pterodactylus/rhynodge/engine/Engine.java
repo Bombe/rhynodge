@@ -17,6 +17,9 @@
 
 package net.pterodactylus.rhynodge.engine;
 
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -25,16 +28,17 @@ import java.util.SortedMap;
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Reaction;
+import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.states.AbstractState;
 import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.StateManager;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.log4j.Logger;
-
+import com.google.common.base.Optional;
 import com.google.common.collect.Maps;
 import com.google.common.util.concurrent.AbstractExecutionThreadService;
+import org.apache.commons.lang3.tuple.Pair;
+import org.apache.log4j.Logger;
 
 /**
  * Rhynodge main engine.
@@ -108,45 +112,24 @@ public class Engine extends AbstractExecutionThreadService {
 	@Override
 	public void run() {
 		while (isRunning()) {
-
-			/* delay if we have no reactions. */
-			synchronized (reactions) {
-				if (reactions.isEmpty()) {
-					logger.debug("Sleeping while no Reactions available.");
-					try {
-						reactions.wait();
-					} catch (InterruptedException ie1) {
-						/* ignore, we’re looping anyway. */
-					}
-					continue;
-				}
+			Optional<Reaction> nextReaction = getNextReaction();
+			if (!nextReaction.isPresent()) {
+				continue;
 			}
 
-			/* find next reaction. */
-			SortedMap<Long, Pair<String, Reaction>> nextReactions = Maps.newTreeMap();
-			String reactionName;
-			Reaction nextReaction;
-			synchronized (reactions) {
-				for (Entry<String, Reaction> reactionEntry : reactions.entrySet()) {
-					net.pterodactylus.rhynodge.State state = stateManager.loadLastState(reactionEntry.getKey());
-					long stateTime = (state != null) ? state.time() : 0;
-					nextReactions.put(stateTime + reactionEntry.getValue().updateInterval(), Pair.of(reactionEntry.getKey(), reactionEntry.getValue()));
-				}
-				reactionName = nextReactions.get(nextReactions.firstKey()).getLeft();
-				nextReaction = nextReactions.get(nextReactions.firstKey()).getRight();
-			}
+			String reactionName = nextReaction.get().name();
 			logger.debug(String.format("Next Reaction: %s.", reactionName));
 
 			/* wait until the next reaction has to run. */
-			net.pterodactylus.rhynodge.State lastState = stateManager.loadLastState(reactionName);
-			long lastStateTime = (lastState != null) ? lastState.time() : 0;
-			int lastStateFailCount = (lastState != null) ? lastState.failCount() : 0;
-			long waitTime = (lastStateTime + nextReaction.updateInterval()) - System.currentTimeMillis();
+			Optional<net.pterodactylus.rhynodge.State> lastState = stateManager.loadLastState(reactionName);
+			long lastStateTime = lastState.isPresent() ? lastState.get().time() : 0;
+			int lastStateFailCount = lastState.isPresent() ? lastState.get().failCount() : 0;
+			long waitTime = (lastStateTime + nextReaction.get().updateInterval()) - System.currentTimeMillis();
 			logger.debug(String.format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
 				synchronized (reactions) {
 					try {
-						logger.info(String.format("Waiting until %tc.", lastStateTime + nextReaction.updateInterval()));
+						logger.info(String.format("Waiting until %tc.", lastStateTime + nextReaction.get().updateInterval()));
 						reactions.wait(waitTime);
 					} catch (InterruptedException ie1) {
 						/* we’re looping! */
@@ -159,7 +142,7 @@ public class Engine extends AbstractExecutionThreadService {
 
 			/* run reaction. */
 			logger.info(String.format("Running Query for %s...", reactionName));
-			Query query = nextReaction.query();
+			Query query = nextReaction.get().query();
 			net.pterodactylus.rhynodge.State state;
 			try {
 				logger.debug("Querying system...");
@@ -177,7 +160,7 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(String.format("State is %s.", state));
 
 			/* convert states. */
-			for (Filter filter : nextReaction.filters()) {
+			for (Filter filter : nextReaction.get().filters()) {
 				if (state.success()) {
 					net.pterodactylus.rhynodge.State newState = filter.filter(state);
 					logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
@@ -187,13 +170,13 @@ public class Engine extends AbstractExecutionThreadService {
 			if (!state.success()) {
 				state.setFailCount(lastStateFailCount + 1);
 			}
-			net.pterodactylus.rhynodge.State lastSuccessfulState = stateManager.loadLastSuccessfulState(reactionName);
+			Optional<net.pterodactylus.rhynodge.State> lastSuccessfulState = stateManager.loadLastSuccessfulState(reactionName);
 
 			/* merge states. */
 			boolean triggerHit = false;
-			Trigger trigger = nextReaction.trigger();
-			if ((lastSuccessfulState != null) && lastSuccessfulState.success() && state.success()) {
-				net.pterodactylus.rhynodge.State newState = trigger.mergeStates(lastSuccessfulState, state);
+			Trigger trigger = nextReaction.get().trigger();
+			if (lastSuccessfulState.isPresent() && lastSuccessfulState.get().success() && state.success()) {
+				net.pterodactylus.rhynodge.State newState = trigger.mergeStates(lastSuccessfulState.get(), state);
 
 				/* save new state. */
 				stateManager.saveState(reactionName, newState);
@@ -208,10 +191,38 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(String.format("Trigger was hit: %s.", triggerHit));
 			if (triggerHit) {
 				logger.info("Executing Action...");
-				nextReaction.action().execute(trigger.output(nextReaction));
+				nextReaction.get().action().execute(trigger.output(nextReaction.get()));
 			}
 
 		}
+	}
+
+	private Optional<Reaction> getNextReaction() {
+		while (isRunning()) {
+			synchronized (reactions) {
+				if (reactions.isEmpty()) {
+					logger.debug("Sleeping while no Reactions available.");
+					try {
+						reactions.wait();
+					} catch (InterruptedException ie1) {
+						/* ignore, we’re looping anyway. */
+					}
+					continue;
+				}
+			}
+
+			/* find next reaction. */
+			SortedMap<Long, Pair<String, Reaction>> nextReactions = Maps.newTreeMap();
+			synchronized (reactions) {
+				for (Entry<String, Reaction> reactionEntry : reactions.entrySet()) {
+					Optional<net.pterodactylus.rhynodge.State> state = stateManager.loadLastState(reactionEntry.getKey());
+					long stateTime = state.isPresent() ? state.get().time() : 0;
+					nextReactions.put(stateTime + reactionEntry.getValue().updateInterval(), Pair.of(reactionEntry.getKey(), reactionEntry.getValue()));
+				}
+				return of(nextReactions.get(nextReactions.firstKey()).getRight());
+			}
+		}
+		return absent();
 	}
 
 }

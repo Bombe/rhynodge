@@ -17,11 +17,15 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.fromNullable;
+
 import java.io.File;
 import java.io.IOException;
 
 import net.pterodactylus.rhynodge.State;
 
+import com.google.common.base.Optional;
 import org.apache.log4j.Logger;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -64,10 +68,10 @@ public class StateManager {
 	 *
 	 * @param reactionName
 	 *            The name of the reaction
-	 * @return The loaded state, or {@code null} if the state could not be
+	 * @return The loaded state, or {@link Optional#absent()} if the state could not be
 	 *         loaded
 	 */
-	public State loadLastState(String reactionName) {
+	public Optional<State> loadLastState(String reactionName) {
 		return loadLastState(reactionName, false);
 	}
 
@@ -76,10 +80,10 @@ public class StateManager {
 	 *
 	 * @param reactionName
 	 *            The name of the reaction
-	 * @return The loaded state, or {@code null} if the state could not be
+	 * @return The loaded state, or {@link Optional#absent()} if the state could not be
 	 *         loaded
 	 */
-	public State loadLastSuccessfulState(String reactionName) {
+	public Optional<State> loadLastSuccessfulState(String reactionName) {
 		return loadLastState(reactionName, true);
 	}
 
@@ -133,14 +137,14 @@ public class StateManager {
 	 * @param successful
 	 *            {@code true} to load the last successful state, {@code false}
 	 *            to load the last state
-	 * @return The loaded state, or {@code null} if the state could not be
+	 * @return The loaded state, or {@link Optional#absent()} if the state could not be
 	 *         loaded
 	 */
-	private State loadLastState(String reactionName, boolean successful) {
+	private Optional<State> loadLastState(String reactionName, boolean successful) {
 		File stateFile = stateFile(reactionName, successful ? "success" : "last");
 		try {
 			State state = objectMapper.readValue(stateFile, AbstractState.class);
-			return state;
+			return fromNullable(state);
 		} catch (JsonParseException jpe1) {
 			logger.warn(String.format("State for Reaction “%s” could not be parsed.", reactionName), jpe1);
 		} catch (JsonMappingException jme1) {
@@ -148,7 +152,7 @@ public class StateManager {
 		} catch (IOException ioe1) {
 			logger.info(String.format("State for Reaction “%s” could not be found.", reactionName));
 		}
-		return null;
+		return absent();
 	}
 
 }
