@@ -56,7 +56,7 @@ public class BlacklistFilter implements Filter {
 		return new TorrentState(from(torrentState.torrentFiles()).filter(new Predicate<TorrentFile>() {
 			@Override
 			public boolean apply(TorrentFile torrentFile) {
-				return (torrentFile == null) ? false : nameDoesNotMatchAFilterWord(torrentFile.name());
+				return (torrentFile != null) && nameDoesNotMatchAFilterWord(torrentFile.name());
 			}
 
 			private boolean nameDoesNotMatchAFilterWord(final String name) {

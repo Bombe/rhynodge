@@ -85,10 +85,7 @@ public class Chain {
 			if (!name.equals(parameter.name)) {
 				return false;
 			}
-			if (!value.equals(parameter.value)) {
-				return false;
-			}
-			return true;
+			return value.equals(parameter.value);
 		}
 
 	}
@@ -328,10 +325,7 @@ public class Chain {
 		if (!action.equals(chain.action)) {
 			return false;
 		}
-		if (updateInterval != chain.updateInterval) {
-			return false;
-		}
-		return true;
+		return updateInterval == chain.updateInterval;
 	}
 
 }
