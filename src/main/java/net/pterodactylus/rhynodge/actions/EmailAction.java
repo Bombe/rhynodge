@@ -109,6 +109,7 @@ public class EmailAction implements Action {
 			multipart.addBodyPart(htmlPart);
 			message.setContent(multipart);
 
+			transport.connect();
 			transport.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException me1) {
 			/* swallow. */
