@@ -19,6 +19,8 @@ package net.pterodactylus.rhynodge.engine;
 
 import static com.google.common.base.Optional.absent;
 import static com.google.common.base.Optional.of;
+import static com.google.common.collect.Maps.newTreeMap;
+import static java.lang.String.format;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,24 +114,24 @@ public class Engine extends AbstractExecutionThreadService {
 	@Override
 	public void run() {
 		while (isRunning()) {
-			Optional<Reaction> nextReaction = getNextReaction();
+			Optional<Pair<String, Reaction>> nextReaction = getNextReaction();
 			if (!nextReaction.isPresent()) {
 				continue;
 			}
 
-			String reactionName = nextReaction.get().name();
-			logger.debug(String.format("Next Reaction: %s.", reactionName));
+			String reactionName = nextReaction.get().getLeft();
+			logger.debug(format("Next Reaction: %s.", reactionName));
 
 			/* wait until the next reaction has to run. */
 			Optional<net.pterodactylus.rhynodge.State> lastState = stateManager.loadLastState(reactionName);
 			long lastStateTime = lastState.isPresent() ? lastState.get().time() : 0;
 			int lastStateFailCount = lastState.isPresent() ? lastState.get().failCount() : 0;
-			long waitTime = (lastStateTime + nextReaction.get().updateInterval()) - System.currentTimeMillis();
-			logger.debug(String.format("Time to wait for next Reaction: %d millseconds.", waitTime));
+			long waitTime = (lastStateTime + nextReaction.get().getRight().updateInterval()) - System.currentTimeMillis();
+			logger.debug(format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
 				synchronized (reactions) {
 					try {
-						logger.info(String.format("Waiting until %tc.", lastStateTime + nextReaction.get().updateInterval()));
+						logger.info(format("Waiting until %tc.", lastStateTime + nextReaction.get().getRight().updateInterval()));
 						reactions.wait(waitTime);
 					} catch (InterruptedException ie1) {
 						/* we’re looping! */
@@ -141,8 +143,8 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* run reaction. */
-			logger.info(String.format("Running Query for %s...", reactionName));
-			Query query = nextReaction.get().query();
+			logger.info(format("Running Query for %s...", reactionName));
+			Query query = nextReaction.get().getRight().query();
 			net.pterodactylus.rhynodge.State state;
 			try {
 				logger.debug("Querying system...");
@@ -157,13 +159,13 @@ public class Engine extends AbstractExecutionThreadService {
 					/* no further state. */
 				};
 			}
-			logger.debug(String.format("State is %s.", state));
+			logger.debug(format("State is %s.", state));
 
 			/* convert states. */
-			for (Filter filter : nextReaction.get().filters()) {
+			for (Filter filter : nextReaction.get().getRight().filters()) {
 				if (state.success()) {
 					net.pterodactylus.rhynodge.State newState = filter.filter(state);
-					logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
+					//logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
 					state = newState;
 				}
 			}
@@ -174,7 +176,7 @@ public class Engine extends AbstractExecutionThreadService {
 
 			/* merge states. */
 			boolean triggerHit = false;
-			Trigger trigger = nextReaction.get().trigger();
+			Trigger trigger = nextReaction.get().getRight().trigger();
 			if (lastSuccessfulState.isPresent() && lastSuccessfulState.get().success() && state.success()) {
 				net.pterodactylus.rhynodge.State newState = trigger.mergeStates(lastSuccessfulState.get(), state);
 
@@ -188,16 +190,16 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* run action if trigger was hit. */
-			logger.debug(String.format("Trigger was hit: %s.", triggerHit));
+			logger.debug(format("Trigger was hit: %s.", triggerHit));
 			if (triggerHit) {
 				logger.info("Executing Action...");
-				nextReaction.get().action().execute(trigger.output(nextReaction.get()));
+				nextReaction.get().getRight().action().execute(trigger.output(nextReaction.get().getRight()));
 			}
 
 		}
 	}
 
-	private Optional<Reaction> getNextReaction() {
+	private Optional<Pair<String, Reaction>> getNextReaction() {
 		while (isRunning()) {
 			synchronized (reactions) {
 				if (reactions.isEmpty()) {
@@ -212,14 +214,14 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 			/* find next reaction. */
-			SortedMap<Long, Pair<String, Reaction>> nextReactions = Maps.newTreeMap();
+			SortedMap<Long, Pair<String, Reaction>> nextReactions = newTreeMap();
 			synchronized (reactions) {
 				for (Entry<String, Reaction> reactionEntry : reactions.entrySet()) {
 					Optional<net.pterodactylus.rhynodge.State> state = stateManager.loadLastState(reactionEntry.getKey());
 					long stateTime = state.isPresent() ? state.get().time() : 0;
 					nextReactions.put(stateTime + reactionEntry.getValue().updateInterval(), Pair.of(reactionEntry.getKey(), reactionEntry.getValue()));
 				}
-				return of(nextReactions.get(nextReactions.firstKey()).getRight());
+				return of(nextReactions.get(nextReactions.firstKey()));
 			}
 		}
 		return absent();
