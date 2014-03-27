@@ -121,8 +121,6 @@ public class Engine extends AbstractExecutionThreadService {
 			logger.debug(format("Next Reaction: %s.", reactionName));
 
 			/* wait until the next reaction has to run. */
-			Optional<net.pterodactylus.rhynodge.State> lastState = stateManager.loadLastState(reactionName);
-			int lastStateFailCount = lastState.isPresent() ? lastState.get().failCount() : 0;
 			long waitTime = nextReaction.get().getNextTime() - System.currentTimeMillis();
 			logger.debug(format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
@@ -142,7 +140,8 @@ public class Engine extends AbstractExecutionThreadService {
 				}
 			}
 			if (!state.success()) {
-				state.setFailCount(lastStateFailCount + 1);
+				Optional<net.pterodactylus.rhynodge.State> lastState = stateManager.loadLastState(reactionName);
+				state.setFailCount(lastState.map(net.pterodactylus.rhynodge.State::failCount).orElse(0) + 1);
 			}
 			Optional<net.pterodactylus.rhynodge.State> lastSuccessfulState = stateManager.loadLastSuccessfulState(reactionName);
 
