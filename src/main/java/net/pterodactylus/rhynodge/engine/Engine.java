@@ -122,14 +122,13 @@ public class Engine extends AbstractExecutionThreadService {
 
 			/* wait until the next reaction has to run. */
 			Optional<net.pterodactylus.rhynodge.State> lastState = stateManager.loadLastState(reactionName);
-			long lastStateTime = lastState.isPresent() ? lastState.get().time() : 0;
 			int lastStateFailCount = lastState.isPresent() ? lastState.get().failCount() : 0;
-			long waitTime = (lastStateTime + nextReaction.get().getReaction().updateInterval()) - System.currentTimeMillis();
+			long waitTime = nextReaction.get().getNextTime() - System.currentTimeMillis();
 			logger.debug(format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
 				synchronized (reactions) {
 					try {
-						logger.info(format("Waiting until %tc.", lastStateTime + nextReaction.get().getReaction().updateInterval()));
+						logger.info(format("Waiting until %tc.", nextReaction.get().getNextTime()));
 						reactions.wait(waitTime);
 					} catch (InterruptedException ie1) {
 						/* we’re looping! */
