@@ -154,9 +154,7 @@ public class Engine extends AbstractExecutionThreadService {
 			/* convert states. */
 			for (Filter filter : nextReaction.get().getReaction().filters()) {
 				if (state.success()) {
-					net.pterodactylus.rhynodge.State newState = filter.filter(state);
-					//logger.debug(String.format("Old state is %s, new state is %s.", state, newState));
-					state = newState;
+					state = filter.filter(state);
 				}
 			}
 			if (!state.success()) {
