@@ -126,14 +126,7 @@ public class Engine extends AbstractExecutionThreadService {
 			long waitTime = nextReaction.get().getNextTime() - System.currentTimeMillis();
 			logger.debug(format("Time to wait for next Reaction: %d millseconds.", waitTime));
 			if (waitTime > 0) {
-				synchronized (reactions) {
-					try {
-						logger.info(format("Waiting until %tc.", nextReaction.get().getNextTime()));
-						reactions.wait(waitTime);
-					} catch (InterruptedException ie1) {
-						/* we’re looping! */
-					}
-				}
+				waitForNextReactionToStart(nextReaction, waitTime);
 
 				/* re-start loop to check for new reactions. */
 				continue;
@@ -193,6 +186,17 @@ public class Engine extends AbstractExecutionThreadService {
 				nextReaction.get().getReaction().action().execute(trigger.output(nextReaction.get().getReaction()));
 			}
 
+		}
+	}
+
+	private void waitForNextReactionToStart(Optional<NextReaction> nextReaction, long waitTime) {
+		synchronized (reactions) {
+			try {
+				logger.info(format("Waiting until %tc.", nextReaction.get().getNextTime()));
+				reactions.wait(waitTime);
+			} catch (InterruptedException ie1) {
+				/* we’re looping! */
+			}
 		}
 	}
 
