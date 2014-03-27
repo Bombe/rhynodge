@@ -9,11 +9,11 @@ import static org.hamcrest.Matchers.is;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 import net.pterodactylus.rhynodge.State;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.base.Optional;
 import com.google.common.io.Files;
 import org.hamcrest.Matchers;
 import org.junit.BeforeClass;

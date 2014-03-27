@@ -17,14 +17,15 @@
 
 package net.pterodactylus.rhynodge.engine;
 
-import static com.google.common.base.Optional.absent;
-import static com.google.common.base.Optional.of;
 import static com.google.common.collect.Maps.newTreeMap;
 import static java.lang.String.format;
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.SortedMap;
 
 import net.pterodactylus.rhynodge.Filter;
@@ -35,7 +36,6 @@ import net.pterodactylus.rhynodge.states.AbstractState;
 import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.StateManager;
 
-import com.google.common.base.Optional;
 import com.google.common.util.concurrent.AbstractExecutionThreadService;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.log4j.Logger;
@@ -227,7 +227,7 @@ public class Engine extends AbstractExecutionThreadService {
 				return of(new NextReaction(keyReaction.getKey(), keyReaction.getValue(), nextReactions.firstKey()));
 			}
 		}
-		return absent();
+		return empty();
 	}
 
 	private static class NextReaction {
