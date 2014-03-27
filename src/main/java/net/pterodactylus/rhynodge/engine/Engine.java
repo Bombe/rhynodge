@@ -132,23 +132,7 @@ public class Engine extends AbstractExecutionThreadService {
 				continue;
 			}
 
-			/* run reaction. */
-			logger.info(format("Running Query for %s...", reactionName));
-			Query query = nextReaction.get().getReaction().query();
-			net.pterodactylus.rhynodge.State state;
-			try {
-				logger.debug("Querying system...");
-				state = query.state();
-				if (state == null) {
-					state = FailedState.INSTANCE;
-				}
-				logger.debug("System queried.");
-			} catch (Throwable t1) {
-				logger.warn("Querying system failed!", t1);
-				state = new AbstractState(t1) {
-					/* no further state. */
-				};
-			}
+			net.pterodactylus.rhynodge.State state = runReaction(nextReaction, reactionName);
 			logger.debug(format("State is %s.", state));
 
 			/* convert states. */
@@ -185,6 +169,25 @@ public class Engine extends AbstractExecutionThreadService {
 			}
 
 		}
+	}
+
+	private net.pterodactylus.rhynodge.State runReaction(Optional<NextReaction> nextReaction, String reactionName) {
+		logger.info(format("Running Query for %s...", reactionName));
+		Query query = nextReaction.get().getReaction().query();
+		net.pterodactylus.rhynodge.State state;
+		try {
+			logger.debug("Querying system...");
+			state = query.state();
+			if (state == null) {
+				state = FailedState.INSTANCE;
+			}
+			logger.debug("System queried.");
+		} catch (Throwable t1) {
+			logger.warn("Querying system failed!", t1);
+			state = new AbstractState(t1) {
+			};
+		}
+		return state;
 	}
 
 	private void waitForNextReactionToStart(Optional<NextReaction> nextReaction, long waitTime) {
