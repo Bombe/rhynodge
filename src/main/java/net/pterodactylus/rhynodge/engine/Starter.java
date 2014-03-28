@@ -50,9 +50,6 @@ public class Starter {
 		/* start a watcher. */
 		ChainWatcher chainWatcher = new ChainWatcher(engine, parameters.getChainDirectory());
 		chainWatcher.start();
-
-		/* start the engine. */
-		engine.start();
 	}
 
 	/**
