@@ -95,6 +95,7 @@ public class BlacklistFilter implements Filter {
             "-P2P",
             "-PLAYNOW",
             "-S4A",
+            "-SHODAN",
             "-SPARKS",
             "-SUFFiCE",
             "-TAMILROCKERS",
