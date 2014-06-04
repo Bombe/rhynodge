@@ -72,15 +72,18 @@ public class BlacklistFilter implements Filter {
 
 	public static BlacklistFilter createDefaultBlacklistFilter() {
 		return new BlacklistFilter(asList(
+            "[G2G]",
             "-3LT0N",
             "-ADTRG",
             "-AMIABLE",
             "-AN0NYM0US",
             "-AQOS",
             "-AXED",
+            "-BiDA",
             "-CM",
             "-DiRTYMARY",
             "-EDAW",
+            "-EVO",
             "-EVOLVE",
             "-FooKaS",
             "-Haggebulle",
@@ -94,6 +97,7 @@ public class BlacklistFilter implements Filter {
             "-NYDIC",
             "-P2P",
             "-PLAYNOW",
+            "-RARBG",
             "-S4A",
             "-SHODAN",
             "-SPARKS",
