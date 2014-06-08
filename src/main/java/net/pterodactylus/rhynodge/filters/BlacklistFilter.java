@@ -80,6 +80,7 @@ public class BlacklistFilter implements Filter {
             "-ARROW",
             "-AQOS",
             "-AXED",
+            "-BeStDivX",
             "-BiDA",
             "-CM",
             "-COCAIN",
