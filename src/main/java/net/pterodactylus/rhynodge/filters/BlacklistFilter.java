@@ -108,6 +108,7 @@ public class BlacklistFilter implements Filter {
             "-MAX",
             "-MiLLENiUM",
             "-NeDiVx",
+            "-NO1KNOWS",
             "-NoGRP",
             "-NOiR",
             "-NYDIC",
