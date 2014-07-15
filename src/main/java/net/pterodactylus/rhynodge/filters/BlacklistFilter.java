@@ -114,6 +114,7 @@ public class BlacklistFilter implements Filter {
             "-NYDIC",
             "-P2P",
             "-PLAYNOW",
+            "-PSYPHER",
             "-PUKKA",
             "-PrisM",
             "-RARBG",
