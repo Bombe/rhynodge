@@ -30,6 +30,8 @@ import net.pterodactylus.rhynodge.output.Output;
  */
 public class AlwaysTrigger implements Trigger {
 
+	private State currentState;
+
 	/**
 	 * {@inheritDoc}
 	 * <p>
@@ -37,6 +39,7 @@ public class AlwaysTrigger implements Trigger {
 	 */
 	@Override
 	public State mergeStates(State previousState, State currentState) {
+		this.currentState = currentState;
 		return currentState;
 	}
 
