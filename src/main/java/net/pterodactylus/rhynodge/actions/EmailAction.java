@@ -101,12 +101,8 @@ public class EmailAction implements Action {
 			/* create text and html parts. */
 			MimeMultipart multipart = new MimeMultipart();
 			multipart.setSubType("alternative");
-			MimeBodyPart textPart = new MimeBodyPart();
-			textPart.setContent(output.text("text/plain", -1), "text/plain;charset=utf-8");
-			MimeBodyPart htmlPart = new MimeBodyPart();
-			htmlPart.setContent(output.text("text/html", -1), "text/html;charset=utf-8");
-			multipart.addBodyPart(textPart);
-			multipart.addBodyPart(htmlPart);
+			addPlainTextPart(output, multipart);
+			addHtmlPart(output, multipart);
 			message.setContent(multipart);
 
 			transport.connect();
@@ -114,6 +110,24 @@ public class EmailAction implements Action {
 		} catch (MessagingException me1) {
 			/* swallow. */
 		}
+	}
+
+	private void addPlainTextPart(Output output, MimeMultipart multipart) throws MessagingException {
+		if (output.text("text/plain", -1) == null) {
+			return;
+		}
+		MimeBodyPart textPart = new MimeBodyPart();
+		textPart.setContent(output.text("text/plain", -1), "text/plain;charset=utf-8");
+		multipart.addBodyPart(textPart);
+	}
+
+	private void addHtmlPart(Output output, MimeMultipart multipart) throws MessagingException {
+		if (output.text("text/html", -1) == null) {
+			return;
+		}
+		MimeBodyPart htmlPart = new MimeBodyPart();
+		htmlPart.setContent(output.text("text/html", -1), "text/html;charset=utf-8");
+		multipart.addBodyPart(htmlPart);
 	}
 
 }
