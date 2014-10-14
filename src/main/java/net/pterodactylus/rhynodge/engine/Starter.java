@@ -64,7 +64,7 @@ public class Starter {
 		 *
 		 * @return The chain directory
 		 */
-		@Option(defaultValue = "chains", shortName = "c", description = "The directory to watch for chains")
+		@Option(defaultValue = "chains", longName = "chains", shortName = "c", description = "The directory to watch for chains")
 		String getChainDirectory();
 
 		/**
@@ -72,7 +72,7 @@ public class Starter {
 		 *
 		 * @return The states directory
 		 */
-		@Option(defaultValue = "states", shortName = "s", description = "The directory to store states in")
+		@Option(defaultValue = "states", longName = "states", shortName = "s", description = "The directory to store states in")
 		String getStateDirectory();
 
 	}
