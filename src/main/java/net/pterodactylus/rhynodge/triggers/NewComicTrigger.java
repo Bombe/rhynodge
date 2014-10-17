@@ -160,6 +160,7 @@ public class NewComicTrigger implements Trigger {
 			html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
 			html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
 			html.append("\"></div>\n");
+			html.append("<div>").append(StringEscapeUtils.escapeHtml4(strip.comment())).append("</div>\n");
 		}
 	}
 
