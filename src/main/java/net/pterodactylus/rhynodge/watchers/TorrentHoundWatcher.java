@@ -29,7 +29,7 @@ import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.torrents.TorrentHoundFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
+import net.pterodactylus.rhynodge.triggers.NewTorrentTrigger;
 
 import com.google.common.collect.ImmutableList;
 
@@ -86,7 +86,7 @@ public class TorrentHoundWatcher extends DefaultWatcher {
 	 * @return The trigger of the watcher
 	 */
 	private static Trigger createTrigger() {
-		return new NewEpisodeTrigger();
+		return new NewTorrentTrigger();
 	}
 
 }
