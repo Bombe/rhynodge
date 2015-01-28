@@ -46,12 +46,19 @@ public class TorrentzEuFilter extends TorrentSiteFilter {
 
 	@Override
 	protected int extractSeedCount(Element dataRow) {
-		return Integer.valueOf(dataRow.select("dd span.u").text());
+		return extractNumber(dataRow.select("dd span.u").text());
 	}
 
 	@Override
 	protected int extractLeechCount(Element dataRow) {
-		return Integer.valueOf(dataRow.select("dd span.d").text());
+		return extractNumber(dataRow.select("dd span.d").text());
+	}
+
+	private int extractNumber(String text) {
+		if ((text == null) || text.isEmpty()) {
+			return 0;
+		}
+		return Integer.valueOf(text.replace(",", ""));
 	}
 
 }
