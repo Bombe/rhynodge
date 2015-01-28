@@ -85,6 +85,7 @@ public class ReactionRunner implements Runnable {
 					currentState = filter.filter(currentState);
 				} catch (Throwable t1) {
 					logger.warn(format("Error during filter %s for %s.", filter.getClass().getSimpleName(), reaction.name()), t1);
+					return new FailedState(t1);
 				}
 			}
 		}
