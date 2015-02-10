@@ -19,13 +19,7 @@ public class BusinessCatComicFilterTest {
 	private final Document document;
 
 	public BusinessCatComicFilterTest() throws IOException {
-		document = loadDocument("business-cat.html", "http://www.businesscat.happyjar.com//");
-	}
-
-	private Document loadDocument(String resourceName, String baseUri) throws IOException {
-		InputStream inputStream = getClass().getResourceAsStream(resourceName);
-		Document document = Jsoup.parse(inputStream, "UTF-8", baseUri);
-		return document;
+		document = ComicLoader.loadDocument("business-cat.html", "http://www.businesscat.happyjar.com//");
 	}
 
 	@Test
