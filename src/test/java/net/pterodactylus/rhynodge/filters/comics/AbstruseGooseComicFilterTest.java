@@ -42,31 +42,25 @@ public class AbstruseGooseComicFilterTest {
 	private final Document document;
 
 	public AbstruseGooseComicFilterTest() throws IOException {
-		document = loadDocument("/comics/abstrusegoose.html", "http://abstrusegoose.com/");
-	}
-
-	private Document loadDocument(String resourceName, String baseUri) throws IOException {
-		InputStream inputStream = getClass().getResourceAsStream(resourceName);
-		Document document = Jsoup.parse(inputStream, "UTF-8", baseUri);
-		return document;
+		document = ComicLoader.loadDocument("abstruse-goose.html", "http://abstrusegoose.com/");
 	}
 
 	@Test
 	public void extractsComicTitleCorrectly() {
 		Optional<String> title = abstruseGooseComicFilter.extractTitle(document);
-		assertThat(title, is(of("Bizarro")));
+		assertThat(title, is(of("The Sudokomic Game")));
 	}
 
 	@Test
 	public void extractComicImagesCorrectly() {
 		List<String> images = abstruseGooseComicFilter.extractImageUrls(document);
-		assertThat(images, contains("http://abstrusegoose.com/strips/bizero.png"));
+		assertThat(images, contains("http://abstrusegoose.com/strips/another_fun_game_is_comic_tac_toe.png"));
 	}
 
 	@Test
 	public void extractImageCommentsCorrectly() {
 		List<String> comments = abstruseGooseComicFilter.extractImageComments(document);
-		assertThat(comments, contains("In the additive group of the integers, bizarro zero is... well... zero."));
+		assertThat(comments, contains("This is the best I could do on short notice."));
 	}
 
 }
