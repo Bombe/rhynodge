@@ -17,6 +17,9 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,17 +42,27 @@ public class CyanideAndHappinessComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return Optional.of("");
+		return Optional.absent();
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTags = document.select("img[alt=Cyanide and Happiness, a daily webcomic]");
+		Elements imageTags = document.select("img#main-comic");
 		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
 
 			@Override
 			public String apply(Element input) {
-				return input.attr("src");
+				String imageUrl = input.attr("src");
+				try {
+					return new URI(document.baseUri()).resolve(imageUrl).toString();
+				} catch (URISyntaxException e) {
+					/* ignore. */
+				}
+				if (!imageUrl.startsWith("/")) {
+					return imageUrl;
+				}
+				String protocol = document.baseUri().substring(0, document.baseUri().indexOf('/'));
+				return protocol + imageUrl;
 			}
 		}).toList();
 	}
