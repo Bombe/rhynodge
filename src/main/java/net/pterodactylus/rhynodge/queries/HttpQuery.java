@@ -29,9 +29,11 @@ import net.pterodactylus.rhynodge.states.HttpState;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.ResponseContentEncoding;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
 
@@ -67,8 +69,9 @@ public class HttpQuery implements Query {
 	@Override
 	@SuppressWarnings("deprecation")
 	public State state() {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		httpClient.addResponseInterceptor(new ResponseContentEncoding());
+		HttpClient httpClient = HttpClientBuilder.create()
+				.setSSLHostnameVerifier((hostname, session) -> true)
+				.addInterceptorFirst(new ResponseContentEncoding()).build();
 		HttpGet get = new HttpGet(uri);
 
 		InputStreamReader inputStreamReader = null;
