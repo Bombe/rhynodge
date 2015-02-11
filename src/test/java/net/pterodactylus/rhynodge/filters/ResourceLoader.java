@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.filters.comics;
+package net.pterodactylus.rhynodge.filters;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,10 +11,10 @@ import org.jsoup.nodes.Document;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class ComicLoader {
+public class ResourceLoader {
 
-	static Document loadDocument(String resourceName, String baseUri) throws IOException {
-		InputStream inputStream = ComicLoader.class.getResourceAsStream(resourceName);
+	public static Document loadDocument(String resourceName, String baseUri) throws IOException {
+		InputStream inputStream = ResourceLoader.class.getResourceAsStream(resourceName);
 		Document document = Jsoup.parse(inputStream, "UTF-8", baseUri);
 		return document;
 	}

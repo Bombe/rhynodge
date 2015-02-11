@@ -23,11 +23,11 @@ import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.is;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
+import net.pterodactylus.rhynodge.filters.ResourceLoader;
+
 import com.google.common.base.Optional;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
@@ -42,7 +42,7 @@ public class AbstruseGooseComicFilterTest {
 	private final Document document;
 
 	public AbstruseGooseComicFilterTest() throws IOException {
-		document = ComicLoader.loadDocument("abstruse-goose.html", "http://abstrusegoose.com/");
+		document = ResourceLoader.loadDocument("abstruse-goose.html", "http://abstrusegoose.com/");
 	}
 
 	@Test

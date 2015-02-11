@@ -1,12 +1,12 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
 import java.io.IOException;
-import java.io.InputStream;
+
+import net.pterodactylus.rhynodge.filters.ResourceLoader;
 
 import com.google.common.base.Optional;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class BusinessCatComicFilterTest {
 	private final Document document;
 
 	public BusinessCatComicFilterTest() throws IOException {
-		document = ComicLoader.loadDocument("business-cat.html", "http://www.businesscat.happyjar.com//");
+		document = ResourceLoader.loadDocument("business-cat.html", "http://www.businesscat.happyjar.com//");
 	}
 
 	@Test

@@ -2,6 +2,8 @@ package net.pterodactylus.rhynodge.filters.comics;
 
 import java.io.IOException;
 
+import net.pterodactylus.rhynodge.filters.ResourceLoader;
+
 import com.google.common.base.Optional;
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
@@ -19,7 +21,7 @@ public class ChiefOBrienAtWorkComicFilterTest {
 	private final Document document;
 
 	public ChiefOBrienAtWorkComicFilterTest() throws IOException {
-		document = ComicLoader.loadDocument("chief-obrien-at-work.html", "http://chiefobrienatwork.com/");
+		document = ResourceLoader.loadDocument("chief-obrien-at-work.html", "http://chiefobrienatwork.com/");
 	}
 
 	@Test
