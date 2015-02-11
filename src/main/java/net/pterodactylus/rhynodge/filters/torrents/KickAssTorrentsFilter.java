@@ -53,7 +53,7 @@ public class KickAssTorrentsFilter extends TorrentSiteFilter {
 	 */
 	@Override
 	protected String extractName(Element dataRow) {
-		return dataRow.select("div.torrentname a.normalgrey").text();
+		return dataRow.select("div.torrentname a.cellMainLink").text();
 	}
 
 	/**
