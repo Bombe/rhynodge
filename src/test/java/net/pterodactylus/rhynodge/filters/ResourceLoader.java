@@ -13,8 +13,8 @@ import org.jsoup.nodes.Document;
  */
 public class ResourceLoader {
 
-	public static Document loadDocument(String resourceName, String baseUri) throws IOException {
-		InputStream inputStream = ResourceLoader.class.getResourceAsStream(resourceName);
+	public static Document loadDocument(Class<?> classToLoadFrom, String resourceName, String baseUri) throws IOException {
+		InputStream inputStream = classToLoadFrom.getResourceAsStream(resourceName);
 		Document document = Jsoup.parse(inputStream, "UTF-8", baseUri);
 		return document;
 	}

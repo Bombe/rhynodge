@@ -42,7 +42,7 @@ public class AbstruseGooseComicFilterTest {
 	private final Document document;
 
 	public AbstruseGooseComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument("abstruse-goose.html", "http://abstrusegoose.com/");
+		document = ResourceLoader.loadDocument(getClass(), "abstruse-goose.html", "http://abstrusegoose.com/");
 	}
 
 	@Test

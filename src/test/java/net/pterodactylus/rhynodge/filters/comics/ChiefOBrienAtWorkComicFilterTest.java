@@ -21,7 +21,7 @@ public class ChiefOBrienAtWorkComicFilterTest {
 	private final Document document;
 
 	public ChiefOBrienAtWorkComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument("chief-obrien-at-work.html", "http://chiefobrienatwork.com/");
+		document = ResourceLoader.loadDocument(getClass(), "chief-obrien-at-work.html", "http://chiefobrienatwork.com/");
 	}
 
 	@Test

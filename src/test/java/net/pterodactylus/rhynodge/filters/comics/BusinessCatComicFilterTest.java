@@ -19,7 +19,7 @@ public class BusinessCatComicFilterTest {
 	private final Document document;
 
 	public BusinessCatComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument("business-cat.html", "http://www.businesscat.happyjar.com//");
+		document = ResourceLoader.loadDocument(getClass(), "business-cat.html", "http://www.businesscat.happyjar.com//");
 	}
 
 	@Test

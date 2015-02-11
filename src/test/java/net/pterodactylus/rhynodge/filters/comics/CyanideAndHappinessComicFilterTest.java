@@ -21,7 +21,7 @@ public class CyanideAndHappinessComicFilterTest {
 	private final Document document;
 
 	public CyanideAndHappinessComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument("cyanide-and-happiness.html", "http://www.explosm.net/comics/new/");
+		document = ResourceLoader.loadDocument(getClass(), "cyanide-and-happiness.html", "http://www.explosm.net/comics/new/");
 	}
 
 	@Test
