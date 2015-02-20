@@ -33,43 +33,22 @@ import com.google.common.collect.Lists;
  */
 public class ComicState extends AbstractState implements Iterable<Comic> {
 
-	/** The comics in this state. */
 	@JsonProperty
 	private final List<Comic> comics = Lists.newArrayList();
 
-	/**
-	 * Returns the list of comics contained in this state.
-	 *
-	 * @return The list of comics in this state
-	 */
 	public List<Comic> comics() {
 		return comics;
 	}
 
-	/**
-	 * Adds the given comic to this state.
-	 *
-	 * @param comic
-	 * 		The comic to add
-	 * @return This comic state
-	 */
 	public ComicState add(Comic comic) {
 		comics.add(comic);
 		return this;
 	}
 
-	//
-	// ITERABLE METHODS
-	//
-
 	@Override
 	public Iterator<Comic> iterator() {
 		return comics.iterator();
 	}
-
-	//
-	// OBJECT METHODS
-	//
 
 	@Override
 	public String toString() {
@@ -83,66 +62,33 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 	 */
 	public static class Comic implements Iterable<Strip> {
 
-		/** The title of the comic. */
 		@JsonProperty
 		private final String title;
 
-		/** The strips of the comic. */
 		@JsonProperty
 		private final List<Strip> strips = Lists.newArrayList();
 
-		/**
-		 * Creates a new comic with the given title.
-		 *
-		 * @param title
-		 * 		The title of the comic
-		 */
 		public Comic(@JsonProperty("title") String title) {
 			this.title = title;
 		}
 
-		/**
-		 * Returns the title of this comic.
-		 *
-		 * @return The title of this comic
-		 */
 		public String title() {
 			return title;
 		}
 
-		/**
-		 * Returns the strips of this comic.
-		 *
-		 * @return The strips of this comic
-		 */
 		public List<Strip> strips() {
 			return strips;
 		}
 
-		/**
-		 * Adds a strip to this comic.
-		 *
-		 * @param strip
-		 * 		The strip to add
-		 * @return This comic
-		 */
 		public Comic add(Strip strip) {
 			strips.add(strip);
 			return this;
 		}
 
-		//
-		// ITERABLE METHODS
-		//
-
 		@Override
 		public Iterator<Strip> iterator() {
 			return strips.iterator();
 		}
-
-		//
-		// OBJECT METHODS
-		//
 
 		@Override
 		public int hashCode() {
@@ -172,48 +118,24 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 	 */
 	public static class Strip {
 
-		/** The URL of the image. */
 		@JsonProperty
 		private final String imageUrl;
 
-		/** The comment of the image. */
 		@JsonProperty
 		private final String comment;
 
-		/**
-		 * Creates a new strip.
-		 *
-		 * @param imageUrl
-		 * 		The URL of the image
-		 * @param comment
-		 * 		The comment of the image
-		 */
 		public Strip(@JsonProperty("imageUrl") String imageUrl, @JsonProperty("comment") String comment) {
 			this.imageUrl = imageUrl;
 			this.comment = comment;
 		}
 
-		/**
-		 * Returns the URL of the image.
-		 *
-		 * @return The URL of the image
-		 */
 		public String imageUrl() {
 			return imageUrl;
 		}
 
-		/**
-		 * Returns the comment of the image.
-		 *
-		 * @return The comment of the image
-		 */
 		public String comment() {
 			return comment;
 		}
-
-		//
-		// OBJECT METHODS
-		//
 
 		@Override
 		public int hashCode() {
