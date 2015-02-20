@@ -19,6 +19,7 @@ package net.pterodactylus.rhynodge.filters.comics;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
@@ -39,32 +40,18 @@ public class SinfestComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		Elements imageCell = document.select("table#AutoNumber2 tr:eq(1) img");
+		Elements imageCell = selectImageAttributes(document);
 		return imageCell.hasAttr("alt") ? Optional.of(imageCell.attr("alt")) : Optional.<String>absent();
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageCell = document.select("table#AutoNumber2 tr:eq(1) img");
-		return imageCell.hasAttr("src") ? FluentIterable.from(imageCell).transform(new Function<Element, Optional<String>>() {
+		Elements imageCells = selectImageAttributes(document);
+		return imageCells.stream().map(cell -> cell.attr("src")).collect(Collectors.toList());
+	}
 
-			@Override
-			public Optional<String> apply(Element elements) {
-				return elements.hasAttr("src") ? Optional.of(elements.attr("src")) : Optional.<String>absent();
-			}
-		}).filter(new Predicate<Optional<String>>() {
-
-			@Override
-			public boolean apply(Optional<String> input) {
-				return input.isPresent();
-			}
-		}).transform(new Function<Optional<String>, String>() {
-
-			@Override
-			public String apply(Optional<String> input) {
-				return input.get();
-			}
-		}).toList() : Collections.<String>emptyList();
+	private Elements selectImageAttributes(Document document) {
+		return document.select("tbody.style5 img");
 	}
 
 	@Override
