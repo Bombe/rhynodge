@@ -65,6 +65,11 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 	// ACCESSORS
 	//
 
+	@Override
+	public boolean isEmpty() {
+		return episodes.isEmpty();
+	}
+
 	/**
 	 * Returns all episodes contained in this state.
 	 *

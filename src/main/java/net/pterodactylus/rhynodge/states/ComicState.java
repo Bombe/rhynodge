@@ -36,6 +36,11 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 	@JsonProperty
 	private final List<Comic> comics = Lists.newArrayList();
 
+	@Override
+	public boolean isEmpty() {
+		return comics.isEmpty();
+	}
+
 	public List<Comic> comics() {
 		return comics;
 	}

@@ -77,11 +77,11 @@ public class ReactionRunner implements Runnable {
 
 	private Output createErrorOutput(Reaction reaction, State state) {
 		DefaultOutput output = new DefaultOutput(String.format("Error while processing “%s!”", reaction.name()));
-		output.addText("text/plain; charset=utf-8", createEmailText(reaction, state));
+		output.addText("text/plain; charset=utf-8", createErrorEmailText(reaction, state));
 		return output;
 	}
 
-	private String createEmailText(Reaction reaction, State state) {
+	private String createErrorEmailText(Reaction reaction, State state) {
 		StringBuilder emailText = new StringBuilder();
 		emailText.append(String.format("An error occured while processing “.”\n\n", reaction.name()));
 		appendExceptionToEmailText(state.exception(), emailText);
@@ -118,6 +118,9 @@ public class ReactionRunner implements Runnable {
 				logger.debug(format("Filtering state through %s...", filter.getClass().getSimpleName()));
 				try {
 					currentState = filter.filter(currentState);
+					if (currentState.success() && currentState.isEmpty()) {
+						errorEmailAction.execute(createEmptyStateOutput(reaction, state));
+					}
 				} catch (Throwable t1) {
 					logger.warn(format("Error during filter %s for %s.", filter.getClass().getSimpleName(), reaction.name()), t1);
 					return new FailedState(t1);
@@ -125,6 +128,12 @@ public class ReactionRunner implements Runnable {
 			}
 		}
 		return currentState;
+	}
+
+	private Output createEmptyStateOutput(Reaction reaction, State state) {
+		DefaultOutput defaultOutput = new DefaultOutput(String.format("Reached Empty State for “%s!”", reaction.name()));
+		defaultOutput.addText("text/plain; charset=utf-8", String.format("The %s for %s was empty.", state.getClass().getSimpleName(), reaction.name()));
+		return defaultOutput;
 	}
 
 }

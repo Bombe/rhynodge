@@ -37,6 +37,7 @@ public abstract class AbstractState implements State {
 
 	/** Whether the state was successfully retrieved. */
 	private final boolean success;
+	private final boolean empty;
 
 	/** The optional exception that occured while retrieving the state. */
 	private final Throwable exception;
@@ -60,7 +61,11 @@ public abstract class AbstractState implements State {
 	 *            otherwise
 	 */
 	protected AbstractState(boolean success) {
-		this(success, null);
+		this(success, true, null);
+	}
+
+	protected AbstractState(boolean success, boolean empty) {
+		this(success, empty, null);
 	}
 
 	/**
@@ -70,7 +75,7 @@ public abstract class AbstractState implements State {
 	 *            The exception that occured while retrieving the state
 	 */
 	protected AbstractState(Throwable exception) {
-		this(false, exception);
+		this(false, true, exception);
 	}
 
 	/**
@@ -82,9 +87,10 @@ public abstract class AbstractState implements State {
 	 * @param exception
 	 *            The exception that occured while retrieving the state
 	 */
-	protected AbstractState(boolean success, Throwable exception) {
+	protected AbstractState(boolean success, boolean empty, Throwable exception) {
 		this.time = System.currentTimeMillis();
 		this.success = success;
+		this.empty = empty;
 		this.exception = exception;
 	}
 
@@ -106,6 +112,11 @@ public abstract class AbstractState implements State {
 	@Override
 	public boolean success() {
 		return success;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return empty;
 	}
 
 	/**

@@ -65,6 +65,11 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	// ACCESSORS
 	//
 
+	@Override
+	public boolean isEmpty() {
+		return files.isEmpty();
+	}
+
 	/**
 	 * Returns all torrent files of this state.
 	 *

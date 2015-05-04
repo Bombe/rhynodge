@@ -51,6 +51,11 @@ public class HtmlState extends AbstractState {
 	// ACCESSORS
 	//
 
+	@Override
+	public boolean isEmpty() {
+		return false;
+	}
+
 	/**
 	 * Returns the URI of the parsed document.
 	 *

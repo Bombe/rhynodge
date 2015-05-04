@@ -47,4 +47,9 @@ public class StringState extends AbstractState {
 		return value;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return value.isEmpty();
+	}
+
 }

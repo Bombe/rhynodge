@@ -26,6 +26,11 @@ public class OutputState extends AbstractState {
 		this.htmlOutput = htmlOutput;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return !plainTextOutput.isPresent() && !htmlOutput.isPresent();
+	}
+
 	public Optional<String> plainTextOutput() {
 		return plainTextOutput;
 	}

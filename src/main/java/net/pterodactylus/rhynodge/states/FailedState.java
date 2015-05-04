@@ -46,6 +46,11 @@ public class FailedState extends AbstractState {
 		super(exception);
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return true;
+	}
+
 	//
 	// STATIC METHODS
 	//

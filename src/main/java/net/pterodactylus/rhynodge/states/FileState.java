@@ -77,6 +77,11 @@ public class FileState extends AbstractState {
 	// ACCESSORS
 	//
 
+	@Override
+	public boolean isEmpty() {
+		return !exists;
+	}
+
 	/**
 	 * Returns whether the file exists.
 	 *

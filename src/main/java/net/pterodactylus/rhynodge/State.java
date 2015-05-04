@@ -43,6 +43,8 @@ public interface State {
 	 */
 	boolean success();
 
+	boolean isEmpty();
+
 	/**
 	 * Returns the number of consecutive failures. This method only returns a
 	 * meaningful number iff {@link #success()} returns {@code false}. If

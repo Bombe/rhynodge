@@ -106,6 +106,11 @@ public class HttpState extends AbstractState {
 		return copyOf(rawResult, rawResult.length);
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return rawResult.length == 0;
+	}
+
 	/**
 	 * Returns the decoded content of the reply. This method uses the charset
 	 * information from the {@link #contentType()}, if present, or UTF-8 if no
