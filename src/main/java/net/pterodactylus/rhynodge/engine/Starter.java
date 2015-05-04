@@ -17,6 +17,10 @@
 
 package net.pterodactylus.rhynodge.engine;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.loader.ChainWatcher;
 import net.pterodactylus.rhynodge.states.StateManager;
 
@@ -36,20 +40,31 @@ public class Starter {
 	 * @param arguments
 	 *            Command-line arguments
 	 */
-	public static void main(String... arguments) {
+	public static void main(String... arguments) throws IOException {
 
 		/* parse command line. */
 		Parameters parameters = CliFactory.parseArguments(Parameters.class, arguments);
+		Configuration configuration = loadConfiguration(parameters.getConfigurationFile());
 
 		/* create the state manager. */
 		StateManager stateManager = new StateManager(parameters.getStateDirectory());
 
 		/* create the engine. */
-		Engine engine = new Engine(stateManager);
+		Engine engine = new Engine(stateManager, createErrorEmailAction(configuration));
 
 		/* start a watcher. */
 		ChainWatcher chainWatcher = new ChainWatcher(engine, parameters.getChainDirectory());
 		chainWatcher.start();
+	}
+
+	private static Configuration loadConfiguration(String configurationFile) throws IOException {
+		try (FileInputStream configInputStream = new FileInputStream(configurationFile)) {
+			return Configuration.from(configInputStream);
+		}
+	}
+
+	private static EmailAction createErrorEmailAction(Configuration configuration) {
+		return new EmailAction(configuration.getSmtpHostname(), configuration.getErrorEmailSender(), configuration.getErrorEmailRecipient());
 	}
 
 	/**
@@ -74,6 +89,9 @@ public class Starter {
 		 */
 		@Option(defaultValue = "states", longName = "states", shortName = "s", description = "The directory to store states in")
 		String getStateDirectory();
+
+		@Option(defaultValue = "/etc/rhynodge/rhynodge.json", longName = "config", shortName = "C", description = "The name of the configuration file")
+		String getConfigurationFile();
 
 	}
 

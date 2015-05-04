@@ -5,6 +5,9 @@ import static java.util.Optional.ofNullable;
 import static net.pterodactylus.rhynodge.states.FailedState.INSTANCE;
 import static org.apache.log4j.Logger.getLogger;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Optional;
 
 import net.pterodactylus.rhynodge.Action;
@@ -13,6 +16,9 @@ import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.Trigger;
+import net.pterodactylus.rhynodge.actions.EmailAction;
+import net.pterodactylus.rhynodge.output.DefaultOutput;
+import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.FailedState;
 
 import org.apache.log4j.Logger;
@@ -29,10 +35,12 @@ public class ReactionRunner implements Runnable {
 	private static final Logger logger = getLogger(ReactionRunner.class);
 	private final Reaction reaction;
 	private final ReactionState reactionState;
+	private final EmailAction errorEmailAction;
 
-	public ReactionRunner(Reaction reaction, ReactionState reactionState) {
+	public ReactionRunner(Reaction reaction, ReactionState reactionState, EmailAction errorEmailAction) {
 		this.reactionState = reactionState;
 		this.reaction = reaction;
+		this.errorEmailAction = errorEmailAction;
 	}
 
 	@Override
@@ -42,6 +50,7 @@ public class ReactionRunner implements Runnable {
 		if (!state.success()) {
 			logger.info(format("Reaction %s failed.", reaction.name()));
 			saveStateWithIncreasedFailCount(state);
+			errorEmailAction.execute(createErrorOutput(reaction, state));
 			return;
 		}
 		Optional<State> lastSuccessfulState = reactionState.loadLastSuccessfulState();
@@ -64,6 +73,32 @@ public class ReactionRunner implements Runnable {
 		Optional<State> lastState = reactionState.loadLastState();
 		state.setFailCount(lastState.map(State::failCount).orElse(0) + 1);
 		reactionState.saveState(state);
+	}
+
+	private Output createErrorOutput(Reaction reaction, State state) {
+		DefaultOutput output = new DefaultOutput(String.format("Error while processing “%s!”", reaction.name()));
+		output.addText("text/plain; charset=utf-8", createEmailText(reaction, state));
+		return output;
+	}
+
+	private String createEmailText(Reaction reaction, State state) {
+		StringBuilder emailText = new StringBuilder();
+		emailText.append(String.format("An error occured while processing “.”\n\n", reaction.name()));
+		appendExceptionToEmailText(state.exception(), emailText);
+		return emailText.toString();
+	}
+
+	private void appendExceptionToEmailText(Throwable exception, StringBuilder emailText) {
+		if (exception != null) {
+			try (StringWriter stringWriter = new StringWriter();
+				 PrintWriter printWriter = new PrintWriter(stringWriter)) {
+				exception.printStackTrace(printWriter);
+				emailText.append(stringWriter.toString());
+			} catch (IOException ioe1) {
+				/* StringWriter doesn’t throw. */
+				throw new RuntimeException(ioe1);
+			}
+		}
 	}
 
 	private State runQuery() {

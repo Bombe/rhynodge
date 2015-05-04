@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import net.pterodactylus.rhynodge.Reaction;
+import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.states.StateManager;
 
 /**
@@ -41,15 +42,11 @@ public class Engine {
 	private final StateManager stateManager;
 	private final ScheduledExecutorService executorService;
 	private final Map<String, Future<?>> scheduledFutures = new ConcurrentHashMap<>();
+	private final EmailAction errorEmailAction;
 
-	/**
-	 * Creates a new engine.
-	 *
-	 * @param stateManager
-	 * 		The state manager
-	 */
-	public Engine(StateManager stateManager) {
+	public Engine(StateManager stateManager, EmailAction errorEmailAction) {
 		this.stateManager = stateManager;
+		this.errorEmailAction = errorEmailAction;
 		executorService = new ScheduledThreadPoolExecutor(10);
 	}
 
@@ -70,7 +67,7 @@ public class Engine {
 		Optional<net.pterodactylus.rhynodge.State> lastState = reactionState.loadLastState();
 		long lastExecutionTime = lastState.map(net.pterodactylus.rhynodge.State::time).orElse(0L);
 		long nextExecutionTime = lastExecutionTime + reaction.updateInterval();
-		ReactionRunner reactionRunner = new ReactionRunner(reaction, reactionState);
+		ReactionRunner reactionRunner = new ReactionRunner(reaction, reactionState, errorEmailAction);
 		ScheduledFuture<?> future = executorService.scheduleWithFixedDelay(reactionRunner, nextExecutionTime - currentTimeMillis(), reaction.updateInterval(), MILLISECONDS);
 		scheduledFutures.put(name, future);
 	}

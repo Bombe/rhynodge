@@ -1,0 +1,5 @@
+{
+  "smtpHostname": "localhost",
+  "errorEmailSender": "errors@rhynodge.net",
+  "errorEmailRecipient": "errors@user.net"
+}
