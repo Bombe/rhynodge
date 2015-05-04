@@ -50,7 +50,8 @@ public class SaturdayMorningBreakfastCerealComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
-		return Collections.emptyList();
+		String imageComment = document.select("img#comic").get(0).attr("title");
+		return Arrays.asList(imageComment, "");
 	}
 
 }
