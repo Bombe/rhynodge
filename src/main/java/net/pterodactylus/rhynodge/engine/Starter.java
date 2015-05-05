@@ -17,15 +17,12 @@
 
 package net.pterodactylus.rhynodge.engine;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.loader.ChainWatcher;
 import net.pterodactylus.rhynodge.states.StateManager;
-
-import com.lexicalscope.jewel.cli.CliFactory;
-import com.lexicalscope.jewel.cli.Option;
+import net.pterodactylus.util.envopt.Parser;
 
 /**
  * Rhynodge main starter class.
@@ -42,57 +39,21 @@ public class Starter {
 	 */
 	public static void main(String... arguments) throws IOException {
 
-		/* parse command line. */
-		Parameters parameters = CliFactory.parseArguments(Parameters.class, arguments);
-		Configuration configuration = loadConfiguration(parameters.getConfigurationFile());
+		Options options = Parser.fromSystemEnvironment().parseEnvironment(Options::new);
 
 		/* create the state manager. */
-		StateManager stateManager = new StateManager(parameters.getStateDirectory());
+		StateManager stateManager = new StateManager(options.stateDirectory);
 
 		/* create the engine. */
-		Engine engine = new Engine(stateManager, createErrorEmailAction(configuration));
+		Engine engine = new Engine(stateManager, createErrorEmailAction(options.smtpHostname, options.errorEmailSender, options.errorEmailRecipient));
 
 		/* start a watcher. */
-		ChainWatcher chainWatcher = new ChainWatcher(engine, parameters.getChainDirectory());
+		ChainWatcher chainWatcher = new ChainWatcher(engine, options.chainDirectory);
 		chainWatcher.start();
 	}
 
-	private static Configuration loadConfiguration(String configurationFile) throws IOException {
-		try (FileInputStream configInputStream = new FileInputStream(configurationFile)) {
-			return Configuration.from(configInputStream);
-		}
-	}
-
-	private static EmailAction createErrorEmailAction(Configuration configuration) {
-		return new EmailAction(configuration.getSmtpHostname(), configuration.getErrorEmailSender(), configuration.getErrorEmailRecipient());
-	}
-
-	/**
-	 * Definition of the command-line parameters.
-	 *
-	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
-	 */
-	private static interface Parameters {
-
-		/**
-		 * Returns the directory to watch for chains.
-		 *
-		 * @return The chain directory
-		 */
-		@Option(defaultValue = "chains", longName = "chains", shortName = "c", description = "The directory to watch for chains")
-		String getChainDirectory();
-
-		/**
-		 * Returns the directory to store states in.
-		 *
-		 * @return The states directory
-		 */
-		@Option(defaultValue = "states", longName = "states", shortName = "s", description = "The directory to store states in")
-		String getStateDirectory();
-
-		@Option(defaultValue = "/etc/rhynodge/rhynodge.json", longName = "config", shortName = "C", description = "The name of the configuration file")
-		String getConfigurationFile();
-
+	private static EmailAction createErrorEmailAction(String smtpHostname, String errorEmailSender, String errorEmailRecipient) {
+		return new EmailAction(smtpHostname, errorEmailSender, errorEmailRecipient);
 	}
 
 }
