@@ -29,7 +29,7 @@ public class Parser {
 				String variableName = option.name();
 				Optional<String> value = environment.getValue(variableName);
 				if (option.required() && !value.isPresent()) {
-					throw new RequiredOptionIsMissing();
+					throw new RequiredOptionIsMissing(option.name());
 				}
 				field.setAccessible(true);
 				try {
@@ -46,6 +46,12 @@ public class Parser {
 		return new Parser(new SystemEnvironment());
 	}
 
-	public static class RequiredOptionIsMissing extends RuntimeException { }
+	public static class RequiredOptionIsMissing extends RuntimeException {
+
+		public RequiredOptionIsMissing(String message) {
+			super(message);
+		}
+
+	}
 
 }
