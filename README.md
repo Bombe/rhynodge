@@ -16,12 +16,15 @@ Rhynodge uses Maven as build and dependency management tool. Maven can also run 
 
 > $ mvn clean compile exec:java
 
-Rhynodge accepts the following command-line parameters:
+Rhynodge accepts the following options using environment variables:
 
-- ``--chains <directory>``, ``-c <directory>``: directory to load chain configurations from.
-- ``--states <directory>``, ``-s <directory>``: directory to store states in.
+- ``SMTP_HOSTNAME``: the hostname of the SMTP server, is used for error emails; default is “localhost”
+- ``ERROR_EMAIL_SENDER``: the email address to use as sender for error emails
+- ``ERROR_EMAIL_RECIPIENT``: the email address to send error emails to
+- ``CHAIN_DIRECTORY``: directory to load chain configurations from; default is “chains”
+- ``STATE_DIRECTORY``: directory to store states in; default is “states”
 
-Both directories need to be created before running Rhynodge.
+Both chain and state directories need to be created before running Rhynodge.
 
 Rhynodge also periodically scans the chains directory to find changed or new chain configuration files. New files will be added to the running instance, changed files will be reloaded, and removing files will remove the corresponding job from Rhynodge.
 
