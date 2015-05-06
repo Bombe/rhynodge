@@ -1,2 +1,9 @@
+# gradle directories
+.gradle/
+build/
+
+# IDEA directories
+out/
+
 /chains/
 /states/
