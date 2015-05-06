@@ -46,6 +46,13 @@ public class ParserTest {
 		requiredTestOptions.getOptionOne();
 	}
 
+	@Test
+	public void parserSetsDefaultValueIfValueIsMissing() {
+	    Mockito.when(environment.getValue("foo")).thenReturn(Optional.empty());
+		DefaultTestOptions options = parser.parseEnvironment(DefaultTestOptions::new);
+		MatcherAssert.assertThat(options.optionOne, Matchers.is("something"));
+	}
+
 	/**
 	 * Test class with options used by {@link Parser}.
 	 *
@@ -106,6 +113,18 @@ public class ParserTest {
 		public String getOptionOne() {
 			return optionOne;
 		}
+
+	}
+
+	/**
+	 * Test class with options used by {@link Parser}.
+	 *
+	 * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
+	 */
+	private static class DefaultTestOptions {
+
+		@Option(name = "foo", defaultValue = "something")
+		public final String optionOne = null;
 
 	}
 

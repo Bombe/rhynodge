@@ -33,7 +33,7 @@ public class Parser {
 				}
 				field.setAccessible(true);
 				try {
-					field.set(optionsObject, value.orElse(null));
+					field.set(optionsObject, value.orElse(option.defaultValue()));
 				} catch (IllegalAccessException iae1) {
 					/* swallow. */
 				}

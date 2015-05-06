@@ -9,8 +9,8 @@ import net.pterodactylus.util.envopt.Option;
  */
 public class Options {
 
-	@Option(name = "SMTP_HOSTNAME")
-	public final String smtpHostname = "localhost";
+	@Option(name = "SMTP_HOSTNAME", defaultValue = "localhost")
+	public final String smtpHostname = null;
 
 	@Option(name = "ERROR_EMAIL_SENDER", required = true)
 	public final String errorEmailSender = null;
@@ -18,10 +18,10 @@ public class Options {
 	@Option(name = "ERROR_EMAIL_RECIPIENT", required = true)
 	public final String errorEmailRecipient = null;
 
-	@Option(name = "STATE_DIRECTORY")
-	public final String stateDirectory = "states";
+	@Option(name = "STATE_DIRECTORY", defaultValue = "states")
+	public final String stateDirectory = null;
 
-	@Option(name = "CHAIN_DIRECTORY")
-	public final String chainDirectory = "chains";
+	@Option(name = "CHAIN_DIRECTORY", defaultValue = "chains")
+	public final String chainDirectory = null;
 
 }

@@ -17,5 +17,6 @@ public @interface Option {
 
 	String name();
 	boolean required() default false;
+	String defaultValue() default "";
 
 }
