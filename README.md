@@ -12,9 +12,9 @@ Rhynodge’s configuration uses JSON files (I tried using XML first but apparent
 
 ## Running Rhynodge
 
-Rhynodge uses Maven as build and dependency management tool. Maven can also run Rhynodge:
+Rhynodge uses Gradle as build and dependency management tool. After creating a “fat jar” (a JAR file containing all required dependencies), simply run the jar file with
 
-> $ mvn clean compile exec:java
+> $ java -jar build/libs/rhynodge-all-*.jar
 
 Rhynodge accepts the following options using environment variables:
 
