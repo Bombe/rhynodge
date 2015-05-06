@@ -37,6 +37,7 @@ import net.pterodactylus.rhynodge.output.Output;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.sun.mail.smtp.SMTPTransport;
+import org.apache.log4j.Logger;
 
 /**
  * {@link Action} implementation that sends an email containing the triggering
@@ -45,6 +46,8 @@ import com.sun.mail.smtp.SMTPTransport;
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class EmailAction implements Action {
+
+	private static final Logger logger = Logger.getLogger(EmailAction.class);
 
 	/** The email address of the sender. */
 	private final String sender;
@@ -110,7 +113,7 @@ public class EmailAction implements Action {
 			}
 			transport.sendMessage(message, message.getAllRecipients());
 		} catch (MessagingException me1) {
-			/* swallow. */
+			logger.error("Could not send email!", me1);
 		}
 	}
 
