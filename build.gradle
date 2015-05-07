@@ -14,6 +14,15 @@ version = "0.1"
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: "org.ajoberstar", name: "gradle-git", version: "1.1.0"
+    }
+}
+
 repositories {
 	mavenCentral()
 }
@@ -44,6 +53,26 @@ task fatJar(type: Jar) {
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 	with jar
 	dependsOn test
+}
+
+task createVersion() {
+    sourceSets {
+        generated {
+            resources {
+                srcDir "src/generated/resources"
+            }
+        }
+    }
+    processResources.dependsOn(createVersion)
+}
+
+
+import org.ajoberstar.grgit.Grgit
+createVersion << {
+    def gitRepo = Grgit.open(".")
+    version = gitRepo.describe()
+    new File("src/generated/resources").mkdirs()
+    new File("src/generated/resources/version.txt").withWriter() { it.write(version) }
 }
 
 /* vim: set ts=4 sw=4 et: */
