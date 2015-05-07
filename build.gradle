@@ -45,3 +45,5 @@ task fatJar(type: Jar) {
 	with jar
 	dependsOn test
 }
+
+/* vim: set ts=4 sw=4 et: */
