@@ -52,6 +52,7 @@ task fatJar(type: Jar) {
 		)
 	}
 	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	from { sourceSets.generated.resources.srcDirs }
 	with jar
 	dependsOn test
 }
