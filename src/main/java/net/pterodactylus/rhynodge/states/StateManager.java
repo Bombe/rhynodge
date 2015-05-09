@@ -24,6 +24,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import net.pterodactylus.rhynodge.State;
 
 import org.apache.log4j.Logger;
@@ -38,6 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
+@Singleton
 public class StateManager {
 
 	/** The logger. */
@@ -55,8 +59,9 @@ public class StateManager {
 	 * @param directory
 	 *            The directory to store states in
 	 */
-	public StateManager(String directory) {
-		this.directory = directory;
+	@Inject
+	public StateManager(Directory directory) {
+		this.directory = directory.getDirectory();
 	}
 
 	//
@@ -157,6 +162,24 @@ public class StateManager {
 			logger.info(String.format("State for Reaction “%s” could not be found.", reactionName));
 		}
 		return empty();
+	}
+
+	public static class Directory {
+
+		private final String directory;
+
+		private Directory(String directory) {
+			this.directory = directory;
+		}
+
+		public String getDirectory() {
+			return directory;
+		}
+
+		public static Directory of(String directory) {
+			return new Directory(directory);
+		}
+
 	}
 
 }

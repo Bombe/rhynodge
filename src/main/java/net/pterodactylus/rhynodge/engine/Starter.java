@@ -22,6 +22,7 @@ import java.io.IOException;
 import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.loader.ChainWatcher;
 import net.pterodactylus.rhynodge.states.StateManager;
+import net.pterodactylus.rhynodge.states.StateManager.Directory;
 import net.pterodactylus.util.envopt.Parser;
 
 /**
@@ -42,7 +43,7 @@ public class Starter {
 		Options options = Parser.fromSystemEnvironment().parseEnvironment(Options::new);
 
 		/* create the state manager. */
-		StateManager stateManager = new StateManager(options.stateDirectory);
+		StateManager stateManager = new StateManager(Directory.of(options.stateDirectory));
 
 		/* create the engine. */
 		Engine engine = new Engine(stateManager, createErrorEmailAction(options.smtpHostname, options.errorEmailSender, options.errorEmailRecipient));

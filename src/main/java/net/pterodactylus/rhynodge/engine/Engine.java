@@ -28,6 +28,9 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.states.StateManager;
@@ -37,6 +40,7 @@ import net.pterodactylus.rhynodge.states.StateManager;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
+@Singleton
 public class Engine {
 
 	private final StateManager stateManager;
@@ -44,6 +48,7 @@ public class Engine {
 	private final Map<String, Future<?>> scheduledFutures = new ConcurrentHashMap<>();
 	private final EmailAction errorEmailAction;
 
+	@Inject
 	public Engine(StateManager stateManager, EmailAction errorEmailAction) {
 		this.stateManager = stateManager;
 		this.errorEmailAction = errorEmailAction;
