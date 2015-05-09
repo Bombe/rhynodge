@@ -18,12 +18,17 @@
 package net.pterodactylus.rhynodge.engine;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import net.pterodactylus.rhynodge.actions.EmailAction;
 import net.pterodactylus.rhynodge.loader.ChainWatcher;
-import net.pterodactylus.rhynodge.states.StateManager;
-import net.pterodactylus.rhynodge.states.StateManager.Directory;
+import net.pterodactylus.rhynodge.loader.ChainWatcher.ChainDirectory;
+import net.pterodactylus.rhynodge.states.StateManager.StateDirectory;
 import net.pterodactylus.util.envopt.Parser;
+import net.pterodactylus.util.inject.ObjectBinding;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Rhynodge main starter class.
@@ -39,17 +44,18 @@ public class Starter {
 	 *            Command-line arguments
 	 */
 	public static void main(String... arguments) throws IOException {
-
 		Options options = Parser.fromSystemEnvironment().parseEnvironment(Options::new);
+		EmailAction errorEmailAction =
+				createErrorEmailAction(options.smtpHostname, options.errorEmailSender, options.errorEmailRecipient);
 
-		/* create the state manager. */
-		StateManager stateManager = new StateManager(Directory.of(options.stateDirectory));
-
-		/* create the engine. */
-		Engine engine = new Engine(stateManager, createErrorEmailAction(options.smtpHostname, options.errorEmailSender, options.errorEmailRecipient));
+		Injector injector = Guice.createInjector(Arrays.asList(
+				ObjectBinding.forClass(StateDirectory.class).is(StateDirectory.of(options.stateDirectory)),
+				ObjectBinding.forClass(ChainDirectory.class).is(ChainDirectory.of(options.chainDirectory)),
+				ObjectBinding.forClass(EmailAction.class).is(errorEmailAction)
+		));
 
 		/* start a watcher. */
-		ChainWatcher chainWatcher = new ChainWatcher(engine, options.chainDirectory);
+		ChainWatcher chainWatcher = injector.getInstance(ChainWatcher.class);
 		chainWatcher.start();
 	}
 

@@ -56,12 +56,12 @@ public class StateManager {
 	/**
 	 * Creates a new state manager. The given directory is assumed to exist.
 	 *
-	 * @param directory
+	 * @param stateDirectory
 	 *            The directory to store states in
 	 */
 	@Inject
-	public StateManager(Directory directory) {
-		this.directory = directory.getDirectory();
+	public StateManager(StateDirectory stateDirectory) {
+		this.directory = stateDirectory.getDirectory();
 	}
 
 	//
@@ -164,11 +164,11 @@ public class StateManager {
 		return empty();
 	}
 
-	public static class Directory {
+	public static class StateDirectory {
 
 		private final String directory;
 
-		private Directory(String directory) {
+		private StateDirectory(String directory) {
 			this.directory = directory;
 		}
 
@@ -176,8 +176,8 @@ public class StateManager {
 			return directory;
 		}
 
-		public static Directory of(String directory) {
-			return new Directory(directory);
+		public static StateDirectory of(String directory) {
+			return new StateDirectory(directory);
 		}
 
 	}

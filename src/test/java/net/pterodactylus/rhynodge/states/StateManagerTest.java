@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 import net.pterodactylus.rhynodge.State;
-import net.pterodactylus.rhynodge.states.StateManager.Directory;
+import net.pterodactylus.rhynodge.states.StateManager.StateDirectory;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.io.Files;
@@ -42,7 +42,7 @@ public class StateManagerTest {
 	public StateManagerTest() throws IOException {
 		tempFolder.create();
 		statePath = tempFolder.newFolder();
-		stateManager = new StateManager(Directory.of(statePath.getPath()));
+		stateManager = new StateManager(StateDirectory.of(statePath.getPath()));
 	}
 
 	@Test

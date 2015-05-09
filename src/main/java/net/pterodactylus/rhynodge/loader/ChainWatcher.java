@@ -27,6 +27,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.engine.Engine;
 import net.pterodactylus.rhynodge.loader.Chain.Parameter;
@@ -48,6 +51,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
+@Singleton
 public class ChainWatcher extends AbstractExecutionThreadService {
 
 	/** The logger. */
@@ -73,9 +77,10 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 	 * @param directory
 	 *            The directory to watch
 	 */
-	public ChainWatcher(Engine engine, String directory) {
+	@Inject
+	public ChainWatcher(Engine engine, ChainDirectory directory) {
 		this.engine = engine;
-		this.directory = directory;
+		this.directory = directory.getDirectory();
 	}
 
 	//
@@ -233,6 +238,24 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 	 */
 	private static String getReactionName(String filename) {
 		return (filename.lastIndexOf(".") > -1) ? filename.substring(0, filename.lastIndexOf(".")) : filename;
+	}
+
+	public static class ChainDirectory {
+
+		private final String directory;
+
+		private ChainDirectory(String directory) {
+			this.directory = directory;
+		}
+
+		public String getDirectory() {
+			return directory;
+		}
+
+		public static ChainDirectory of(String directory) {
+			return new ChainDirectory(directory);
+		}
+
 	}
 
 }
