@@ -77,8 +77,8 @@ public class ReactionRunner implements Runnable {
 
 	private Output createErrorOutput(Reaction reaction, State state) {
 		DefaultOutput output = new DefaultOutput(String.format("Error while processing “%s!”", reaction.name()));
-		output.addText("text/plain; charset=utf-8", createErrorEmailText(reaction, state));
-		output.addText("text/html; charset=utf-8", createErrorEmailText(reaction, state));
+		output.addText("text/plain", createErrorEmailText(reaction, state));
+		output.addText("text/html", createErrorEmailText(reaction, state));
 		return output;
 	}
 
@@ -133,7 +133,7 @@ public class ReactionRunner implements Runnable {
 
 	private Output createEmptyStateOutput(Reaction reaction, State state) {
 		DefaultOutput defaultOutput = new DefaultOutput(String.format("Reached Empty State for “%s!”", reaction.name()));
-		defaultOutput.addText("text/plain; charset=utf-8", String.format("The %s for %s was empty.", state.getClass().getSimpleName(), reaction.name()));
+		defaultOutput.addText("text/plain", String.format("The %s for %s was empty.", state.getClass().getSimpleName(), reaction.name()));
 		return defaultOutput;
 	}
 
