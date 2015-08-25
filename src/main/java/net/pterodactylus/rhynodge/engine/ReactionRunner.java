@@ -78,6 +78,7 @@ public class ReactionRunner implements Runnable {
 	private Output createErrorOutput(Reaction reaction, State state) {
 		DefaultOutput output = new DefaultOutput(String.format("Error while processing “%s!”", reaction.name()));
 		output.addText("text/plain; charset=utf-8", createErrorEmailText(reaction, state));
+		output.addText("text/html; charset=utf-8", createErrorEmailText(reaction, state));
 		return output;
 	}
 
