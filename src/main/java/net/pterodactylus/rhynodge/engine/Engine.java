@@ -52,7 +52,7 @@ public class Engine {
 	public Engine(StateManager stateManager, EmailAction errorEmailAction) {
 		this.stateManager = stateManager;
 		this.errorEmailAction = errorEmailAction;
-		executorService = new ScheduledThreadPoolExecutor(10);
+		executorService = new ScheduledThreadPoolExecutor(1);
 	}
 
 	//
