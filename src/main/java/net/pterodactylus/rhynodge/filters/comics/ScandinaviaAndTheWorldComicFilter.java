@@ -22,6 +22,7 @@ import com.google.common.base.Optional;
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.List;
 
@@ -39,19 +40,18 @@ public class ScandinaviaAndTheWorldComicFilter extends ComicSiteFilter {
 	// COMICSITEFILTER METHODS
 	//
 
+	private Elements findImageElements(Document document) {
+		return document.select("img[itemprop=image]");
+	}
+
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return Optional.of(document.select(".comicmid img").attr("title"));
+		return Optional.of(findImageElements(document).attr("title"));
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		return from(document.select(".comicmid img")).transform(new Function<Element, String>() {
-			@Override
-			public String apply(Element element) {
-				return element.attr("src");
-			}
-		}).toList();
+		return from(findImageElements(document)).transform(element -> element.attr("src")).toList();
 	}
 
 	@Override

@@ -1,0 +1,835 @@
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/Product">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>The whale in the room - Scandinavia and the World</title>
+	<meta name="DESCRIPTION" content="Webcomic: I was talking with a woman from the Netherlands and somehow we ended up talking about how our countries treat stranded marine life" />
+
+	<!-- Schema.org markup for Google+ -->
+	<meta itemprop="name" content="The whale in the room - Scandinavia and the World">
+	<meta itemprop="description" content="Webcomic: I was talking with a woman from the Netherlands and somehow we ended up talking about how our countries treat stranded marine life">
+	<meta itemprop="image" content="http://satwcomic.com/art/300_thumb/the-whale-in-the-room.png">
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="product">
+	<meta name="twitter:site" content="@satwcomic">
+	<meta name="twitter:title" content="The whale in the room - Scandinavia and the World">
+	<meta name="twitter:description" content="Webcomic: I was talking with a woman from the Netherlands and somehow we ended up talking about how our countries treat stranded marine life">
+	<meta name="twitter:creator" content="@satwcomic">
+	<meta name="twitter:image" content="http://satwcomic.com/art/300_thumb/the-whale-in-the-room.png">
+	<meta name="twitter:data1" content="Comic">
+	<meta name="twitter:label1" content="The whale in the room">
+	<meta name="twitter:data2" content=":)">
+	<meta name="twitter:label2" content=":D">
+
+	<!-- Open Graph data -->
+	<meta property="og:title" content="The whale in the room - Scandinavia and the World" />
+	<meta property="og:type" content="website" />
+	<meta property="og:url" content="http://satwcomic.com/the-whale-in-the-room" />
+	<meta property="og:image" content="http://satwcomic.com/art/300_thumb/the-whale-in-the-room.png" />
+	<meta property="og:description" content="Webcomic: I was talking with a woman from the Netherlands and somehow we ended up talking about how our countries treat stranded marine life" />
+	<meta property="og:site_name" content="Scandinavia and the World" />
+	<meta property="fb:app_id" content="992325017452040" />
+	<meta property="og:image:width" content="300" />
+	<meta property="og:image:height" content="300" />
+
+	<script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Organization",
+      "url": "http://satwcomic.com",
+      "logo": "http://satwcomic.com/img_satwcomic/schema.png"
+    }
+    </script>
+
+	<meta name="KEYWORDS" content="webcomic,comic" />
+	<meta name="robots" content="index, follow" />
+
+	<link rel="icon" type="image/ico" href="http://satwcomic.com/favicon.ico" />
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="http://feeds.feedburner.com/satwcomic" />
+
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+					(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+				m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+		ga('create', 'UA-93915-32', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+
+
+	<link href="http://satwcomic.com/satwcomic_3_bootstrap.min.css" rel="stylesheet">
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="http://satwcomic.com/satwcomic_3_style.css" type="text/css" />
+	<link rel="stylesheet" href="http://satwcomic.com/bootcore_4.css" type="text/css">
+
+
+
+	<script type="text/javascript" language="JavaScript">
+		function moveCaretToEnd(el) {
+			if (typeof el.selectionStart == "number") {
+				el.selectionStart = el.selectionEnd = el.value.length;
+			} else if (typeof el.createTextRange != "undefined") {
+				el.focus();
+				var range = el.createTextRange();
+				range.collapse(false);
+				range.select();
+			}
+		}
+
+		function reply_click(clicked_id) {
+			var textBoxValue = clicked_id;
+			document.forms['commentform'].elements['comt'].value = document.forms['commentform'].elements['comt'].value + '@' + textBoxValue + ' ';
+
+			var text_input = document.forms['commentform'].elements['comt'];
+			text_input.focus ();
+
+			moveCaretToEnd(text_input);
+
+			// Work around Chrome's little problem
+			window.setTimeout(function() {
+				moveCaretToEnd(text_input);
+			}, 1);
+
+		}
+		function makeFrame(comment_id) {
+			document.getElementById(comment_id).innerHTML = comment_id + '<br /><iframe src="http://satwcomic.com/singlecomment.php?hash=' + comment_id + '" width="500" height="65" style="border: 1px solid grey;" marginheight="0" marginwidth="0" frameborder="0" scrolling="yes"></iframe><br />';
+		}
+
+		function reply_to_comment(clicked_id)
+		{
+			var COMMENT_ID_PREFIX = 'comid_';
+
+			var reply_comment_box = $('#reply_div');
+			$(reply_comment_box).find('span').text(clicked_id);
+			$(reply_comment_box).find('#parent_links').val(clicked_id);
+
+			var originalName = $('#' + COMMENT_ID_PREFIX + clicked_id).find('.getName').text();
+			$(reply_comment_box).find('textarea').val('@' + originalName + ' ');
+
+			$('#' + COMMENT_ID_PREFIX + clicked_id).append(reply_comment_box);
+			$('#reply_div').show(0);
+		}
+
+		if (typeof expandCommentsButton=='undefined')
+			var expandCommentsButton = 'show replies';
+
+		if (typeof collapseCommentsButton=='undefined')
+			var collapseCommentsButton = 'hide replies';
+
+		function expand_replies(clicked_id)
+		{
+			// FIRST UNCHECK THE EXPAND/COLLAPSE BOTH RADIO BUTTONS, BECAUSE SOMEONE HAS JUST CLICKED AN INDIVIDUAL
+			// EXPAND/CONTRACT BUTTON (THE + AND - ON EACH COMMENT).
+			console.log('Expand_replies for id: ' + clicked_id);
+			$('input[name=expand_comments]').removeAttr('checked');
+			var plusMinus = $('#' + clicked_id).find('.expand_replies').text();
+			console.log('Expand_replies plusMinus:' + plusMinus + '<--');
+			if (plusMinus == expandCommentsButton)
+			{
+				console.log('Expand_replies processing expand request for id:' + clicked_id + '<--');
+				$('#' + clicked_id).find('.expand_replies').text(collapseCommentsButton);
+				console.log('Expand_replies: switched button to contract');
+				var index = clicked_id.length + 1;
+				console.log('Expand_replies: about to loop, index: ' + index);
+				$('.commentall').each(function()
+				{
+					var replyId = $(this).attr('id');
+					console.log('Expand_replies: looping, replyId:' + replyId + '<--');
+					if ((clicked_id + '-') == replyId.substring(0, index))
+					{
+						console.log('Expand_replies: looping, found match: replyId.lastIndexOf dash is: ' + replyId.lastIndexOf('-') + ' index is: ' + index);
+						// THIS WILL SHOW THE REPLY AT THE NEXT HIGHEST LEVEL
+						if (replyId.lastIndexOf('-') <= index)
+						{
+							console.log('Expand_replies processing opening id:' + replyId + '<--');
+							$('#' + replyId).show(0).data('is_open', '1');
+						}
+						else
+						{
+							// THIS WILL SHOW THE REPLIES AT LOWER LEVELS, IF THEY WERE ALREADY OPENED AND LEFT OPEN
+							if ($('#' + replyId).data('is_open') == '1')
+								$('#' + replyId).show(0);
+						}
+					}
+				});
+			}
+			else if (plusMinus == collapseCommentsButton)
+			{
+				console.log('Expand_replies processing contract request for id:' + clicked_id + '<--');
+				$('#' + clicked_id).find('.expand_replies').text(expandCommentsButton);
+				var index = clicked_id.length + 1;
+				$('.commentall').each(function()
+				{
+					var replyId = $(this).attr('id');
+					if ((clicked_id + '-') == replyId.substring(0, index))
+					{
+						// THIS WILL HIDE ALL REPLIES THAT ARE AT A LOWER LEVEL.
+						// THE if PART WILL HIDE THE FIRST LEVEL
+						if (replyId.lastIndexOf('-') <= index)
+						{
+							$('#' + replyId).hide(0).data('is_open', '0');
+						}
+						else // THIS WILL HIDE ANYTHING LOWER THAN THE FIRST LEVEL, WHILE STILL SIGNALLING IF THEY WERE ALREADY OPENED
+							$('#' + replyId).hide(0);
+					}
+				});
+			}
+		}
+		function tally_vote(upDown, commentId)
+		{
+			console.log('vote for ' + upDown + ' from: ' + commentId);
+
+			$('#expand').find('#fieldToUpdate').val(upDown);
+			console.log('after first find/val');
+			$('#expand').find('#votingCommentId').val(commentId);
+			console.log('after second find/val');
+			// UPDATE THE COMMENTS TABLE WITH THE VOTE
+			$('#expand').submit();
+			console.log('after triggering submit');
+		}
+
+
+	</script>
+
+</head>
+<body>
+
+
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+	var js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return;
+	js = d.createElement(s); js.id = id;
+	js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.4&appId=129521600468289";
+	fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-4">
+			<center>
+				<a href="http://satwcomic.com/" title="Scandinavia and the World"><img src="http://satwcomic.com/img_satwcomic/denmarklogo7.png" width="340" style="max-width: 100%; height: auto; margin-top: 10px;" height="167" alt="Scandinavia and the World" title="Scandinavia and the World" /></a>
+			</center>
+		</div>
+		<div class="col-md-8">
+			<center><div style="width: 728px; max-width: 100%; overflow: hidden; text-align: center;  height: 117px; margin-bottom: 10px; z-index:-100;">
+				<small style="color: #b4b4b4; font-size: 12px;">advert</small><br />
+				<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fpi.js?z=296726&u=MepsuLtd&width=728&height=90"></script>
+			</div></center>
+			<div style="width: 100%; max-width: 728px; text-align: center;" class="hidden-xs">
+				<!--<a href="http://satwcomic.com/store/finland-pin"><img src="http://satwcomic.com/up1loader/finn-pin-tiny.png" width="38" style="max-width: 100%; height: auto; margin-top: 0;" height="50" alt="Finn Pin" title="New Finn Pin" /></a> &nbsp; -->
+				<a href="https://www.patreon.com/SatW" title="Support Scandinavia and the World" target="_blank"><img src="http://satwcomic.com/img_satwcomic/become-patron.png" width="260" style="max-width: 100%; height: auto; margin-top: 0;" height="50" alt="Patreon Logo" title="Support Scandinavia and the World via Patreon" /></a>
+				<!--<a href="https://www.patreon.com/creation?hid=2308571" title="Map of Europe" target="_blank"><img src="http://satwcomic.com/up1loader/micro-map.png" width="63" style="max-width: 100%; height: auto; margin-top: 0;" height="50" alt="Patreon Logo" title="Patreon Map" /></a>-->
+			</div>
+		</div>
+	</div>
+
+	<nav class="navbar navbar-default">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="http://satwcomic.com/" class="pull-left"><img src="http://satwcomic.com/up1loader/satw-logo-smler.png" title="Home" style="width:100%; height: auto; margin-top: -1px;"></a>
+			</div>
+			<div class="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style="height: 1px;">
+				<ul class="nav navbar-nav">
+					<li><a href="http://satwcomic.com/the-world"><span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Comics</a></li>
+					<li><a href="http://satwcomic.com/animations"><span class="glyphicon glyphicon-film" aria-hidden="true"></span> Animation</a></li>
+					<!--<li><a href="http://satwcomic.com/store"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Store</a></li>-->
+					<li><a href="http://satwcomic.com/wiki"><span class="glyphicon glyphicon-book" aria-hidden="true"></span> Wiki</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Support Us<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="https://www.patreon.com/SatW" target="_blank">Via Patreon</a></li>
+							<li><a href="http://satwcomic.com/donate">Via PayPal</a></li>
+							<!--<li><a href="http://satwcomic.com/store"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Via our Store</a></li>-->
+							<li><a href="http://satwcomic.com/gold-supporter">Gold Membership Info</a></li>
+							<li><a href="http://satwcomic.com/custom-portraits"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Custom Portraits</a></li>
+							<li><a href="http://satwcomic.com/rewards"><span class="glyphicon glyphicon-star" aria-hidden="true"></span> Rewards</a></li>
+						</ul>
+					</li>
+					<li><a href="http://satwcomic.com/forums"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> Forum</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> You<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="http://satwcomic.com/login" rel="nofollow">Sign In</a></li>
+							<li><a href="http://satwcomic.com/join" rel="nofollow">Create Account</a></li>
+						</ul>
+					</li>
+
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span> Follow Us<span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="http://www.facebook.com/SatWcomic" rel="nofollow" target="_blank" title="Facebook Updates"><img src="http://satwcomic.com/imgs/facebook_16.png" width="16" height="16" alt="" /> Facebook</a></a></li>
+							<li><a href="http://twitter.com/satwcomic" rel="nofollow" target="_blank" title="Twitter, links to the latest comics"><img src="http://satwcomic.com/imgs/twitter3_16.png" width="16" height="16" alt="" /> Twitter</a></a></li>
+							<li><a href="http://satw.us/" rel="nofollow" target="_blank" title="Tumblr"><img src="http://satwcomic.com/imgs/tumblr_16.png" width="16" height="16" alt="" /> Tumblr</a></a></li>
+							<li><a href="https://www.youtube.com/user/SatWcomic" rel="nofollow" target="_blank" title="YouTube"><img src="http://satwcomic.com/imgs/youtube_16.png" width="16" height="16" alt="" /> YouTube</a></a></li>
+							<li><a href="http://www.reddit.com/r/SatWcomic" rel="nofollow" target="_blank" title="Reddit"><img src="http://satwcomic.com/imgs/reddit_16.png" width="16" height="16" alt="" /> Reddit</a></a></li>
+							<li><a href="https://plus.google.com/+scandinaviaandtheworld/" rel="nofollow" target="_blank" title="Google+"><img src="http://satwcomic.com/imgs/gplus_16.png" width="16" height="16" alt="" /> Google+</a></a></li>
+							<li><a href="http://feeds.feedburner.com/satwcomic" rel="nofollow" target="_blank" title="RSS Feed"><img src="http://satwcomic.com/imgs/rss_16.png" width="16" height="16" alt="" /> RSS</a></a></li>
+							<li><a href="http://tapastic.com/series/Scandinavia-and-the-World" rel="nofollow" target="_blank" title="Tapastic"><img src="http://satwcomic.com/imgs/tap_16.png" width="16" height="16" alt="" /> Tapastic</a></a></li>
+							<li><a href="http://imgur.com/user/SatWcomic/submitted" rel="nofollow" target="_blank" title="Imgur"><img src="http://satwcomic.com/imgs/imgur_16.png" width="16" height="16" alt="" /> Imgur</a></a></li>
+						</ul>
+					</li>
+				</ul>
+				<!--<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://satwcomic.com/search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a></li>
+				  </ul>-->
+			</div>
+		</div>
+	</nav>
+
+
+
+
+	<div class="btn-group btn-group-justified">
+		<a href="http://satwcomic.com/sweden-denmark-and-norway" class="btn btn-default bred" title="Scandinavia and the World from the beginning"><span
+				class="glyphicon glyphicon-fast-backward"></span></a>
+		<a href="http://satwcomic.com/banana-republic" title="Banana Republic (alt+p)" accesskey="p" class="btn btn-default bred"><span
+				class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>
+		<a href="http://satwcomic.com/family-photo" class="btn btn-default bred" title="Random Comic"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
+
+
+	</div>
+	<center><a href="http://satwcomic.com/banana-republic"><img src="http://satwcomic.com/art/the-whale-in-the-room.png" width="600" itemprop="image" title="The whale in the room"
+																height="1182" alt="The whale in the room satwcomic.com" style="max-width: 100%; height: auto; margin: 3px;" /></a></center>
+	<div class="row">
+		<div class="col-md-9">
+			<h1 itemprop="headline">The whale in the room</h1>
+			<hr />
+			<span itemprop="articleBody">I was talking with a woman from the Netherlands and somehow we ended up talking about how our countries treat stranded marine life. Of course the Netherlands have regular beaches where whales can get stranded, but the first thing that popped into my head were whales flopping over the sides of Netherlands&#039; dams.</span><br />
+			<br />
+
+			<small> 25th August 2015  </small>
+			<div class="btn-group btn-group-justified">
+				<a href="http://satwcomic.com/sweden-denmark-and-norway" class="btn btn-default bred" title="Scandinavia and the World from the beginning"><span
+						class="glyphicon glyphicon-fast-backward"></span></a>
+				<a href="http://satwcomic.com/banana-republic" title="Banana Republic (alt+p)" accesskey="p" class="btn btn-default bred"><span
+						class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>
+				<a href="http://satwcomic.com/family-photo" class="btn btn-default bred" title="Random Comic"><span class="glyphicon glyphicon-random" aria-hidden="true"></span></a>
+
+
+			</div>
+			<br /><center> <small>Tagged in</small>  <a href="http://satwcomic.com/the-world/Whale" class="btn btn-default btn-sm">Whale</a>  <a href="http://satwcomic.com/the-world/Netherlands" class="btn btn-default btn-sm">Netherlands</a>  <a href="http://satwcomic.com/the-world/denmark" class="btn btn-default btn-sm">Denmark</a> </center>
+		</div>
+		<div class="col-md-3">
+			<br />
+			<a href="https://www.patreon.com/SatW">Please support SatW via <b style="color: #e6461a;"><img src="http://satwcomic.com/imgs/patreon2_16.png" width="16" height="16" /> Patreon</b></a><br />
+			<br />
+
+
+
+			<small>Share Scandinavia and the World:</small><br />
+			<br />
+			<iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Fsatwcomic.com%2Fthe-whale-in-the-room&amp;send=false&amp;layout=button_count&amp;width=450&amp;show_faces=false&amp;font=tahoma&amp;colorscheme=light&amp;action=like&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:150px; height:21px;" allowTransparency="true"></iframe><br />
+			<br />
+			<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://satwcomic.com/the-whale-in-the-room" data-text="The whale in the room" data-via="satwcomic">Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script><br />
+
+			<br />
+			<div style="width: 185px;">
+				<center>
+					<span style="font-family: tahoma,verdana,arial,sans-serif; font-size: 11px;">Latest comic in your News Feed:</span><br />
+					<div class="fb-page" data-href="https://www.facebook.com/SatWcomic" data-width="185" data-height="70" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="false" data-show-posts="false"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/SatWcomic"><a href="https://www.facebook.com/SatWcomic">Scandinavia and the World</a></blockquote></div></div>
+				</center>
+			</div>
+
+		</div>
+	</div>
+	<br />
+	<div class="row">
+
+		<div class="col-sm-4">
+			<center><div style="width: 300px; max-width: 100%; overflow: hidden; text-align: center;  height: 272px; margin-bottom: 10px; z-index:-100;">
+				<small style="color: #b4b4b4; font-size: 12px;">advert</small><br />
+				<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fpi.js?z=296724&u=MepsuLtd&width=300&height=250"></script>
+			</div></center>
+		</div>
+		<div class="col-sm-4">
+			<center><div style="width: 300px; max-width: 100%; overflow: hidden; text-align: center;  height: 272px; margin-bottom: 10px; z-index:-100;">
+				<small style="color: #b4b4b4; font-size: 12px;">advert</small><br />
+				<script type="text/javascript" src="http://ap.lijit.com/www/delivery/fpi.js?z=296724&u=MepsuLtd&width=300&height=250"></script>
+			</div></center>
+		</div>
+		<div class="col-sm-4">
+
+			<div class="well" style="max-width: 400px;">
+				<p class="text-success">We have an awesome newsletter with 2,971 subscribers!</p>
+				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Latest comic news<br />
+				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> Merchandise news<br />
+				<span class="glyphicon glyphicon-fire" aria-hidden="true"></span> Iceland's Demon Cat<br />
+				<span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span> and more!<br />
+				<br />
+				<form method="post" action="http://satwcomic.com/newsletter/go" class="form-horizontal">
+					<input type="email" name="email" class="form-control input-lg" required placeholder="Email address"><br />
+					<button type="submit" class="btn btn-success" name="join">Subscribe</button> <img src="http://satwcomic.com/up1loader/cat-in-letter.png" width="60" height="67" alt="" title="Iceland's Cat" class="pull-right" /><br />
+				</form>
+			</div>
+
+		</div>
+	</div>
+	<div id="comments">&nbsp;</div>
+	57 Comments: <br /><div id="commentbox">&nbsp;</div>
+	<form action="http://satwcomic.com/the-whale-in-the-room" method="post" name="expand" id="expand">
+		<label for="expand_comments">expand all: </label>
+		<input type="radio" name="expand_comments" id="expand_comments" value="expand" >
+		<label for="collapse_comments">collapse all: </label>
+		<input type="radio" name="expand_comments" id="collapse_comments" value="collapse" >
+		<span style="font-weight: bold; margin-left: 15%;">sort by: </span>
+		<label for="sort_votes">votes</label>
+		<input type="radio" name="sort_order" value="votes_approval" id="sort_votes" checked onclick="this.form.submit()">
+		<label for="sort_date">date</label>
+		<input type="radio" name="sort_order" value="date" id="sort_date"  onclick="this.form.submit()">
+
+
+		<span style="font-weight: bold; margin-left: 3%;">direction: </span>
+		<label for="sort_asc">ascending</label>
+		<input type="radio" name="asc_desc" value="ASC"  id="sort_asc"  onclick="this.form.submit()">
+		<label for="sort_desc">descending</label>
+		<input type="radio" name="asc_desc" value="DESC" id="sort_desc"  onclick="this.form.submit()">
+
+		<input type="hidden" id="fieldToUpdate" name="fieldToUpdate" value="">
+		<input type="hidden" id="votingCommentId" name="votingCommentId" value="">
+
+	</form>
+	<div class="commentall" id="comid_9400586" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/photondancer" rel="nofollow">photondancer</a></span><br />
+			<img src="http://satwcomic.com/imgs/stabby.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteO" title="O">O</span></a>   <br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">9 hours ago</small> <small>#9400586</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">6<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			I really love the fact that Denmark gave the whale his beer. He&#039;s such a softy :-)
+			<br /><br /><div class="expand_div"><span onclick="expand_replies('comid_9400586')" class="expand_replies fake_link btn btn-warning" onmouseover="this.style.textDecoration = 'underline'; this.style.cursor = 'pointer'" onmouseout="this.style.textDecoration = 'none'; this.style.cursor = 'inherit'">show replies</span></div>
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400586-9400642" data-is-open="0"  style="display: none; margin-left: 5%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/marcoreos" rel="nofollow">marcoreos</a></span><br />
+			<img src="http://satwcomic.com/imgs/ice-helo.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>15</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteF" title="F">F</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/United-States.png" width="16"
+																																																	  height="16" alt="" title="United-States" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">6 hours ago</small> <small>#9400642</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">0<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			@<a href="http://satwcomic.com/member/photondancer" rel="nofollow">photondancer</a> I think the whale took it when he turned away. No matter how sorry he feels, Denmark wouldn&#039;t just give away a beer like that...
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400660" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/ryttyr" rel="nofollow">ryttyr</a></span><br />
+			<img src="http://satwcomic.com/imgs/swe-pc.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>19</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Sweden.png" width="16"
+																																																	  height="16" alt="" title="Sweden" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">5 hours ago</small> <small>#9400660</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			He he. I like Denmark&#039;s way of hydrating the whale.<br />
+			<br />
+			BTW. Can we get an Iceland based comic soon? He is one of my favorite characters but he is not in the comic that often.
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400452" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/bubba" rel="nofollow">bubba</a></span><br />
+			<img src="http://satwcomic.com/imgs/sister-icespin.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>54</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteF" title="F">F</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Iceland.png" width="16"
+																																																	  height="16" alt="" title="Iceland" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">20 hours ago</small> <small>#9400452</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			Iceland would just have waited for the whale to die (or killed it) and ate the meat!<br />
+			<br />
+			Not really - the little dear would have been too sick to eat.
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400444" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/riani" rel="nofollow">riani</a></span><br />
+			<img src="http://satwcomic.com/imgs/dark-matter.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteF" title="F">F</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/United-States.png" width="16"
+																																											 height="16" alt="" title="United-States" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">21 hours ago</small> <small>#9400444</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			Of course Denmark gives the whale a beer.
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400443" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/gctwnl" rel="nofollow">gctwnl</a></span><br />
+			<img src="http://satwcomic.com/imgs/nether-wave.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Netherlands.png" width="16"
+																																											 height="16" alt="" title="Netherlands" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">21 hours ago</small> <small>#9400443</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			That whale drinking beer. Brilliant!<br />
+			<br />
+			Actually, much of The Netherlands is not below sea level but roughly &#039;at&#039; sea level and it would only flood during a high tide.<br />
+			<br />
+			Maybe a good one for another comic: one of the reasons The Netherlands is below sea level in many places is that we pumped the water out of the ground to make the swamps, that was there originally in many places, dry. As a result, the ground compacted and The Netherlands got lower and lower over the centuries. Then we had to build higher dikes to keep the sea out. Self-inflicted in part...<br />
+			<br />
+			Another thing we have done is pumped gas out of the North of the country (used to be the biggest gas reserve in the world) and as a result the ground is compacting there as well. That also results in earthquakes strong enough to damage buildings there.
+			<br /><br /><div class="expand_div"><span onclick="expand_replies('comid_9400443')" class="expand_replies fake_link btn btn-warning" onmouseover="this.style.textDecoration = 'underline'; this.style.cursor = 'pointer'" onmouseout="this.style.textDecoration = 'none'; this.style.cursor = 'inherit'">show replies</span></div>
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400443-9400487" data-is-open="0"  style="display: none; margin-left: 5%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/mathiasawk" rel="nofollow">mathiasawk</a></span><br />
+			<img src="http://satwcomic.com/imgs/denm-rock.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>21</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Denmark.png" width="16"
+																																																	  height="16" alt="" title="Denmark" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">19 hours ago</small> <small>#9400487</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">0<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			@<a href="http://satwcomic.com/member/gctwnl" rel="nofollow">gctwnl</a> Very interesting. I call myself a history nerd, but somehow I&#039;d convinced myself that a lot of the Netherlands had been created recently, as all I knew about the Netherlands&#039; geography was that it depended a whole lot on the integrity of dams and dikes. Shit, now that I&#039;m writing it out it seems a whole lot more na&iuml;ve than I thought it would..
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400443-9400493" data-is-open="0"  style="display: none; margin-left: 5%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/97gleeina" rel="nofollow">97gleeina</a></span><br />
+			<img src="http://satwcomic.com/imgs/jp-dn.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteO" title="O">O</span></a>   <br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">18 hours ago</small> <small>#9400493</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">0<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			@<a href="http://satwcomic.com/member/gctwnl" rel="nofollow">gctwnl</a>
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400443-9400603" data-is-open="0"  style="display: none; margin-left: 5%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/Asukotto" rel="nofollow">Asukotto</a></span><br />
+			<img src="http://satwcomic.com/imgs/bonwash.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>29</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Poland.png" width="16"
+																																																	  height="16" alt="" title="Poland" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">8 hours ago</small> <small>#9400603</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			@<a href="http://satwcomic.com/member/gctwnl" rel="nofollow">gctwnl</a> There is another reason why Netherlands sinking: During The Ice Age, the mass of ice that lied on scandinavia, it shifted The Netherlands up. Now Nordic coutries growing in high, while Netherlands and parts of Belgium and Germany are sinking. <br />
+			<br />
+			Don&#039;t blame me, blame geology ^^&#039;
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400423" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/Fundir" rel="nofollow">Fundir</a></span><br />
+			<img src="http://satwcomic.com/imgs/king-den.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>21</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Denmark.png" width="16"
+																																																	  height="16" alt="" title="Denmark" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">21 hours ago</small> <small>#9400423</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			Yay the whale hvalborg! &lt;3 (they got the name from a danish song)
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400419" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/Dutchbag" rel="nofollow">Dutchbag</a></span><br />
+			<img src="http://satwcomic.com/imgs/russia-laugh.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>18</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Netherlands.png" width="16"
+																																																	  height="16" alt="" title="Netherlands" /></a><br />
+			<a href="http://satwcomic.com/forums"><img src="http://satwcomic.com/imgs/moderator.png" width="81" height="13" alt="Moderator" title="Forum Moderator" /></a>
+			<img src="http://satwcomic.com/badges/sml_yearbook.png" title="Mepsu Yearbook 2015" />  <img src="http://satwcomic.com/badges/sml_oneyear.png" title="Old One" />   <img src="http://satwcomic.com/badges/sml_hudson.png" title="Bug Hunter" />    <img src="http://satwcomic.com/badges/sml_quite.png" title="Mepsu Yearbook Winner" />
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">21 hours ago</small> <small>#9400419</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">2<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			&gt;fuck my like<br />
+			<br />
+			Humon pls
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400669" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/kyrtuck" rel="nofollow">kyrtuck</a></span><br />
+			<img src="http://satwcomic.com/imgs/special-finland.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>24</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/United-States.png" width="16"
+																																																	  height="16" alt="" title="United-States" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">4 hours ago</small> <small>#9400669</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">1<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">1<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			No Netherlands, I don&#039;t wanna fuck your life, its not sexy enough.
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400600" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/senia5" rel="nofollow">senia5</a></span><br />
+			<img src="http://satwcomic.com/imgs/drunkden.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>18</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteF" title="F">F</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/Denmark.png" width="16"
+																																																	  height="16" alt="" title="Denmark" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">8 hours ago</small> <small>#9400600</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">1<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			I love how you called him Hvalborg. Nice touch. ;)
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="commentall" id="comid_9400569" data-is-open="1"  style="display: block; margin-left: 0%;">
+		<div class="commentleft">
+			<span style="font-weight: bold;"><a class="getName" href="http://satwcomic.com/member/Dorkymike" rel="nofollow">Dorkymike</a></span><br />
+			<img src="http://satwcomic.com/imgs/hummfin.jpg" width="70" height="100" alt="" style="margin-top:4px;" /><br />
+			<small><i>32</i></small> <a href="http://satwcomic.com/personal" rel="nofollow"><span class="spriteM" title="M">M</span></a>  <a href="http://satwcomic.com/personal" rel="nofollow"><img src="http://satwcomic.com/flags/United-States.png" width="16"
+																																																	  height="16" alt="" title="United-States" /></a><br />
+
+
+
+		</div>
+		<div class="commentright">
+			<small></small><small class="commentdata" title="Posted at Scandinavia and the World">12 hours ago</small> <small>#9400569</small> &nbsp;
+			&nbsp;  &nbsp;  &nbsp; <div class="label label-success">1<p class="vote_up glyphicon glyphicon-arrow-up" ></p></div><div class="label label-danger">0<p class="vote_down glyphicon glyphicon-arrow-down" ></p></div>  &nbsp; <br />
+			<br />
+			As long as they don&#039;t die on the beach and explode. That tends to be quite messy.
+
+
+		</div>
+		<hr class="magic" />
+		<br />
+	</div>
+
+	<br />
+
+	<div class="memberpls">
+		Add comment: Please <a href="http://satwcomic.com/login" rel="nofollow">Sign in</a> or <a href="http://satwcomic.com/join" rel="nofollow">create an accout</a> to comment.
+	</div>
+	<div class="stand_high" style="display: none;" id="reply_div">
+		<small>, reply to comment: <span id="reply_comment_id"></span></small>
+		<form method="post" action="http://satwcomic.com/the-whale-in-the-room" name="replycommentform" enctype="multipart/form-data" class="form-horizontal">
+			<textarea rows="5" style="width: 95%;" id="reply_comtbox" name="comt" required class="form-control"></textarea><br />
+			<button type="submit" name="addcomt" value="Reply to Comment" class="btn btn-primary">Reply</button>
+			<input type="text" name="name" value="" class="hidden" />
+			<input type="text" name="parent_links" value="" id="parent_links" class="hidden" />
+		</form>
+	</div>
+	<br />
+	<center><h3><a href="http://satwcomic.com/allcomments/the-whale-in-the-room" rel="nofollow">View all 57 comments</a></h3></center>
+
+	<br />
+
+	<br />
+	<footer>
+		<center>
+			<img src="http://satwcomic.com/imgs/lightfoot.png" width="555" height="136" style="max-width: 100%; height: auto;" alt="" /><br />
+			<br />
+			Copyright &copy; 2009-2015 Scandinavia and the World<br />
+			<br />
+
+			<div class="row">
+				<div class="col-md-3">
+					<div class="well">
+						<center>
+							<a href="http://satwcomic.com/"><img src="http://mepsu.com/img_mepsu/scarf-satw.png" width="200" class="img-rounded" style="max-width: 100%; height: auto;" height="200" alt="" title="" /><br />
+								Scandinavia and the World</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well">
+						<center>
+							<a href="http://rom.ac/"><img src="http://mepsu.com/img_mepsu/scarf-ra2.png" class="img-rounded" style="max-width: 100%; height: auto;" width="200" height="200" alt="" title="" /><br />
+								Romantically Apocalyptic</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well">
+						<center>
+							<a href="http://stupidfox.net/"><img src="http://mepsu.com/img_mepsu/scarf-sf.png" width="200" class="img-rounded" style="max-width: 100%; height: auto;" height="200" alt="" title="" /><br />
+								StupidFox</a>
+						</center>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="well">
+						<center>
+							<a href="http://humoncomics.com/"><img src="http://mepsu.com/img_mepsu/scarf-humon.png" width="200" class="img-rounded" style="max-width: 100%; height: auto;" height="200" alt="" title="" /><br />
+								Humon Comics</a>
+						</center>
+					</div>
+				</div>
+			</div>
+
+
+			<!--<a href="http://satwcomic.com/guest-strips" title="guest strips from fellow artists">Be a guest artist</a> | -->
+			<a href="mailto:contact@satwcomic.com" title="contact us">contact@satwcomic.com</a> |
+			<a href="http://satwcomic.com/advertise">Advertise</a> |
+			<a href="http://dayvi.com/" title="Coded by Dayvi">Coded by Dayvi</a> |
+			<a href="http://satwcomic.com/webcomics" rel="nofollow">Other Webcomics</a> |
+			<a href="http://satwcomic.com/privacy-policy" rel="nofollow">Privacy Policy</a>
+
+			<br />
+			<br />
+
+		</center>
+	</footer>
+
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="http://satwcomic.com/js/bootstrap.min.js"></script><script src="http://satwcomic.com/i_comments.js"></script>
+
+
+
+</body>
+</html>
