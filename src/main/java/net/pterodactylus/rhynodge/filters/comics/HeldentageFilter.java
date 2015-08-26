@@ -25,7 +25,7 @@ public class HeldentageFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		return document.select("#mod_heldentage a img").stream().map(element -> element.attr("src")).collect(toList());
+		return document.select("#mod_jheldentage_display_latest img").stream().map(element -> element.attr("src")).collect(toList());
 	}
 
 	@Override
