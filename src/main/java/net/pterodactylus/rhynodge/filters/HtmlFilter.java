@@ -25,6 +25,7 @@ import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.HttpState;
 
+import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -35,6 +36,8 @@ import org.jsoup.nodes.Document;
  */
 public class HtmlFilter implements Filter {
 
+	private static final Logger logger = Logger.getLogger(HtmlFilter.class);
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -44,6 +47,7 @@ public class HtmlFilter implements Filter {
 			return FailedState.from(state);
 		}
 		checkState(state instanceof HttpState, "state is not a HttpState but a %s", state.getClass().getName());
+		logger.trace(String.format("Got HTML: %s, %s", ((HttpState) state).contentType(), ((HttpState) state).content()));
 		Document document = Jsoup.parse(((HttpState) state).content(), ((HttpState) state).uri());
 		return new HtmlState(((HttpState) state).uri(), document);
 	}
