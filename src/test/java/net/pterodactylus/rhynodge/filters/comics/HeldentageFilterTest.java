@@ -24,7 +24,7 @@ public class HeldentageFilterTest {
 	private final Document document;
 
 	public HeldentageFilterTest() throws IOException {
-		document = loadDocument("/comics/heldentage.html", "http://www.der-flix.de/");
+		document = loadDocument("heldentage.html", "http://www.der-flix.de/");
 	}
 
 	private Document loadDocument(String resourceName, String baseUri) throws IOException {
@@ -40,7 +40,7 @@ public class HeldentageFilterTest {
 
 	@Test
 	public void comicUrlCanBeFound() {
-		assertThat(heldentageFilter.extractImageUrls(document), is(asList("/images/heldentage/Tag_908.jpg")));
+		assertThat(heldentageFilter.extractImageUrls(document), is(asList("/images/heldentage/Tag_916.jpg")));
 	}
 
 	@Test
