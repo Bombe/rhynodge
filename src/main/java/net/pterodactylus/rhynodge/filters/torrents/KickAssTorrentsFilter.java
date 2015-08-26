@@ -69,7 +69,7 @@ public class KickAssTorrentsFilter extends TorrentSiteFilter {
 	 */
 	@Override
 	protected String extractMagnetUri(Element dataRow) {
-		return dataRow.select("a.imagnet").attr("href");
+		return dataRow.select("a[title=Torrent magnet link]").attr("href");
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class KickAssTorrentsFilter extends TorrentSiteFilter {
 	 */
 	@Override
 	protected String extractDownloadUri(Element dataRow) {
-		return dataRow.select("a.idownload:not(.partner1Button)").attr("href");
+		return dataRow.select("a[title=Download torrent file]").attr("href");
 	}
 
 	/**
