@@ -25,7 +25,7 @@ public class KickAssTorrentsFilterTest {
 	private final Document document;
 
 	public KickAssTorrentsFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument(getClass(), "kickass-to-results.html", "https://kickass.to/");
+		document = ResourceLoader.loadDocument(getClass(), "kickass-to-results.html", "https://kat.cr/");
 	}
 
 	@Test

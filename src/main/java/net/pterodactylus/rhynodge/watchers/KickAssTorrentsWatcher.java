@@ -64,7 +64,7 @@ public class KickAssTorrentsWatcher extends DefaultWatcher {
 	 */
 	private static Query createHttpQuery(String searchTerms) {
 		try {
-			return new HttpQuery("https://kickass.to/usearch/" + URLEncoder.encode(searchTerms, "UTF-8") + "/?field=time_add&sorder=desc");
+			return new HttpQuery("https://kat.cr/usearch/" + URLEncoder.encode(searchTerms, "UTF-8") + "/?field=time_add&sorder=desc");
 		} catch (UnsupportedEncodingException uee1) {
 			/* will not happen. */
 			return null;
