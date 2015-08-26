@@ -1,6 +1,7 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
 import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toList;
 
@@ -20,7 +21,7 @@ public class HeldentageFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return absent();
+		return extractImageUrls(document).isEmpty() ? absent() : of("");
 	}
 
 	@Override
