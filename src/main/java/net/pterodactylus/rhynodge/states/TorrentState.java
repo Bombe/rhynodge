@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
@@ -271,11 +272,7 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		 */
 		private String generateId() {
 			if (magnetUri != null) {
-				String id = extractId(magnetUri);
-				if (id != null) {
-					return id;
-				}
-				return magnetUri;
+				return extractId(magnetUri).orElse(magnetUri);
 			}
 			return (downloadUri != null) ? downloadUri : name;
 		}
@@ -291,14 +288,17 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		 *            The magnet URI to extract the “xt” from
 		 * @return The extracted ID, or {@code null} if no ID could be found
 		 */
-		private static String extractId(String magnetUri) {
+		private static Optional<String> extractId(String magnetUri) {
+			if ((magnetUri == null) || (magnetUri.length() < 8)) {
+				return Optional.empty();
+			}
 			List<NameValuePair> parameters = URLEncodedUtils.parse(magnetUri.substring("magnet:?".length()), Charset.forName("UTF-8"));
 			for (NameValuePair parameter : parameters) {
 				if (parameter.getName().equals("xt")) {
-					return parameter.getValue().toLowerCase();
+					return Optional.of(parameter.getValue().toLowerCase());
 				}
 			}
-			return null;
+			return Optional.empty();
 		}
 
 		//
