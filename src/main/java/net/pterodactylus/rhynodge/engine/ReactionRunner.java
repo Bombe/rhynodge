@@ -119,9 +119,6 @@ public class ReactionRunner implements Runnable {
 				logger.debug(format("Filtering state through %s...", filter.getClass().getSimpleName()));
 				try {
 					currentState = filter.filter(currentState);
-					if (currentState.success() && currentState.isEmpty()) {
-						errorEmailAction.execute(createEmptyStateOutput(reaction, currentState));
-					}
 				} catch (Throwable t1) {
 					logger.warn(format("Error during filter %s for %s.", filter.getClass().getSimpleName(), reaction.name()), t1);
 					return new FailedState(t1);
@@ -129,12 +126,6 @@ public class ReactionRunner implements Runnable {
 			}
 		}
 		return currentState;
-	}
-
-	private Output createEmptyStateOutput(Reaction reaction, State state) {
-		DefaultOutput defaultOutput = new DefaultOutput(String.format("Reached Empty State for “%s!”", reaction.name()));
-		defaultOutput.addText("text/plain", String.format("The %s for %s was empty.", state.getClass().getSimpleName(), reaction.name()));
-		return defaultOutput;
 	}
 
 }
