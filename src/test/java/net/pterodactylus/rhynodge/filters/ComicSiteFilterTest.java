@@ -40,7 +40,7 @@ public class ComicSiteFilterTest {
 		State state = new HtmlState("http://foo/", null);
 		ComicSiteFilter comicSiteFilter = new TestComicSiteFilter(null, null, null);
 		State newState = comicSiteFilter.filter(state);
-		assertThat(newState instanceof ComicState, is(true));
+		assertThat(newState.success(), is(false));
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class ComicSiteFilterTest {
 		State state = new HtmlState("http://foo/", null);
 		ComicSiteFilter comicSiteFilter = new TestComicSiteFilter("Title", Collections.<String>emptyList(), null);
 		State newState = comicSiteFilter.filter(state);
-		assertThat(newState instanceof ComicState, is(true));
+		assertThat(newState.success(), is(false));
 	}
 
 	@Test
