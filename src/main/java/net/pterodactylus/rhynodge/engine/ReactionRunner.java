@@ -48,7 +48,7 @@ public class ReactionRunner implements Runnable {
 		State state = runQuery();
 		state = runStateThroughFilters(state);
 		if (!state.success()) {
-			logger.info(format("Reaction %s failed.", reaction.name()));
+			logger.info(format("Reaction %s failed in %s.", reaction.name(), state));
 			saveStateWithIncreasedFailCount(state);
 			errorEmailAction.execute(createErrorOutput(reaction, state));
 			return;
@@ -84,7 +84,7 @@ public class ReactionRunner implements Runnable {
 
 	private String createErrorEmailText(Reaction reaction, State state) {
 		StringBuilder emailText = new StringBuilder();
-		emailText.append(String.format("An error occured while processing “.”\n\n", reaction.name()));
+		emailText.append(String.format("An error occured while processing “%s.”\n\n", reaction.name()));
 		appendExceptionToEmailText(state.exception(), emailText);
 		return emailText.toString();
 	}
