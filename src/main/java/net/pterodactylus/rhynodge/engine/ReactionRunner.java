@@ -120,7 +120,7 @@ public class ReactionRunner implements Runnable {
 				try {
 					currentState = filter.filter(currentState);
 					if (currentState.success() && currentState.isEmpty()) {
-						errorEmailAction.execute(createEmptyStateOutput(reaction, state));
+						errorEmailAction.execute(createEmptyStateOutput(reaction, currentState));
 					}
 				} catch (Throwable t1) {
 					logger.warn(format("Error during filter %s for %s.", filter.getClass().getSimpleName(), reaction.name()), t1);
