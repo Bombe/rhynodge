@@ -17,16 +17,17 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
+
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.FluentIterable;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -38,23 +39,18 @@ public class GirlGeniusComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return Optional.of("");
+		return extractImageUrls(document).isEmpty() ? absent() : of("");
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageElements = document.select("#MainTable img[alt=Comic]");
-		return imageElements.hasAttr("src") ? FluentIterable.from(imageElements).transform(new Function<Element, String>() {
-
-			@Override
-			public String apply(Element imageElement) {
-				return imageElement.attr("src");
-			}
-		}).toList() : Collections.<String>emptyList();
+		Elements imageElements = document.select("#comicbody img[alt=Comic]");
+		return imageElements.stream().filter(e -> e.hasAttr("src")).map(e -> e.attr("src")).collect(Collectors.toList());
 	}
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
 		return Collections.emptyList();
 	}
+
 }
