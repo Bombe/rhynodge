@@ -38,6 +38,7 @@ import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import org.apache.log4j.Logger;
 
 /**
  * {@link Filter} implementation that extracts {@link Episode} information from
@@ -46,6 +47,8 @@ import com.google.common.collect.Multimap;
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
 public class EpisodeFilter implements Filter {
+
+	private static final Logger logger = Logger.getLogger(EpisodeFilter.class);
 
 	/** The pattern to parse episode information from the filename. */
 	private static final Collection<Pattern> episodePatterns = asList(Pattern.compile("[Ss](\\d{2})[Ee](\\d{2})"), Pattern.compile("[^\\d](\\d{1,2})x(\\d{2})[^\\d]"));
@@ -111,6 +114,7 @@ public class EpisodeFilter implements Filter {
 	 *         no episode information could be found
 	 */
 	private static Optional<Episode> extractEpisode(TorrentFile torrentFile) {
+		logger.debug(String.format("Extracting episode from %s...", torrentFile));
 		for (Pattern episodePattern : episodePatterns) {
 			Matcher matcher = episodePattern.matcher(torrentFile.name());
 			if (!matcher.find() || matcher.groupCount() < 2) {
@@ -118,6 +122,7 @@ public class EpisodeFilter implements Filter {
 			}
 			String seasonString = matcher.group(1);
 			String episodeString = matcher.group(2);
+			logger.debug(String.format("Parsing %s and %s as season and episode...", seasonString, episodeString));
 			int season = Integer.valueOf(seasonString);
 			int episode = Integer.valueOf(episodeString);
 			return Optional.of(new Episode(season, episode));
