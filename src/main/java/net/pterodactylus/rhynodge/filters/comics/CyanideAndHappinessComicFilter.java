@@ -17,6 +17,9 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
+import static com.google.common.base.Optional.absent;
+import static com.google.common.base.Optional.of;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -42,7 +45,7 @@ public class CyanideAndHappinessComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return Optional.absent();
+		return extractImageUrls(document).isEmpty() ? absent() : of("");
 	}
 
 	@Override

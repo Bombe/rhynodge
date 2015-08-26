@@ -1,12 +1,14 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+
 import java.io.IOException;
 
 import net.pterodactylus.rhynodge.filters.ResourceLoader;
+import net.pterodactylus.rhynodge.states.ComicState;
+import net.pterodactylus.rhynodge.states.HtmlState;
 
-import com.google.common.base.Optional;
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
@@ -19,24 +21,21 @@ public class CyanideAndHappinessComicFilterTest {
 
 	private final CyanideAndHappinessComicFilter comicSiteFilter = new CyanideAndHappinessComicFilter();
 	private final Document document;
+	private final HtmlState htmlState;
 
 	public CyanideAndHappinessComicFilterTest() throws IOException {
 		document = ResourceLoader.loadDocument(getClass(), "cyanide-and-happiness.html", "http://www.explosm.net/comics/new/");
+		htmlState = new HtmlState("http://files.explosm.net/comics/Kris/skeletor.png", document);
 	}
 
 	@Test
-	public void filterCanParseComicTitle() {
-		MatcherAssert.assertThat(comicSiteFilter.extractTitle(document), Matchers.is(Optional.absent()));
-	}
-
-	@Test
-	public void filterCanExtractImageUrls() {
-		MatcherAssert.assertThat(comicSiteFilter.extractImageUrls(document), Matchers.contains("http://files.explosm.net/comics/Dave/moneyhappiness.png"));
-	}
-
-	@Test
-	public void filterExtractNoImageComments() {
-		MatcherAssert.assertThat(comicSiteFilter.extractImageComments(document), Matchers.empty());
+	public void comicCanBeParsed() {
+		ComicState comicState = (ComicState) comicSiteFilter.filter(htmlState);
+		assertThat(comicState.comics(), contains(
+				ComicMatchers.isComic("", contains(
+						ComicMatchers.isStrip("http://files.explosm.net/comics/Kris/skeletor.png", "")
+				))
+		));
 	}
 
 }
