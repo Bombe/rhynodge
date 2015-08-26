@@ -1,14 +1,14 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
-import static com.google.common.base.Optional.absent;
-import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.jsoup.Jsoup.parse;
+import static org.hamcrest.Matchers.contains;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
+
+import net.pterodactylus.rhynodge.filters.ComicSiteFilterTest;
+import net.pterodactylus.rhynodge.filters.ResourceLoader;
+import net.pterodactylus.rhynodge.states.ComicState;
+import net.pterodactylus.rhynodge.states.HtmlState;
 
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -18,34 +18,24 @@ import org.junit.Test;
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class HeldentageFilterTest {
+public class HeldentageFilterTest extends ComicSiteFilterTest {
 
 	private final HeldentageFilter heldentageFilter = new HeldentageFilter();
-	private final Document document;
+	private final HtmlState htmlState;
 
 	public HeldentageFilterTest() throws IOException {
-		document = loadDocument("heldentage.html", "http://www.der-flix.de/");
-	}
-
-	private Document loadDocument(String resourceName, String baseUri) throws IOException {
-		InputStream inputStream = getClass().getResourceAsStream(resourceName);
-		Document document = parse(inputStream, "UTF-8", baseUri);
-		return document;
+		Document document = ResourceLoader.loadDocument(HeldentageFilter.class, "heldentage.html", "http://www.der-flix.de/");
+		htmlState = new HtmlState("http://www.der-flix.de/", document);
 	}
 
 	@Test
-	public void comicDoesNotHaveATitle() {
-		assertThat(heldentageFilter.extractTitle(document), is(absent()));
-	}
-
-	@Test
-	public void comicUrlCanBeFound() {
-		assertThat(heldentageFilter.extractImageUrls(document), is(asList("/images/heldentage/Tag_916.jpg")));
-	}
-
-	@Test
-	public void comicDoesNotHaveImageComments() {
-		assertThat(heldentageFilter.extractImageComments(document), is(Collections.<String>emptyList()));
+	public void comicIsParsedCorrectly() {
+		ComicState comicState = (ComicState) heldentageFilter.filter(htmlState);
+		assertThat(comicState.comics(), contains(
+				ComicMatchers.isComic("", contains(
+						ComicMatchers.isStrip("http://www.der-flix.de/images/heldentage/Tag_916.jpg", "")
+				))
+		));
 	}
 
 }
