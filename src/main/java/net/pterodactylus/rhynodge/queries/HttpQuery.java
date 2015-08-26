@@ -18,7 +18,6 @@
 package net.pterodactylus.rhynodge.queries;
 
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 import net.pterodactylus.rhynodge.Query;
@@ -32,12 +31,9 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.ResponseContentEncoding;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.util.EntityUtils;
-
-import com.google.common.io.Closeables;
 
 /**
  * {@link Query} that performs an HTTP GET request to a fixed uri.
