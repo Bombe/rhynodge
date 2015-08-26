@@ -64,7 +64,7 @@ public class PirateBayWatcher extends DefaultWatcher {
 	 */
 	private static Query createHttpQuery(String searchTerms) {
 		try {
-			return new HttpQuery("http://thepiratebay.se/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0");
+			return new HttpQuery("http://thepiratebay.vg/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0");
 		} catch (UnsupportedEncodingException uee1) {
 			/* will not happen. */
 			return null;
