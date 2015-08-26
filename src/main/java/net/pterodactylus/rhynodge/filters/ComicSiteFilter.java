@@ -28,6 +28,7 @@ import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
 import net.pterodactylus.rhynodge.states.ComicState.Strip;
+import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.HtmlState;
 
 import com.google.common.base.Optional;
@@ -47,7 +48,6 @@ public abstract class ComicSiteFilter implements Filter {
 
 		/* initialize states: */
 		HtmlState htmlState = (HtmlState) state;
-		ComicState comicState = new ComicState();
 
 		/* extract comics. */
 		Optional<String> title = extractTitle(htmlState.document());
@@ -55,22 +55,25 @@ public abstract class ComicSiteFilter implements Filter {
 		List<String> imageComments = extractImageComments(htmlState.document());
 
 		/* store comic, if found, into state. */
-		if (title.isPresent() && !imageUrls.isEmpty()) {
-			Comic comic = new Comic(title.get());
-			int imageCounter = 0;
-			for (String imageUrl : imageUrls) {
-				String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
-				try {
-					URI stripUri = new URI(htmlState.uri()).resolve(imageUrl);
-					Strip strip = new Strip(stripUri.toString(), imageComment);
-					imageCounter++;
-					comic.add(strip);
-				} catch (URISyntaxException use1) {
-					throw new IllegalStateException(String.format("Could not resolve image URL “%s” against base URL “%s”.", imageUrl, htmlState.uri()), use1);
-				}
-			}
-			comicState.add(comic);
+		if (!title.isPresent() || imageUrls.isEmpty()) {
+			return new FailedState();
 		}
+
+		ComicState comicState = new ComicState();
+		Comic comic = new Comic(title.get());
+		int imageCounter = 0;
+		for (String imageUrl : imageUrls) {
+			String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
+			try {
+				URI stripUri = new URI(htmlState.uri()).resolve(imageUrl);
+				Strip strip = new Strip(stripUri.toString(), imageComment);
+				imageCounter++;
+				comic.add(strip);
+			} catch (URISyntaxException use1) {
+				throw new IllegalStateException(String.format("Could not resolve image URL “%s” against base URL “%s”.", imageUrl, htmlState.uri()), use1);
+			}
+		}
+		comicState.add(comic);
 
 		return comicState;
 	}
