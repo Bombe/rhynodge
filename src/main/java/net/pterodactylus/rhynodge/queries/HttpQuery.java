@@ -81,7 +81,7 @@ public class HttpQuery implements Query {
 			HttpConnectionParams.setSoTimeout(get.getParams(), (int) TimeUnit.SECONDS.toMillis(300));
 			HttpResponse response = httpClient.execute(get);
 			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-				return new FailedState();
+				return new FailedState(new IllegalStateException(String.format("Invalid HTTP Status: %d", response.getStatusLine().getStatusCode())));
 			}
 			HttpEntity entity = response.getEntity();
 
