@@ -65,7 +65,7 @@ public abstract class ComicSiteFilter implements Filter {
 		for (String imageUrl : imageUrls) {
 			String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
 			try {
-				URI stripUri = new URI(htmlState.uri()).resolve(imageUrl);
+				URI stripUri = new URI(htmlState.uri()).resolve(imageUrl.replaceAll(" ", "%20"));
 				Strip strip = new Strip(stripUri.toString(), imageComment);
 				imageCounter++;
 				comic.add(strip);
