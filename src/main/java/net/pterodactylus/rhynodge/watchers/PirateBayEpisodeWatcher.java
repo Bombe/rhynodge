@@ -66,7 +66,7 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 
 	private static Query createHttpQuery(String searchTerms, String proxyHost, int proxyPort) {
 		try {
-			return new HttpQuery("http://thepiratebay.org/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
+			return new HttpQuery("http://uj3wazyk5u4hnvtk.onion/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
 		} catch (UnsupportedEncodingException uee1) {
 			/* will not happen. */
 			return null;
