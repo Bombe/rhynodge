@@ -26,6 +26,7 @@ import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.HttpState;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -42,17 +43,18 @@ import org.apache.http.util.EntityUtils;
  */
 public class HttpQuery implements Query {
 
-	/** The uri to request. */
 	private final String uri;
+	private final String proxyHost;
+	private final int proxyPort;
 
-	/**
-	 * Creates a new HTTP query.
-	 *
-	 * @param uri
-	 *            The uri to request
-	 */
 	public HttpQuery(String uri) {
+		this(uri, null, -1);
+	}
+
+	public HttpQuery(String uri, String proxyHost, int proxyPort) {
 		this.uri = uri;
+		this.proxyHost = proxyHost;
+		this.proxyPort = proxyPort;
 	}
 
 	//
@@ -65,9 +67,13 @@ public class HttpQuery implements Query {
 	@Override
 	@SuppressWarnings("deprecation")
 	public State state() {
-		HttpClient httpClient = HttpClientBuilder.create()
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
 				.setSSLHostnameVerifier((hostname, session) -> true)
-				.addInterceptorFirst(new ResponseContentEncoding()).build();
+				.addInterceptorFirst(new ResponseContentEncoding());
+		if ((proxyHost != null) && (proxyPort != -1)) {
+			httpClientBuilder.setProxy(new HttpHost(proxyHost, proxyPort));
+		}
+		HttpClient httpClient = httpClientBuilder.build();
 		HttpGet get = new HttpGet(uri);
 
 		try {

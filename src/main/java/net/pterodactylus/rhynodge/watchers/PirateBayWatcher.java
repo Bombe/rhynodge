@@ -47,8 +47,16 @@ public class PirateBayWatcher extends DefaultWatcher {
 	 * @param searchTerms
 	 *            The terms to search for
 	 */
-	public PirateBayWatcher(String searchTerms) {
-		super(createHttpQuery(searchTerms), createFilters(), createTrigger());
+	public PirateBayWatcher(String searchTerms, String proxy) {
+		super(createHttpQuery(searchTerms, extractProxyHost(proxy), extractProxyPort(proxy)), createFilters(), createTrigger());
+	}
+
+	private static String extractProxyHost(String proxy) {
+		return proxy.split(":")[0];
+	}
+
+	private static int extractProxyPort(String proxy) {
+		return Integer.valueOf(proxy.split(":")[1]);
 	}
 
 	//
@@ -62,9 +70,9 @@ public class PirateBayWatcher extends DefaultWatcher {
 	 *            The search terms of the query
 	 * @return The query of the watcher
 	 */
-	private static Query createHttpQuery(String searchTerms) {
+	private static Query createHttpQuery(String searchTerms, String proxyHost, int proxyPort) {
 		try {
-			return new HttpQuery("http://thepiratebay.org/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0");
+			return new HttpQuery("http://thepiratebay.org/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
 		} catch (UnsupportedEncodingException uee1) {
 			/* will not happen. */
 			return null;
