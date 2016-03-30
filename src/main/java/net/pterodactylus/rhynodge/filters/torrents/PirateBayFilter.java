@@ -54,7 +54,7 @@ public class PirateBayFilter extends TorrentSiteFilter {
 	 */
 	@Override
 	protected String extractSize(Element dataRow) {
-		return dataRow.select(".detDesc").text().split(Pattern.quote(","))[1].split(Pattern.quote("Size"))[1];
+		return dataRow.select(".detDesc").text().split(Pattern.quote(","))[1].split(Pattern.quote("Size"))[1].trim().replace('\u00a0', ' ');
 	}
 
 	/**
