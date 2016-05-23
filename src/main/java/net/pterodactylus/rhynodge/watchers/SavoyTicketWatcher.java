@@ -4,7 +4,7 @@ import static java.util.Arrays.asList;
 
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
-import net.pterodactylus.rhynodge.filters.webpages.SavoyTicketsFilter;
+import net.pterodactylus.rhynodge.filters.webpages.savoy.SavoyTicketsFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.AlwaysTrigger;
 

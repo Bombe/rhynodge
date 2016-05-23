@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.filters.webpages;
+package net.pterodactylus.rhynodge.filters.webpages.savoy;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.time.format.DateTimeFormatter.ofPattern;
