@@ -1,8 +1,8 @@
-package net.pterodactylus.rhynodge.filters.webpages.wettercom
+package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.filters.ResourceLoader.loadDocument
-import net.pterodactylus.rhynodge.filters.webpages.wettercom.WetterComState.WindDirection
+import net.pterodactylus.rhynodge.webpages.weather.wettercom.WetterComState.WindDirection
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
 import org.hamcrest.MatcherAssert.assertThat

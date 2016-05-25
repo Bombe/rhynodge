@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.filters.webpages.wettercom
+package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import net.pterodactylus.rhynodge.states.AbstractState
 import java.time.LocalDateTime

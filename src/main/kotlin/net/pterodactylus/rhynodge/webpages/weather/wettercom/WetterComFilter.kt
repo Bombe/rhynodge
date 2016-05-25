@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.filters.webpages.wettercom
+package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import net.pterodactylus.rhynodge.Filter
 import net.pterodactylus.rhynodge.State
