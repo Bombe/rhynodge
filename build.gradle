@@ -1,4 +1,5 @@
 apply plugin: "java"
+apply plugin: "kotlin"
 apply plugin: "war"
 apply plugin: "jacoco"
 apply plugin: "idea"
@@ -16,11 +17,14 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 buildscript {
+    ext.kotlinVersion = '1.0.2'
+
     repositories {
         mavenCentral()
     }
     dependencies {
         classpath group: "org.ajoberstar", name: "gradle-git", version: "1.1.0"
+        classpath group: "org.jetbrains.kotlin", name: "kotlin-gradle-plugin", version: "$kotlinVersion"
     }
 }
 
@@ -29,6 +33,7 @@ repositories {
 }
 
 dependencies {
+    compile group: "org.jetbrains.kotlin", name: "kotlin-stdlib", version: "$kotlinVersion"
     compile group: "com.google.guava", name: "guava", version: "14.0-rc1"
     compile group: "log4j", name: "log4j", version: "1.2.17"
     compile group: "org.apache.httpcomponents", name: "httpclient", version: "4.4"
