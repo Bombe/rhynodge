@@ -16,4 +16,9 @@ class WetterComState(val dateTime: LocalDateTime) : AbstractState(true) {
         (hours as MutableList<HourState>).add(hourState)
     }
 
+    override fun equals(other: Any?): Boolean {
+        other as? WetterComState ?: return false
+        return (dateTime == other.dateTime) and (hours == other.hours)
+    }
+
 }
