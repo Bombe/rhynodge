@@ -44,12 +44,12 @@ class WetterComFilter : Filter {
         return LocalDateTime.from(dateTimeFormatter.parse("%s %s".format(dateElement, timeElement)))
     }
 
-    private fun parseHourStates(document: Document): List<WetterComState.HourState> {
+    private fun parseHourStates(document: Document): List<HourState> {
         return document.select(".weather-strip--detail").mapIndexed { index, element -> parseHourState(index, element) }
     }
 
-    private fun parseHourState(index: Int, hourElement: Element): WetterComState.HourState {
-        return WetterComState.HourState.atHour(index)
+    private fun parseHourState(index: Int, hourElement: Element): HourState {
+        return HourState.atHour(index)
                 .temperature(parseTemperature(hourElement))
                 .rainProbability(parseRainProbability(hourElement))
                 .rainAmount(parseRainAmount(hourElement))
