@@ -8,12 +8,16 @@ import java.time.ZonedDateTime
  *
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-class WetterComState(val dateTime: ZonedDateTime) : AbstractState(true) {
+class WetterComState(val dateTime: ZonedDateTime) : AbstractState(true), Iterable<HourState> {
 
     val hours: List<HourState> = mutableListOf()
 
     fun addHour(hourState: HourState) {
         (hours as MutableList<HourState>).add(hourState)
+    }
+
+    override fun iterator(): Iterator<HourState> {
+        return hours.iterator()
     }
 
     override fun equals(other: Any?): Boolean {

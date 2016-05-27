@@ -34,4 +34,13 @@ class WetterComStateTest {
         assertThat(firstState, `is`(secondState))
     }
 
+    @Test
+    fun iteratingDeliversHourStates() {
+        val now = Instant.now().atZone(ZoneId.of("UTC"))
+        val firstState = WetterComState(ZonedDateTime.from(now))
+        firstState.addHour(HourState(0, 10.0, 0.05, 0.0, WindDirection.NORTH, 5.0, "Fine", "http://1"))
+        firstState.addHour(HourState(1, 12.0, 0.1, 2.0, WindDirection.WEST, 8.0, "Superb", "http://2"))
+        assertThat(firstState.iterator().asSequence().toList(), `is`(firstState.hours as Iterable<HourState>))
+    }
+
 }
