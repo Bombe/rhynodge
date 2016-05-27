@@ -69,7 +69,7 @@ class WetterComFilter : Filter {
             hourElement.extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(0)").filter { (it >= '0') and (it <= '9') }.toDouble() / 100.0
 
     private fun parseRainAmount(hourElement: Element) =
-            hourElement.extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(1)").trim().split(" ")[1].toDouble()
+            hourElement.extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(1)").trim().split(" ").getOrNull(1)?.toDouble() ?: 0.0
 
     private fun parseWindDirection(hourElement: Element) =
             hourElement.extractText(".weather-strip__3 .text--left:eq(1) .flag__body span:eq(0)").trim().split(",")[0].toWindDirection()

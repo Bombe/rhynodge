@@ -69,7 +69,7 @@ class WetterComFilterTest {
                 HourState(14, 16.0, 0.75, 0.4, WindDirection.NORTHWEST, 12.0, "Regenschauer", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/d_81_S.png?201605201518"),
                 HourState(15, 15.0, 0.85, 0.2, WindDirection.WEST, 12.0, "leichter Regen", "http://ls1.wettercomassets.com/wcomv5/images/icons/small/d_61_S.png?201605201518"),
                 HourState(16, 14.0, 0.9, 0.2, WindDirection.WEST, 14.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
-                HourState(17, 14.0, 0.9, 0.2, WindDirection.NORTHWEST, 12.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
+                HourState(17, 14.0, 0.9, 0.0, WindDirection.NORTHWEST, 12.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
                 HourState(18, 14.0, 0.9, 0.2, WindDirection.WEST, 12.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
                 HourState(19, 13.0, 0.85, 0.1, WindDirection.NORTHWEST, 11.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
                 HourState(20, 13.0, 0.8, 0.01, WindDirection.WEST, 11.0, "leichter Regen", "http://ls2.wettercomassets.com/wcomv5/images/icons/small/n_61_S.png?201605201518"),
