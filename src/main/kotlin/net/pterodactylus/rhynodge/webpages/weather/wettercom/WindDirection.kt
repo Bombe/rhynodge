@@ -22,9 +22,9 @@ enum class WindDirection {
 fun String.toWindDirection(): WindDirection {
     return when (this) {
         "N" -> WindDirection.NORTH
-        "NE" -> WindDirection.NORTHEAST
-        "E" -> WindDirection.EAST
-        "SE" -> WindDirection.SOUTHEAST
+        "NO" -> WindDirection.NORTHEAST
+        "O" -> WindDirection.EAST
+        "SO" -> WindDirection.SOUTHEAST
         "S" -> WindDirection.SOUTH
         "SW" -> WindDirection.SOUTHWEST
         "W" -> WindDirection.WEST
