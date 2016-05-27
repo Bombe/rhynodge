@@ -7,6 +7,8 @@ import net.pterodactylus.rhynodge.states.HtmlState
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import java.time.LocalDateTime
+import java.time.ZoneId.of
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 /**
@@ -36,12 +38,12 @@ class WetterComFilter : Filter {
         return wetterComState
     }
 
-    private fun parseDateTime(document: Document): LocalDateTime? {
+    private fun parseDateTime(document: Document): ZonedDateTime? {
         val dateElement = document.select("#furtherDetails .portable-mb h3")
                 .single()?.text()?.split(",")?.get(1)?.trim() ?: return null
         val timeElement = document.select(".weather-strip--detail .delta.palm-hide")
                 .first()?.text()?.split(" ")?.first() ?: return null
-        return LocalDateTime.from(dateTimeFormatter.parse("%s %s".format(dateElement, timeElement)))
+        return LocalDateTime.from(dateTimeFormatter.parse("%s %s".format(dateElement, timeElement))).atZone(of("Europe/Berlin"))
     }
 
     private fun parseHourStates(document: Document): List<HourState> {

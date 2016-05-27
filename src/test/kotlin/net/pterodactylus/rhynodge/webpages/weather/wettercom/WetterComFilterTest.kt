@@ -14,6 +14,7 @@ import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import java.time.LocalDateTime
 import java.time.Month
+import java.time.ZoneId
 
 /**
  * Unit test for [WetterComFilter].
@@ -49,7 +50,7 @@ class WetterComFilterTest {
         val document = loadDocument(javaClass, "wetter.com.html", url)
         val htmlState = HtmlState(url, document)
         val newState = filter.filter(htmlState) as WetterComState
-        assertThat(newState.dateTime, `is`(LocalDateTime.of(2016, Month.MAY, 23, 5, 0)))
+        assertThat(newState.dateTime, `is`(LocalDateTime.of(2016, Month.MAY, 23, 5, 0).atZone(ZoneId.of("Europe/Berlin"))))
         assertThat(newState.hours, contains(
                 HourState(0, 15.0, 0.65, 0.8, WindDirection.NORTH, 5.0, "leichter Regen-schauer", "http://ls1.wettercomassets.com/wcomv5/images/icons/small/d_80_S.png?201605201518"),
                 HourState(1, 15.0, 0.7, 0.9, WindDirection.NONE, 5.0, "leichter Regen-schauer", "http://ls1.wettercomassets.com/wcomv5/images/icons/small/d_80_S.png?201605201518"),
