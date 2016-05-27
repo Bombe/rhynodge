@@ -1,5 +1,6 @@
 package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
+import net.pterodactylus.rhynodge.filters.HtmlFilter
 import net.pterodactylus.rhynodge.queries.HttpQuery
 import net.pterodactylus.rhynodge.watchers.DefaultWatcher
 
@@ -10,6 +11,6 @@ import net.pterodactylus.rhynodge.watchers.DefaultWatcher
  */
 class WetterComHamburgWatcher : DefaultWatcher(
         HttpQuery("http://www.wetter.com/wetter_aktuell/wettervorhersage/heute/deutschland/hamburg/DE0004130.html"),
-        listOf(WetterComFilter()),
+        listOf(HtmlFilter(), WetterComFilter()),
         WetterComTrigger()
 )
