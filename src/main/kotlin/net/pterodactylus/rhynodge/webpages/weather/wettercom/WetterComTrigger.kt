@@ -50,9 +50,8 @@ class WetterComTrigger : Trigger {
             head {
                 style("text/css") {
                     unsafe {
-                        +".hour-state { display: table-row; }"
-                        +" "
-                        +".hour-state > div { display: table-cell; padding-right: 1em; }"
+                        +".hour-state { display: table-row; } "
+                        +".hour-state > div { display: table-cell; padding-right: 1em; } "
                     }
                 }
             }
