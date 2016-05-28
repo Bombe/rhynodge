@@ -9,26 +9,42 @@ enum class WindDirection(val arrow: String) {
 
     NONE("↺"),
     NORTH("↓"),
+    NORTHNORTHEAST("↓↙"),
     NORTHEAST("↙"),
+    EASTNORTHEAST("↙←"),
     EAST("←"),
+    EASTSOUTHEAST("←↖"),
     SOUTHEAST("↖"),
+    SOUTHSOUTHEAST("↖↑"),
     SOUTH("↑"),
+    SOUTHSOUTHWEST("↑↗"),
     SOUTHWEST("↗"),
+    WESTSOUTHWEST("↗→"),
     WEST("→"),
-    NORTHWEST("↘")
+    WESTNORTHWEST("→↘"),
+    NORTHWEST("↘"),
+    NORTHNORTHWEST("↘↓")
 
 }
 
 fun String.toWindDirection(): WindDirection {
     return when (this) {
-        "N" -> WindDirection.NORTH
-        "NO" -> WindDirection.NORTHEAST
-        "O" -> WindDirection.EAST
-        "SO" -> WindDirection.SOUTHEAST
-        "S" -> WindDirection.SOUTH
-        "SW" -> WindDirection.SOUTHWEST
-        "W" -> WindDirection.WEST
-        "NW" -> WindDirection.NORTHWEST
+        "N", "Nord" -> WindDirection.NORTH
+        "Nordnordost" -> WindDirection.NORTHNORTHEAST
+        "NO", "Nordost" -> WindDirection.NORTHEAST
+        "Ostnordost" -> WindDirection.EASTNORTHEAST
+        "O", "Ost" -> WindDirection.EAST
+        "Ostsüdost" -> WindDirection.EASTSOUTHEAST
+        "SO", "Südost" -> WindDirection.SOUTHEAST
+        "Südsüdost" -> WindDirection.SOUTHSOUTHEAST
+        "S", "Süd" -> WindDirection.SOUTH
+        "Südsüdwest" -> WindDirection.SOUTHSOUTHWEST
+        "SW", "Südwest" -> WindDirection.SOUTHWEST
+        "Westsüdwest" -> WindDirection.WESTSOUTHWEST
+        "W", "West" -> WindDirection.WEST
+        "Westnordwest" -> WindDirection.WESTNORTHWEST
+        "NW", "Nordwest" -> WindDirection.NORTHWEST
+        "Nordnordwest" -> WindDirection.NORTHNORTHWEST
         else -> WindDirection.NONE
     }
 }
