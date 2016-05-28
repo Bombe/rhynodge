@@ -30,6 +30,7 @@ import net.pterodactylus.rhynodge.states.TorrentState;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
 import com.google.common.base.Predicate;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Filter for {@link TorrentState}s that removes all {@link TorrentFile}s whose
@@ -45,8 +46,9 @@ public class BlacklistFilter implements Filter {
 		this.filterWords = filterWords;
 	}
 
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		if (!state.success()) {
 			return FailedState.from(state);
 		}

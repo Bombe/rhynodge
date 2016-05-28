@@ -25,6 +25,7 @@ import net.pterodactylus.rhynodge.filters.webpages.savoy.TicketLink;
 import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.OutputState;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -42,8 +43,9 @@ public class SavoyTicketsFilter implements Filter {
 	private DateTimeFormatter timeFormatter = ofPattern("HH:mm");
 	private DateTimeFormatter dateTimeFormatter = ofPattern("dd.MM.uuuu, HH:mm");
 
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		checkArgument(state instanceof HtmlState, "state must be HTML");
 
 		HtmlState htmlState = (HtmlState) state;

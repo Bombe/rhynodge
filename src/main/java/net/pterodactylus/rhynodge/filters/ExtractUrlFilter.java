@@ -26,6 +26,7 @@ import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.StringState;
 
 import com.google.common.base.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 
 /**
@@ -35,8 +36,9 @@ import org.jsoup.nodes.Document;
  */
 public abstract class ExtractUrlFilter implements Filter {
 
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		checkArgument(state instanceof HtmlState, "state must be an HTML state");
 
 		HtmlState htmlState = (HtmlState) state;

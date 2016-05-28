@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Defines a filter that runs between {@link Query}s and {@link Trigger}s and
  * can be used to convert a {@link State} into another {@link State}. This can
@@ -38,6 +40,7 @@ public interface Filter {
 	 *            The state to convert
 	 * @return The new state
 	 */
-	State filter(State state);
+	@NotNull
+	State filter(@NotNull State state);
 
 }

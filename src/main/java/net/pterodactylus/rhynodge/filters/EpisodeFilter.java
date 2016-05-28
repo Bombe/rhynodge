@@ -39,6 +39,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * {@link Filter} implementation that extracts {@link Episode} information from
@@ -60,8 +61,9 @@ public class EpisodeFilter implements Filter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		if (!state.success()) {
 			return FailedState.from(state);
 		}

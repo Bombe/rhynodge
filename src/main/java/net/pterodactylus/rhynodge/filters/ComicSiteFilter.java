@@ -32,6 +32,7 @@ import net.pterodactylus.rhynodge.states.FailedState;
 import net.pterodactylus.rhynodge.states.HtmlState;
 
 import com.google.common.base.Optional;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 
 /**
@@ -42,8 +43,9 @@ import org.jsoup.nodes.Document;
  */
 public abstract class ComicSiteFilter implements Filter {
 
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		checkArgument(state instanceof HtmlState, "state must be an HTML state");
 
 		/* initialize states: */

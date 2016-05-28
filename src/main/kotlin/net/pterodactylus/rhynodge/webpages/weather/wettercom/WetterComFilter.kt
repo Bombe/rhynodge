@@ -20,8 +20,8 @@ class WetterComFilter : Filter {
 
     private val dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
 
-    override fun filter(state: State?): State {
-        if (state?.success()?.not() ?: true) {
+    override fun filter(state: State): State {
+        if (state.success().not()) {
             return FailedState.from(state)
         }
         if (state !is HtmlState) {

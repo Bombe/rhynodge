@@ -26,6 +26,7 @@ import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.HttpState;
 
 import org.apache.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
@@ -41,8 +42,9 @@ public class HtmlFilter implements Filter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		if (!state.success()) {
 			return FailedState.from(state);
 		}

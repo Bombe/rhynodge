@@ -25,6 +25,8 @@ import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.states.HttpState;
 import net.pterodactylus.rhynodge.states.StringState;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * {@link Filter} implementation that uses the {@link StringState#value() value}
  * of a {@link StringState} as a URL for {@link HttpQuery}, turning it into an
@@ -34,8 +36,9 @@ import net.pterodactylus.rhynodge.states.StringState;
  */
 public class HttpQueryFilter implements Filter {
 
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		checkArgument(state instanceof StringState, "state must be a String state");
 
 		StringState stringState = (StringState) state;

@@ -32,6 +32,7 @@ import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.TorrentState;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
+import org.jetbrains.annotations.NotNull;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -48,8 +49,9 @@ public abstract class TorrentSiteFilter implements Filter {
 	/**
 	 * {@inheritDoc}
 	 */
+	@NotNull
 	@Override
-	public State filter(State state) {
+	public State filter(@NotNull State state) {
 		if (!state.success()) {
 			return FailedState.from(state);
 		}
