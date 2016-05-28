@@ -5,17 +5,17 @@ package net.pterodactylus.rhynodge.webpages.weather.wettercom
  *
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-enum class WindDirection(val degrees: Int) {
+enum class WindDirection(val arrow: String) {
 
-    NONE(0),
-    NORTH(90),
-    NORTHEAST(45),
-    EAST(0),
-    SOUTHEAST(315),
-    SOUTH(270),
-    SOUTHWEST(225),
-    WEST(180),
-    NORTHWEST(135)
+    NONE("↺"),
+    NORTH("↓"),
+    NORTHEAST("↙"),
+    EAST("←"),
+    SOUTHEAST("↖"),
+    SOUTH("↑"),
+    SOUTHWEST("↗"),
+    WEST("→"),
+    NORTHWEST("↘")
 
 }
 

@@ -65,12 +65,7 @@ class WetterComTrigger : Trigger {
                         div("temperature") { +"%d °C".format(it.temperature.toInt()) }
                         div("rain-probability") { +"%d%%".format((it.rainProbability * 100).toInt()) }
                         div("rain-amount") { +"%d l/m²".format(it.rainAmount.toInt()) }
-                        div("wind-direction") {
-                            div {
-                                attributes += "style" to "padding: none; transform: rotate(%ddeg)".format(180 - it.windDirection.degrees)
-                                +"➠"
-                            }
-                        }
+                        div("wind-direction") { +it.windDirection.arrow }
                         div("wind-speed") { +"%d km/h".format(it.windSpeed.toInt()) }
                         div("description") { +it.description }
                         div("image") { img(src = it.image) }
