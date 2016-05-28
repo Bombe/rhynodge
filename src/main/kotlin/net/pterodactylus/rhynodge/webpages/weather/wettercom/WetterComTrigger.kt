@@ -8,6 +8,7 @@ import kotlinx.html.html
 import kotlinx.html.img
 import kotlinx.html.stream.createHTML
 import kotlinx.html.style
+import kotlinx.html.unsafe
 import net.pterodactylus.rhynodge.Reaction
 import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.Trigger
@@ -48,8 +49,11 @@ class WetterComTrigger : Trigger {
         return createHTML().html {
             head {
                 style("text/css") {
-                    +".hour-state { display: table-row; }"
-                    +".hour-state > div { display: table-cell; }"
+                    unsafe {
+                        +".hour-state { display: table-row; }"
+                        +" "
+                        +".hour-state > div { display: table-cell; padding-right: 1em; }"
+                    }
                 }
             }
             body {
