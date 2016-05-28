@@ -9,7 +9,7 @@ import net.pterodactylus.rhynodge.watchers.DefaultWatcher
  *
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-class WetterComHamburgWatcher : DefaultWatcher(
+class WetterDeHamburgWatcher : DefaultWatcher(
         HttpQuery("http://www.wetter.de/deutschland/wetter-hamburg-18219464/wetterbericht-aktuell.html"),
         listOf(HtmlFilter(), WetterDeFilter()),
         WetterDeTrigger()
