@@ -1,6 +1,7 @@
 package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.Test

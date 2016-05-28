@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.webpages.weather.wettercom
+package net.pterodactylus.rhynodge.webpages.weather
 
 /**
  * The direction the wind comes from.

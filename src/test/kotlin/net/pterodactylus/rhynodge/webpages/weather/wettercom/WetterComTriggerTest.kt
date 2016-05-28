@@ -1,6 +1,7 @@
 package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import net.pterodactylus.rhynodge.Reaction
+import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.containsString

@@ -1,6 +1,7 @@
 package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 
 /**
  * Container for weather conditions of a single hour.
