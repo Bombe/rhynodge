@@ -5,6 +5,7 @@ import net.pterodactylus.rhynodge.filters.ResourceLoader.loadDocument
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
 import net.pterodactylus.rhynodge.webpages.weather.HourState
+import net.pterodactylus.rhynodge.webpages.weather.WeatherState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -51,7 +52,7 @@ class WetterComFilterTest {
     fun filterParsesHtmlCorrectly() {
         val document = loadDocument(javaClass, "wetter.com.html", url)
         val htmlState = HtmlState(url, document)
-        val newState = filter.filter(htmlState) as WetterComState
+        val newState = filter.filter(htmlState) as WeatherState
         assertThat(newState.dateTime, `is`(LocalDateTime.of(2016, Month.MAY, 23, 5, 0).atZone(ZoneId.of("Europe/Berlin"))))
         assertThat(newState.hours, contains(
                 HourState(0, 15, null, 0.65, 0.8, WindDirection.NORTH, 5, null, null, "leichter Regen-schauer", "http://ls1.wettercomassets.com/wcomv5/images/icons/small/d_80_S.png?201605201518"),

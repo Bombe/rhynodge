@@ -1,22 +1,21 @@
-package net.pterodactylus.rhynodge.webpages.weather.wettercom
+package net.pterodactylus.rhynodge.webpages.weather
 
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import net.pterodactylus.rhynodge.states.AbstractState
-import net.pterodactylus.rhynodge.webpages.weather.HourState
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
 /**
- * Contains the state parsed from [wetter.com](https://www.wetter.com/).
+ * Contains a weather state.
  *
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-class WetterComState(val dateTime: ZonedDateTime) : AbstractState(true), Iterable<HourState> {
+class WeatherState(val service: String, val dateTime: ZonedDateTime) : AbstractState(true), Iterable<HourState> {
 
-    constructor(@JsonProperty("dateTime") time: Long) :
-    this(Instant.ofEpochMilli(time).atZone(ZoneId.of("Europe/Berlin")))
+    constructor(@JsonProperty("service") service: String, @JsonProperty("dateTime") time: Long) :
+    this(service, Instant.ofEpochMilli(time).atZone(ZoneId.of("Europe/Berlin")))
 
     @JsonProperty("hours")
     val hours: List<HourState> = mutableListOf()
@@ -34,7 +33,7 @@ class WetterComState(val dateTime: ZonedDateTime) : AbstractState(true), Iterabl
     }
 
     override fun equals(other: Any?): Boolean {
-        other as? WetterComState ?: return false
+        other as? WeatherState ?: return false
         return (dateTime == other.dateTime) and (hours == other.hours)
     }
 

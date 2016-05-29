@@ -1,4 +1,4 @@
-package net.pterodactylus.rhynodge.webpages.weather.wetterde
+package net.pterodactylus.rhynodge.webpages.weather
 
 import kotlinx.html.body
 import kotlinx.html.div
@@ -19,19 +19,19 @@ import java.time.temporal.ChronoUnit
 import java.util.Locale
 
 /**
- * TODO
+ * Detects changes in the weather and creates email texts.
  *
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-class WetterDeTrigger : Trigger {
+class WeatherTrigger : Trigger {
 
     private val dateFormatter = DateFormat.getDateInstance(DateFormat.LONG, Locale.ENGLISH)
-    private lateinit var state: WetterDeState
+    private lateinit var state: WeatherState
     private var changed = false
 
     override fun mergeStates(previousState: State, currentState: State): State {
         changed = previousState != currentState
-        state = currentState as WetterDeState
+        state = currentState as WeatherState
         return currentState
     }
 
@@ -40,7 +40,7 @@ class WetterDeTrigger : Trigger {
     }
 
     override fun output(reaction: Reaction): Output {
-        val output = DefaultOutput("The Weather (according to wetter.de) on %s".format(dateFormatter.format(state.dateTime.toInstant().toEpochMilli())))
+        val output = DefaultOutput("The Weather (according to ${state.service}) on ${dateFormatter.format(state.dateTime.toInstant().toEpochMilli())}")
         output.addText("text/html", generateHtmlOutput())
         return output
     }

@@ -1,66 +1,66 @@
-package net.pterodactylus.rhynodge.webpages.weather.wetterde
+package net.pterodactylus.rhynodge.webpages.weather
 
 import net.pterodactylus.rhynodge.Reaction
 import net.pterodactylus.rhynodge.State
-import net.pterodactylus.rhynodge.webpages.weather.HourState
-import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.containsString
 import org.junit.Test
 import org.mockito.Mockito.mock
+import java.io.File
 import java.time.ZoneId.of
 import java.time.ZonedDateTime
 
 /**
- * Unit test for [WetterDeTriggerTest].
+ * Unit test for [WeatherTrigger].
 
  * @author [David ‘Bombe’ Roden](mailto:bombe@pterodactylus.net)
  */
-class WetterDeTriggerTest {
+class WeatherTriggerTest {
 
     private val now = ZonedDateTime.now(of("Europe/Berlin"))
-    private val previousState = WetterDeState(now.minusDays(1))
-    private val trigger = WetterDeTrigger()
+    private val previousState = WeatherState("Weather", now.minusDays(1))
+    private val trigger = WeatherTrigger()
 
     @Test
     fun currentStateIsAlwaysReturned() {
-        val currentState = WetterDeState(now)
+        val currentState = WeatherState("Weather", now)
         assertThat(trigger.mergeStates(previousState, currentState), `is`(currentState as State))
     }
 
     @Test
     fun triggerDoesNotTriggerIfStateHasNotChanged() {
-        val currentState = WetterDeState(now.minusDays(1))
+        val currentState = WeatherState("Weather", now.minusDays(1))
         trigger.mergeStates(previousState, currentState)
         assertThat(trigger.triggers(), `is`(false))
     }
 
     @Test
     fun triggerDoesTriggerIfStateHasChanged() {
-        val currentState = WetterDeState(now)
+        val currentState = WeatherState("Weather", now)
         trigger.mergeStates(previousState, currentState)
         assertThat(trigger.triggers(), `is`(true))
     }
 
     @Test
     fun outputContainsCorrectSummary() {
-        val currentState = WetterDeState(ZonedDateTime.of(2016, 5, 28, 0, 0, 0, 0, of("Europe/Berlin")))
+        val currentState = WeatherState("Weather", ZonedDateTime.of(2016, 5, 28, 0, 0, 0, 0, of("Europe/Berlin")))
         trigger.mergeStates(previousState, currentState)
         val reaction = mock(Reaction::class.java)
         val output = trigger.output(reaction)
-        assertThat(output.summary(), `is`("The Weather (according to wetter.de) on May 28, 2016"))
+        assertThat(output.summary(), `is`("The Weather (according to Weather) on May 28, 2016"))
     }
 
     @Test
     fun outputContainsCorrectHourData() {
-        val currentState = WetterDeState(ZonedDateTime.of(2016, 5, 28, 0, 0, 0, 0, of("Europe/Berlin")))
+        val currentState = WeatherState("Weather", ZonedDateTime.of(2016, 5, 28, 0, 0, 0, 0, of("Europe/Berlin")))
         currentState += HourState(0, 10, 11, 0.12, 13.0, WindDirection.SOUTHSOUTHEAST, 14, 15, 0.16, "17", "http://18")
         currentState += HourState(1, 20, 21, 0.22, 23.0, WindDirection.NORTHNORTHWEST, 24, 25, 0.26, "27", "http://28")
         trigger.mergeStates(previousState, currentState)
         val reaction = mock(Reaction::class.java)
         val output = trigger.output(reaction)
         val htmlText = output.text("text/html", -1)
+        File("/tmp/wetter.html").writer().use { it.write(htmlText) }
         assertThat(htmlText, containsString("00:00"))
         assertThat(htmlText, containsString("10 °C"))
         assertThat(htmlText, containsString("(11 °C)"))

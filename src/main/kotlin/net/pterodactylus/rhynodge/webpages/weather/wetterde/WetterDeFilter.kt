@@ -5,6 +5,7 @@ import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
 import net.pterodactylus.rhynodge.webpages.weather.HourState
+import net.pterodactylus.rhynodge.webpages.weather.WeatherState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import net.pterodactylus.rhynodge.webpages.weather.toWindDirection
 import org.jsoup.nodes.Document
@@ -37,9 +38,9 @@ class WetterDeFilter : Filter {
         return parseWetterDeState(state)
     }
 
-    private fun parseWetterDeState(htmlState: HtmlState): WetterDeState {
+    private fun parseWetterDeState(htmlState: HtmlState): WeatherState {
         val dateTime = parseDate(htmlState.document()) ?: throw IllegalArgumentException("date can not be parsed")
-        val wetterDeState = WetterDeState(dateTime)
+        val wetterDeState = WeatherState("wetter.de", dateTime)
         parseHourStates(htmlState.document()).forEach { wetterDeState += it }
         return wetterDeState
     }

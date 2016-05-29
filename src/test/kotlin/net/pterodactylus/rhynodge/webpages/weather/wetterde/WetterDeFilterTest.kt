@@ -5,6 +5,7 @@ import net.pterodactylus.rhynodge.states.AbstractState
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
 import net.pterodactylus.rhynodge.webpages.weather.HourState
+import net.pterodactylus.rhynodge.webpages.weather.WeatherState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -43,14 +44,14 @@ class WetterDeFilterTest {
     @Test
     fun filterCanParseDateCorrectly() {
         val htmlState = HtmlState(url, ResourceLoader.loadDocument(javaClass, "wetter.de.html", url))
-        val wetterDeState = filter.filter(htmlState) as WetterDeState
+        val wetterDeState = filter.filter(htmlState) as WeatherState
         assertThat(wetterDeState.dateTime, `is`(ZonedDateTime.of(2016, 5, 30, 0, 0, 0, 0, ZoneId.of("Europe/Berlin"))))
     }
 
     @Test
     fun filterParsesHoursCorrectly() {
         val htmlState = HtmlState(url, ResourceLoader.loadDocument(javaClass, "wetter.de.html", url))
-        val wetterDeState = filter.filter(htmlState) as WetterDeState
+        val wetterDeState = filter.filter(htmlState) as WeatherState
         assertThat(wetterDeState, contains(
                 HourState(0, 18, 18, 0.47, 0.4, WindDirection.NORTHEAST, 19, 41, 0.91, "gewittrig", "http://cdn.static-fra.de/wetterv3/css/images/icons/weather/m/017_M.png?o44shg"),
                 HourState(1, 18, 18, 0.60, 0.6, WindDirection.NORTHEAST, 20, 39, 0.91, "gewittrig", "http://cdn.static-fra.de/wetterv3/css/images/icons/weather/m/017_M.png?o44shg"),

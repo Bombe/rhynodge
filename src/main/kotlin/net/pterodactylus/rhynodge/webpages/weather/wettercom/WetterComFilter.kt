@@ -5,6 +5,7 @@ import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
 import net.pterodactylus.rhynodge.webpages.weather.HourState
+import net.pterodactylus.rhynodge.webpages.weather.WeatherState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import net.pterodactylus.rhynodge.webpages.weather.toWindDirection
 import org.jsoup.nodes.Document
@@ -36,7 +37,7 @@ class WetterComFilter : Filter {
 
     private fun parseWetterComState(state: HtmlState): State {
         val dateTime = parseDateTime(state.document()) ?: return FailedState(IllegalArgumentException("no date present"))
-        val wetterComState = WetterComState(dateTime)
+        val wetterComState = WeatherState("wetter.com", dateTime)
         parseHourStates(state.document()).forEach { wetterComState += it }
         return wetterComState
     }
