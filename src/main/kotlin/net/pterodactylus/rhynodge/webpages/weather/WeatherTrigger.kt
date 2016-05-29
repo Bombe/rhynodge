@@ -50,33 +50,59 @@ class WeatherTrigger : Trigger {
             head {
                 style("text/css") {
                     unsafe {
-                        +".hour-state { display: table-row; } "
-                        +".hour-state > div { display: table-cell; padding-right: 1em; } "
+                        +".weather-states { display: table; } "
+                        +".hour-state, .header { display: table-row; } "
+                        +".hour-state > div { display: table-cell; padding: 0em 0.5em; text-align: center; } "
+                        +".header > div { display: table-cell; padding: 0em 0.5em; font-weight: bold; text-align: center; } "
                     }
                 }
             }
             body {
                 val startTime = state.dateTime.toInstant()
                 h1 { +"The Weather (according to wetter.de) on %s".format(dateFormatter.format(startTime.toEpochMilli())) }
+                val showFeltTemperature = state.any { it.feltTemperature != null }
+                val showGustSpeed = state.any { it.gustSpeed != null }
+                val showHumidity = state.any { it.humidity != null }
                 state.forEach {
-                    div("hour-state") {
-                        div("time") { +"%tH:%<tM".format(startTime.plus(it.hourIndex.toLong(), ChronoUnit.HOURS).toEpochMilli()) }
-                        div("temperature") { +"%d °C".format(it.temperature) }
-                        it.feltTemperature?.let {
-                            div("felt-temperature") { +"(%d °C)".format(it) }
+                    div("weather-states") {
+                        div("header") {
+                            div { +"Time" }
+                            div { +"Temperature" }
+                            if (showHumidity) {
+                                div { +"feels like" }
+                            }
+                            div { +"Chance of Rain" }
+                            div { +"Amount" }
+                            div { +"Wind from" }
+                            div { +"Speed" }
+                            if (showGustSpeed) {
+                                div { +"Gusts" }
+                            }
+                            if (showHumidity) {
+                                div { +"Humidity" }
+                            }
+                            div { +"Description" }
+                            div { +"Image" }
                         }
-                        div("rain-probability") { +"%d%%".format((it.rainProbability * 100).toInt()) }
-                        div("rain-amount") { +"%s l/m²".format(it.rainAmount.minDigits()) }
-                        div("wind-direction") { +it.windDirection.arrow }
-                        div("wind-speed") { +"%d km/h".format(it.windSpeed) }
-                        it.gustSpeed?.let {
-                            div("gust-speed") { +"(up to %d km/h)".format(it) }
+                        div("hour-state") {
+                            div("time") { +"%tH:%<tM".format(startTime.plus(it.hourIndex.toLong(), ChronoUnit.HOURS).toEpochMilli()) }
+                            div("temperature") { +"%d °C".format(it.temperature) }
+                            if (showFeltTemperature) {
+                                div("felt-temperature") { +if (it.feltTemperature != null) "(${it.feltTemperature} °C)" else "" }
+                            }
+                            div("rain-probability") { +"%d%%".format((it.rainProbability * 100).toInt()) }
+                            div("rain-amount") { +"%s l/m²".format(it.rainAmount.minDigits()) }
+                            div("wind-direction") { +it.windDirection.arrow }
+                            div("wind-speed") { +"%d km/h".format(it.windSpeed) }
+                            if (showGustSpeed) {
+                                div("gust-speed") { +if (it.gustSpeed != null) "(up to ${it.gustSpeed} km/h)" else "" }
+                            }
+                            if (showHumidity) {
+                                div("humidity") { +if (it.humidity != null) "${it.humidity.times(100).toInt()}%" else "" }
+                            }
+                            div("description") { +it.description }
+                            div("image") { img(src = it.image) }
                         }
-                        it.humidity?.let {
-                            div("humidity") { +"%d%%".format((it * 100).toInt()) }
-                        }
-                        div("description") { +it.description }
-                        div("image") { img(src = it.image) }
                     }
                 }
             }
