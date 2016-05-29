@@ -86,14 +86,14 @@ class WeatherTrigger : Trigger {
                         }
                         div("hour-state") {
                             div("time") { +"%tH:%<tM".format(startTime.plus(it.hourIndex.toLong(), ChronoUnit.HOURS).toEpochMilli()) }
-                            div("temperature") { +"%d °C".format(it.temperature) }
+                            div("temperature") { +"${it.temperature} °C" }
                             if (showFeltTemperature) {
                                 div("felt-temperature") { +if (it.feltTemperature != null) "(${it.feltTemperature} °C)" else "" }
                             }
-                            div("rain-probability") { +"%d%%".format((it.rainProbability * 100).toInt()) }
-                            div("rain-amount") { +"%s l/m²".format(it.rainAmount.minDigits()) }
+                            div("rain-probability") { +"${it.rainProbability.times(100).toInt()}%" }
+                            div("rain-amount") { +"${it.rainAmount.minDigits()} l/m²" }
                             div("wind-direction") { +it.windDirection.arrow }
-                            div("wind-speed") { +"%d km/h".format(it.windSpeed) }
+                            div("wind-speed") { +"${it.windSpeed} km/h" }
                             if (showGustSpeed) {
                                 div("gust-speed") { +if (it.gustSpeed != null) "(up to ${it.gustSpeed} km/h)" else "" }
                             }
