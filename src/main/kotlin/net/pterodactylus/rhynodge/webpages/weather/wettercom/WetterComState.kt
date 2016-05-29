@@ -3,6 +3,7 @@ package net.pterodactylus.rhynodge.webpages.weather.wettercom
 import com.fasterxml.jackson.annotation.JsonGetter
 import com.fasterxml.jackson.annotation.JsonProperty
 import net.pterodactylus.rhynodge.states.AbstractState
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
@@ -24,7 +25,7 @@ class WetterComState(val dateTime: ZonedDateTime) : AbstractState(true), Iterabl
         @JsonGetter("dateTime")
         get() = dateTime.toInstant().toEpochMilli()
 
-    fun addHour(hourState: HourState) {
+    operator fun plusAssign(hourState: HourState) {
         (hours as MutableList<HourState>).add(hourState)
     }
 

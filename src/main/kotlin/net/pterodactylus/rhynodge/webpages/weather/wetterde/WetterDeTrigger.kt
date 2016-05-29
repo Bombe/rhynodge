@@ -62,13 +62,19 @@ class WetterDeTrigger : Trigger {
                     div("hour-state") {
                         div("time") { +"%tH:%<tM".format(startTime.plus(it.hourIndex.toLong(), ChronoUnit.HOURS).toEpochMilli()) }
                         div("temperature") { +"%d °C".format(it.temperature) }
-                        div("felt-temperature") { +"(%d °C)".format(it.feltTemperature) }
+                        it.feltTemperature?.let {
+                            div("felt-temperature") { +"(%d °C)".format(it) }
+                        }
                         div("rain-probability") { +"%d%%".format((it.rainProbability * 100).toInt()) }
                         div("rain-amount") { +"%s l/m²".format(it.rainAmount.minDigits()) }
                         div("wind-direction") { +it.windDirection.arrow }
                         div("wind-speed") { +"%d km/h".format(it.windSpeed) }
-                        div("gust-speed") { +"(up to %d km/h)".format(it.gustSpeed) }
-                        div("humidity") { +"%d%%".format((it.humidity * 100).toInt()) }
+                        it.gustSpeed?.let {
+                            div("gust-speed") { +"(up to %d km/h)".format(it) }
+                        }
+                        it.humidity?.let {
+                            div("humidity") { +"%d%%".format((it * 100).toInt()) }
+                        }
                         div("description") { +it.description }
                         div("image") { img(src = it.image) }
                     }

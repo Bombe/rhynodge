@@ -4,6 +4,7 @@ import net.pterodactylus.rhynodge.Filter
 import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import net.pterodactylus.rhynodge.webpages.weather.toWindDirection
 import org.jsoup.nodes.Document

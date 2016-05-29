@@ -4,6 +4,7 @@ import net.pterodactylus.rhynodge.filters.ResourceLoader
 import net.pterodactylus.rhynodge.states.AbstractState
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`

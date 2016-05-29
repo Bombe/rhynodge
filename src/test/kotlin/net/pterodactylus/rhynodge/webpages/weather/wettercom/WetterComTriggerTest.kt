@@ -1,6 +1,7 @@
 package net.pterodactylus.rhynodge.webpages.weather.wettercom
 
 import net.pterodactylus.rhynodge.Reaction
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
@@ -62,8 +63,8 @@ class WetterComTriggerTest {
     @Test
     fun outputHtmlContainsHourStates() {
         val currentState = WetterComState(now.minusDays(1))
-        currentState.addHour(HourState(0, 10.0, 0.11, 12.0, WindDirection.NORTH, 13.0, "Rain", "http://1"))
-        currentState.addHour(HourState(1, 14.0, 0.15, 16.0, WindDirection.SOUTH, 17.0, "Sun", "http://2"))
+        currentState += HourState(0, 10, null, 0.11, 12.0, WindDirection.NORTH, 13, null, null, "Rain", "http://1")
+        currentState += HourState(1, 14, null, 0.15, 16.0, WindDirection.SOUTH, 17, null, null, "Sun", "http://2")
         trigger.mergeStates(previousState, currentState) as WetterComState
         val reaction = Mockito.mock(Reaction::class.java)
         val output = trigger.output(reaction)

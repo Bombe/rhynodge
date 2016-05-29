@@ -4,6 +4,8 @@ import net.pterodactylus.rhynodge.Filter
 import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
+import net.pterodactylus.rhynodge.webpages.weather.HourState
+import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import net.pterodactylus.rhynodge.webpages.weather.toWindDirection
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
@@ -35,7 +37,7 @@ class WetterComFilter : Filter {
     private fun parseWetterComState(state: HtmlState): State {
         val dateTime = parseDateTime(state.document()) ?: return FailedState(IllegalArgumentException("no date present"))
         val wetterComState = WetterComState(dateTime)
-        parseHourStates(state.document()).forEach { wetterComState.addHour(it) }
+        parseHourStates(state.document()).forEach { wetterComState += it }
         return wetterComState
     }
 
@@ -52,37 +54,38 @@ class WetterComFilter : Filter {
     }
 
     private fun parseHourState(index: Int, hourElement: Element): HourState {
-        return HourState.atHour(index)
-                .temperature(parseTemperature(hourElement))
-                .rainProbability(parseRainProbability(hourElement))
-                .rainAmount(parseRainAmount(hourElement))
-                .windFrom(parseWindDirection(hourElement))
-                .at(parseWindSpeed(hourElement))
-                .describedAs(parseDescription(hourElement))
-                .withImage(parseImageUrl(hourElement))
-                .build()
+        return HourState(
+                hourIndex = index,
+                temperature = hourElement.temperature,
+                rainProbability = hourElement.rainProbability,
+                rainAmount = hourElement.rainAmount,
+                windDirection = hourElement.windDirection,
+                windSpeed = hourElement.windSpeed,
+                description = hourElement.description,
+                image = hourElement.imageUrl
+        )
     }
 
-    private fun parseTemperature(hourElement: Element) =
-            hourElement.extractText(".weather-strip__2 .item-weathericon .palm-hide").filter { (it >= '0') and (it <= '9') }.toDouble()
+    private val Element.temperature: Int
+        get() = extractText(".weather-strip__2 .item-weathericon .palm-hide").filter { (it >= '0') and (it <= '9') }.toInt()
 
-    private fun parseRainProbability(hourElement: Element) =
-            hourElement.extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(0)").filter { (it >= '0') and (it <= '9') }.toDouble() / 100.0
+    private val Element.rainProbability: Double
+        get() = extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(0)").filter { (it >= '0') and (it <= '9') }.toDouble() / 100.0
 
-    private fun parseRainAmount(hourElement: Element) =
-            hourElement.extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(1)").trim().split(" ").getOrNull(1)?.toDouble() ?: 0.0
+    private val Element.rainAmount: Double
+        get() = extractText(".weather-strip__3 .text--left:eq(0) .flag__body span:eq(1)").trim().split(" ").getOrNull(1)?.toDouble() ?: 0.0
 
-    private fun parseWindDirection(hourElement: Element) =
-            hourElement.extractText(".weather-strip__3 .text--left:eq(1) .flag__body span:eq(0)").trim().split(",")[0].toWindDirection()
+    private val Element.windDirection: WindDirection
+        get() = extractText(".weather-strip__3 .text--left:eq(1) .flag__body span:eq(0)").trim().split(",")[0].toWindDirection()
 
-    private fun parseWindSpeed(hourElement: Element) =
-            hourElement.extractText(".weather-strip__3 .text--left:eq(1) .flag__body span:eq(0)").split(Regex("[, ]+"))[1].toDouble()
+    private val Element.windSpeed: Int
+        get() = extractText(".weather-strip__3 .text--left:eq(1) .flag__body span:eq(0)").split(Regex("[, ]+"))[1].toInt()
 
-    private fun parseDescription(hourElement: Element) =
-            hourElement.extractText(".weather-strip__1 .vhs-text--small")
+    private val Element.description: String
+        get() = extractText(".weather-strip__1 .vhs-text--small")
 
-    private fun parseImageUrl(hourElement: Element) =
-            hourElement.select(".weather-strip__2 img").firstOrNull()?.attr("src") ?: ""
+    private val Element.imageUrl: String
+        get() = select(".weather-strip__2 img").firstOrNull()?.attr("src") ?: ""
 
     private fun Element.extractText(selector: String) = select(selector).firstOrNull()?.text() ?: ""
 

@@ -2,6 +2,7 @@ package net.pterodactylus.rhynodge.webpages.weather.wetterde
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import net.pterodactylus.rhynodge.states.AbstractState
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import java.time.Instant
 import java.time.ZoneId.of
 import java.time.ZonedDateTime

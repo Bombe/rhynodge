@@ -2,6 +2,7 @@ package net.pterodactylus.rhynodge.webpages.weather.wetterde
 
 import net.pterodactylus.rhynodge.Reaction
 import net.pterodactylus.rhynodge.State
+import net.pterodactylus.rhynodge.webpages.weather.HourState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
