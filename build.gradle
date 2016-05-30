@@ -93,4 +93,8 @@ war {
     dependsOn(test)
 }
 
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+}
+
 /* vim: set ts=4 sw=4 et: */
