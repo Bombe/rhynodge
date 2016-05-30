@@ -63,27 +63,27 @@ class WeatherTrigger : Trigger {
                 val showFeltTemperature = state.any { it.feltTemperature != null }
                 val showGustSpeed = state.any { it.gustSpeed != null }
                 val showHumidity = state.any { it.humidity != null }
-                state.forEach {
-                    div("weather-states") {
-                        div("header") {
-                            div { +"Time" }
-                            div { +"Temperature" }
-                            if (showHumidity) {
-                                div { +"feels like" }
-                            }
-                            div { +"Chance of Rain" }
-                            div { +"Amount" }
-                            div { +"Wind from" }
-                            div { +"Speed" }
-                            if (showGustSpeed) {
-                                div { +"Gusts" }
-                            }
-                            if (showHumidity) {
-                                div { +"Humidity" }
-                            }
-                            div { +"Description" }
-                            div { +"Image" }
+                div("weather-states") {
+                    div("header") {
+                        div { +"Time" }
+                        div { +"Temperature" }
+                        if (showHumidity) {
+                            div { +"feels like" }
                         }
+                        div { +"Chance of Rain" }
+                        div { +"Amount" }
+                        div { +"Wind from" }
+                        div { +"Speed" }
+                        if (showGustSpeed) {
+                            div { +"Gusts" }
+                        }
+                        if (showHumidity) {
+                            div { +"Humidity" }
+                        }
+                        div { +"Description" }
+                        div { +"Image" }
+                    }
+                    state.forEach {
                         div("hour-state") {
                             div("time") { +"%tH:%<tM".format(startTime.plus(it.hourIndex.toLong(), ChronoUnit.HOURS).toEpochMilli()) }
                             div("temperature") { +"${it.temperature} °C" }
