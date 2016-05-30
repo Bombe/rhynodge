@@ -93,4 +93,6 @@ war {
     dependsOn(test)
 }
 
+apply plugin: "jacoco"
+
 /* vim: set ts=4 sw=4 et: */
