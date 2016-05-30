@@ -20,9 +20,8 @@ class WeatherState(val service: String, val dateTime: ZonedDateTime) : AbstractS
     @JsonProperty("hours")
     val hours: List<HourState> = mutableListOf()
 
-    val timeMillis: Long
-        @JsonGetter("dateTime")
-        get() = dateTime.toInstant().toEpochMilli()
+    @get:JsonGetter("dateTime")
+    val timeMillis = dateTime.toInstant().toEpochMilli()
 
     operator fun plusAssign(hourState: HourState) {
         (hours as MutableList<HourState>).add(hourState)
