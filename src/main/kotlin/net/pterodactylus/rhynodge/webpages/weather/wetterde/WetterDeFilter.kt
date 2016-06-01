@@ -26,7 +26,7 @@ import java.util.Locale
 class WetterDeFilter : Filter {
 
     object DateParser {
-        val parser = DateTimeFormatter.ofPattern("dd. MMM yyyy").withLocale(Locale.GERMAN).withZone(ZoneId.of("Europe/Berlin"))
+        val parser = DateTimeFormatter.ofPattern("dd. MMMM yyyy").withLocale(Locale.GERMAN).withZone(ZoneId.of("Europe/Berlin"))
     }
 
     override fun filter(state: State): State {

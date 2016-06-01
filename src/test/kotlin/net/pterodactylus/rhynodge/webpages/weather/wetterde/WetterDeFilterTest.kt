@@ -45,7 +45,7 @@ class WetterDeFilterTest {
     fun filterCanParseDateCorrectly() {
         val htmlState = HtmlState(url, ResourceLoader.loadDocument(javaClass, "wetter.de.html", url))
         val wetterDeState = filter.filter(htmlState) as WeatherState
-        assertThat(wetterDeState.dateTime, `is`(ZonedDateTime.of(2016, 5, 30, 0, 0, 0, 0, ZoneId.of("Europe/Berlin"))))
+        assertThat(wetterDeState.dateTime, `is`(ZonedDateTime.of(2016, 6, 1, 0, 0, 0, 0, ZoneId.of("Europe/Berlin"))))
     }
 
     @Test
