@@ -30,6 +30,7 @@ import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.torrents.PirateBayFilter;
+import net.pterodactylus.rhynodge.queries.FallbackQuery;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
 
@@ -66,7 +67,10 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 
 	private static Query createHttpQuery(String searchTerms, String proxyHost, int proxyPort) {
 		try {
-			return new HttpQuery("http://uj3wazyk5u4hnvtk.onion/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
+			HttpQuery hiddenServiceQuery = new HttpQuery("http://uj3wazyk5u4hnvtk.onion/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
+			HttpQuery torQuery = new HttpQuery("http://thepiratebay.org/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0", proxyHost, proxyPort);
+			HttpQuery plainInternetQuery = new HttpQuery("http://thepiratebay.org/search/" + URLEncoder.encode(searchTerms, "UTF-8") + "/0/3/0");
+			return new FallbackQuery(hiddenServiceQuery, torQuery, plainInternetQuery);
 		} catch (UnsupportedEncodingException uee1) {
 			/* will not happen. */
 			return null;
