@@ -28,6 +28,7 @@ import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
+import net.pterodactylus.rhynodge.filters.SizeBlacklistFilter;
 import net.pterodactylus.rhynodge.filters.torrents.TorrentzEuFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
@@ -78,7 +79,7 @@ public class TorrentzEuWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.of(new HtmlFilter(), new TorrentzEuFilter(), createDefaultBlacklistFilter());
+		return ImmutableList.of(new HtmlFilter(), new TorrentzEuFilter(), createDefaultBlacklistFilter(), new SizeBlacklistFilter());
 	}
 
 	/**

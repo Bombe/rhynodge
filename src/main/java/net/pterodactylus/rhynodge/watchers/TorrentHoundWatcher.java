@@ -27,6 +27,7 @@ import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
+import net.pterodactylus.rhynodge.filters.SizeBlacklistFilter;
 import net.pterodactylus.rhynodge.filters.torrents.TorrentHoundFilter;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 import net.pterodactylus.rhynodge.triggers.NewTorrentTrigger;
@@ -77,7 +78,7 @@ public class TorrentHoundWatcher extends DefaultWatcher {
 	 * @return The filters of the watcher
 	 */
 	private static List<Filter> createFilters() {
-		return ImmutableList.of(new HtmlFilter(), new TorrentHoundFilter(), createDefaultBlacklistFilter());
+		return ImmutableList.of(new HtmlFilter(), new TorrentHoundFilter(), createDefaultBlacklistFilter(), new SizeBlacklistFilter());
 	}
 
 	/**
