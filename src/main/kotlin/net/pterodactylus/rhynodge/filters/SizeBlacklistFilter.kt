@@ -8,7 +8,7 @@ import net.pterodactylus.rhynodge.states.TorrentState
 /**
  * Blacklist that filters torrents with a certain size.
  */
-class SizeBlacklistFilter(private val blacklistedSizes: Iterable<String> = listOf("313.97 MiB", "331.97 MiB")): Filter {
+class SizeBlacklistFilter(private val blacklistedSizes: Iterable<String> = listOf("313.97 MiB", "331.97 MiB", "716.05 MiB")): Filter {
 
 	override fun filter(state: State): State {
 		val torrentState = state as? TorrentState ?: return FailedState()
