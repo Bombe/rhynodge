@@ -43,14 +43,14 @@ public class SaturdayMorningBreakfastCerealComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		String imageUrl = document.select("img#comic").get(0).attr("src");
+		String imageUrl = document.select("img#cc-comic").get(0).attr("src");
 		String afterImageUrl = document.select("#aftercomic img").attr("src");
 		return FluentIterable.from(Arrays.asList(imageUrl, afterImageUrl)).filter(url -> url.length() > 0).toList();
 	}
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
-		String imageComment = document.select("img#comic").get(0).attr("title");
+		String imageComment = document.select("img#cc-comic").get(0).attr("title");
 		return Arrays.asList(imageComment, "");
 	}
 

@@ -1,27 +1,80 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head><script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-3727700-1', 'auto');
-    ga('send', 'pageview');
 
-</script>
+<!DOCTYPE html>
+<html>
+<head>
+
+    <link href="/comiccontrol/defaultstyles.css" rel="stylesheet" type="text/css" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Saturday Morning Breakfast Cereal</title>
-    <link href="smbc.css" rel="stylesheet" type="text/css" />
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+
+    <title>Saturday Morning Breakfast Cereal - Moody</title>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-3727700-1', 'auto');
+        ga('send', 'pageview');
+        /*
+         var _paq = _paq || [];
+         _paq.push(['trackPageView']);
+         _paq.push(['enableLinkTracking']);
+         (function()
+         {
+         var u="//buzz.thehiveworks.com/";
+         _paq.push(['setTrackerUrl', u+'piwik.php']);
+         _paq.push(['setSiteId', 7]);
+         var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+         g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
+         })();
+         */
+        function getBlock(name) {
+            if (document.getElementById(name)) {
+                return document.getElementById(name);
+            } else if (document.all) {
+                return document.all[name];
+            } else if (document.layers) {
+                return document.layers[name];
+            }
+        }
+        function getStyle(name) {
+            return getBlock(name).style;
+        }
+
+        function hideBlock(name) {
+            getStyle(name).display="none";
+        }
+
+        function showBlock(name) {
+            getStyle(name).display="";
+        }
+        function toggleBlock(name){
+            if(getStyle(name).display == "none"){
+                showBlock(name);
+            }else{
+                hideBlock(name);
+            }
+        }
+    </script>
+    <script type = "text/javascript" src = "//b.thehiveworks.com/optional/pb-smbc-comics.js" async></script>
+
+    <link href="/smbc.css" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="alternate" type="application/rss+xml"
+          title="RSS Feed for smbc-comics.com"
+          href="//www.smbc-comics.com/rss.php" />
     <script>
         function getLink(matchClass) {
             var elems = document.getElementsByTagName('a'), i;
             var linkname = "";
             for (i in elems) {
                 if(((' ' + elems[i].className + ' ').indexOf(' ' + matchClass + ' ')
-                        > -1) && (linkname == "")) {
+                    > -1) && (linkname == "")) {
                     linkname = elems[i].href;
                 }
             }
@@ -38,171 +91,220 @@
         }
 
         function randomPressed() {
-            window.location = "http://smbc-comics.com/index.php?id=3346";
+            window.location = "//smbc-comics.com/index.php?id=4377";
         }
 
         document.onkeydown = function(evt) {
             evt = evt || window.event;
-            switch (evt.keyCode) {
-                case 37:
-                    leftArrowPressed();
-                    break;
-                case 89:
-                    leftArrowPressed();
-                    break;
-                case 90:
-                    leftArrowPressed();
-                    break;
-                case 39:
-                    rightArrowPressed();
-                    break;
-                case 67:
-                    rightArrowPressed();
-                    break;
-                case 86:
-                    toggleBlock('aftercomic');
-                    break;
-                case 88:
-                    randomPressed();
-                    break;
+
+            if (evt.altKey || evt.shiftKey || evt.ctrlKey || evt.metaKey){
+                return;
+            }else{
+                switch (evt.keyCode) {
+                    case 37:
+                        leftArrowPressed();
+                        break;
+                    case 89:
+                        leftArrowPressed();
+                        break;
+                    case 90:
+                        leftArrowPressed();
+                        break;
+                    case 39:
+                        rightArrowPressed();
+                        break;
+                    case 67:
+                        rightArrowPressed();
+                        break;
+                    case 86:
+                        toggleBlock('aftercomic');
+                        break;
+                    case 88:
+                        randomPressed();
+                        break;
+                }
             }
         };
 
     </script>
-    <!-- End Project Wonderful Ad Box Loader -->
-</head>
+
+    <script src="/comiccontrol/includes/ccscripts.js"></script></head>
 <body>
-<div id="header">
-    <a id="logo" href="index.php"></a>
-    <div id="leaderboard"><iframe id='aeb4facd' name='aeb4facd' src='http://162.218.115.228/delivery/afr.php?n=aeb4facd&amp;zoneid=142&amp;target=_blank&amp;cb=INSERT_RANDOM_NUMBER_HERE' frameborder='0' scrolling='no' width='728' height='90' allowtransparency='true'><a href='http://162.218.115.228/delivery/ck.php?n=a613cf58&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://162.218.115.228/delivery/avw.php?zoneid=142&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a613cf58' border='0' alt='' /></a></iframe>
-        <script type='text/javascript' src='http://162.218.115.228/delivery/ag.php'></script></div>
-    <div id="menu">
-        <a href="archives.php" id="archives"></a>
-        <a href="mailto:zach@smbc-comics.com" id="contact"></a>
-        <a href="http://www.smbc-comics.com/smbcforum" id="forum"></a>
-        <a href="http://smbc.myshopify.com/" id="store"></a>
-    </div>
-    <a id="patreon" href="http://www.patreon.com/ZachWeinersmith"></a>
-</div>
+<!-- OnScroll tag: smbc-comics -->
+<!--<script src="//tags.onscroll.com/385625a0-6ab8-4c1b-8a1d-e31e57b835dc/tag.min.js" async defer></script>
+<script src="//ap.lijit.com/www/sovrn_beacon_standalone/sovrn_standalone_beacon.js?iid=8862344&uid=antares" id="sBeacon"></script>
+-->
 <div id="wrapper">
-    <div id="comicleft"><div id="navtop">
-        <div class="nav"><a href="/index.php?id=1" class="first" rel="start"></a><a href="/index.php?id=3724" class="prev" rel="prev"></a><a href="http://smbc-comics.com/rss.php" class="rss" rel="rss"></a><div class="navspace2"><div class="nextdis"></div><div class="lastdis"></div></div></div>    <div class="navmid"><a class="midprev" href="index.php?id=3724"></a><a class="random" href="index.php?id=3346"></a><a class="midnext"></a></div>
-    </div>
+    <div id="header">
+        <a id="logo" href="/index.php"><img src="/images/moblogo.png" class="desktophide" alt="Logo" /></a>
+        <a id="mobfacebook" href="https://www.facebook.com/smbccomics"> <img src="/images/mobfacebook.png" alt="FaceBook" /></a><a id="mobtwitter" href="https://twitter.com/ZachWeiner"><img src="/images/mobtwitter.png" alt="Twitter" /></a><a id="mobtumblr" href="//smbc-comics.tumblr.com/"><img src="/images/mobtumblr.png" alt="Tumblr" /></a>
         <div style="clear:both;"></div>
-        <div id="comicbody"><img title="And they say there&#39;s no use for a liberal arts degree!" src="comics/1430750631-20150504.png" id="comic" border="0" /><br /></a></div><div style="clear:both;"></div>
-        <div id="navbottom">
-            <div class="nav"><a href="/index.php?id=1" class="first" rel="start"></a><a href="/index.php?id=3724" class="prev" rel="prev"></a><a href="http://smbc-comics.com/rss.php" class="rss" rel="rss"></a><div class="navspace2"><div class="nextdis"></div><div class="lastdis"></div></div></div>    <div class="navmid"><a class="midprev" href="index.php?id=3724"></a><a class="random" href="index.php?id=3346"></a><a class="midnext"></a></div>
+        <div id="mobad1" class="desktophide">
         </div>
-        <div id="ibar"></div>
-        <script src="http://cdn.thehiveworks.com/jumpbar.js"></script>
-        <div id="sharewrap">
-            <div id="sharebuttons">
-                <a id="twittershare"  onclick="window.open('https://twitter.com/share?url=http://smbc-comics.com/index.php?id=3725&text=Saturday Morning Breakfast Cereal%20%23smbc%20%23hiveworks','name','width=600,height=400')"></a><a id="facebookshare" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.smbc-comics.com%2F%3Fid%3D3725&t=Saturday+Morning+Breakfast+Cereal','name','width=600,height=400')"></a><a id="redditshare" onclick="window.location = '//www.reddit.com/submit?url=www.smbc-comics.com%2F%3Fid%3D3725'; return false"></a><a id="pinterestshare" onclick="window.open('http://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.smbc-comics.com%2F%3Fid%3D3725&media=http%3A%2F%2Fwww.smbc-comics.com%2Fcomics%2F1430750631-20150504.png&description=Saturday%20Morning%20Breakfast%20Cereal','name','width=600,height=400')"></a><a id="stumbleuponshare" onclick="window.open('http://www.stumbleupon.com/badge/?url=http%3A%2F%2Fwww.smbc-comics.com%2F%3Fid%3D3725%23comic','name','width=600,height=400')"></a>
-            </div>
-            <script>
 
-                function getBlock(name) {
-                    if (document.getElementById) {
-                        return document.getElementById(name);
-                    } else if (document.all) {
-                        return document.all[name];
-                    } else if (document.layers) {
-                        return document.layers[name];
-                    }
-                }
-                function getStyle(name) {
-                    return getBlock(name).style;
-                }
+        <div id="mobheaderclr" class="desktophide">&nbsp;</div>
+        <div id="menu" class="mobilehide"><a id="archive" href="/comic/archive"></a><a id="forum" href="//www.smbc-comics.com/smbcforum">
+        </a>
+            <a id="store" href="//hivemill.com/collections/smbc"></a>
+            <a id="facebook" href="https://www.facebook.com/smbccomics"></a><a id="rss" href="/rss.php"></a></div>
 
-                function hideBlock(name) {
-                    getStyle(name).display="none";
-                }
-
-                function showBlock(name) {
-                    getStyle(name).display="";
-                }
-
-                function toggleBlock(name){
-                    if(getStyle(name).display == "none"){
-                        showBlock(name);
-                    }else{
-                        hideBlock(name);
-                    }
-                }
-            </script><a id="extracomic" onclick='toggleBlock("aftercomic")'></a>
-            <div id="aftercomic" onclick='toggleBlock("aftercomic")' style="display:none;">
-                <img src='http://smbc-comics.com/comics/1430750631-20150504after.png'>
-            </div>
+        <div id="boardleader" class="mobilehide">
+            <ins data-revive-zoneid="142" data-revive-id="c1983f6607c69b6f23252f0cbc167ac1"></ins>
         </div>
-        <div style="clear:both; width:700px; height:50px;"></div>
-        <div id="blogarea">
-            <div id="blogtop"></div>
-            <div id="newsarea"><div class="cc-newscontent"><div class="cc-publishtime">May 4, 2015<br /></div><p>&nbsp;Oh, that? That&#39;s just ALL OF STARPOCALYPSE FOR FREE!</p>
+
+        <a id="patreon" href="https://www.patreon.com/ZachWeinersmith?ty=h" class="mobilehide"></a>
+    </div>
+
+    <div id="mainwrap">
+        <div id="comicleft"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+            <script src="/clipboard/clipboard.min.js"></script>
+            <div id="navtop">
+                <div class="nav"><a href="http://www.smbc-comics.com/comic/2002-09-05" class="first" rel="start"></a><a href="http://www.smbc-comics.com/comic/reasoning" class="prev" rel="prev"></a><a href="http://www.smbc-comics.com/random.php" class="navaux" rel="rss"></a><a href="http://www.smbc-comics.com/comic/press" class="next" rel="next"></a><a href="http://www.smbc-comics.com/comic/ants" class="last" rel="index"></a></div></div>
+            <a href="//smbc-comics.com/soonish/" style="width:684px; margin: 0 auto; display:block;"><img src="/images/soonishcomicad.png" /></a><div id="cc-comicbody"><a href="http://www.smbc-comics.com/comic/press"><img src="http://www.smbc-comics.com/comics/1496144390-soonish6 (1).png" title="It&#39;s not an old man rant if you put it in the mouths of children!" id="cc-comic" border="0" /><br /></a></div>	    <script type="text/javascript" src="/showkickstarter.js" /></script>
+            <div id="navbottom"><div class="nav"><a href="http://www.smbc-comics.com/comic/2002-09-05" class="first" rel="start"></a><a href="http://www.smbc-comics.com/comic/reasoning" class="prev" rel="prev"></a><a href="http://www.smbc-comics.com/random.php" class="navaux" rel="rss"></a><a href="http://www.smbc-comics.com/comic/press" class="next" rel="next"></a><a href="http://www.smbc-comics.com/comic/ants" class="last" rel="index"></a></div>
+                <a id="extracomic" onclick='toggleBlock("aftercomic")' class="mobilehide"></a>
+                <div id="aftercomic" onclick='toggleBlock("aftercomic")' style="display:none;" class="mobilehide">
+                <img src='//smbc-comics.com/comics/1496144435-soonish6after.png'>
+                </div>
+                </div>
+                <div id="buythis" style="">
+                <a href="//hivemill.com/products/smbc-print-pages?&podurl=%2F%2Fwww.smbc-comics.com%2Findex.php%3Fid%3D4507"><img src="/images/printme.png" id="buythisimg" /></a>
+                </div>
+
+
+                <button id="mobilepermalink" class="desktophide" data-clipboard-text="http://smbc-comics.com/comic/moody">Tap to copy a permalink!</button>
+            <div id="permalink" class="mobilehide"><label>Permalink for sharing!</label><input id="permalinktext" type="text" value="http://smbc-comics.com/comic/moody" /></div>
+                <div id="ibar"></div>
+                <div id="sharemob" class="desktophide"><div id="share"><img src="/images/mobshare.png" /></div><a id="facebookshare" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody&t=Saturday+Morning+Breakfast+Cereal','name','width=600,height=400')"><img src="/images/mobfacebookshare.png" /></a><a id="twittershare"  onclick="window.open('https://twitter.com/share?url=http://smbc-comics.com/comic/moody&text=Saturday Morning Breakfast Cereal%20%23smbc%20%23hiveworks','name','width=600,height=400')"><img src="/images/mobtwittershare.png" /></a><a id="redditshare" onclick="window.location = 'http://www.reddit.com/submit?url=www.smbc-comics.com%2Fcomic%2Fmoody'; return false"><img src="/images/mobredditshare.png" /></a><a id="pinterestshare" onclick="window.open('http://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody&media=http%3A%2F%2Fwww.smbc-comics.com%2Fcomics%2F1496144390-soonish6 (1).png&description=Saturday%20Morning%20Breakfast%20Cereal','name','width=600,height=400')"><img src="/images/mobpinterestshare.png" /></a><a id="stumbleuponshare" onclick="window.open('http://www.stumbleupon.com/badge/?url=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody%23comic','name','width=600,height=400')"><img src="/images/mobstumbleuponshare.png" /></a><a id="extracomic" onclick='toggleBlock("mobaftercomic")'><img src="/images/mobbutton.png" /></a> </div>
+                <div id="mobaftercomic" onclick='toggleBlock("mobaftercomic")' style="display:none;">
+                <img src='//smbc-comics.com/comics/1496144435-soonish6after.png'>
+                </div>
+
+                <div id="sharebar" class="mobilehide"><div id="sharebaricons"><a id="facebookshare" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody&t=Saturday+Morning+Breakfast+Cereal','name','width=600,height=400')"></a><a id="twittershare"  onclick="window.open('https://twitter.com/share?url=http://smbc-comics.com/comic/moody&text=Saturday Morning Breakfast Cereal%20%23smbc%20%23hiveworks','name','width=600,height=400')"></a><a id="redditshare" onclick="window.location = 'http://www.reddit.com/submit?url=www.smbc-comics.com%2Fcomic%2Fmoody'; return false"></a><a id="pinterestshare" onclick="window.open('http://www.pinterest.com/pin/create/button/?url=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody&media=http%3A%2F%2Fwww.smbc-comics.com%2Fcomics%2F1496144390-soonish6 (1).png&description=Saturday%20Morning%20Breakfast%20Cereal','name','width=600,height=400')"></a><a id="stumbleuponshare" onclick="window.open('http://www.stumbleupon.com/badge/?url=http%3A%2F%2Fwww.smbc-comics.com%2Fcomic%2Fmoody%23comic','name','width=600,height=400')"></a></div></div>
+                <div id="blogheader" class="mobilehide"></div>
+                <div id="blogarea" class="mobilehide">
+                <div class="cc-newsarea"><div class="cc-publishtime">May 31, 2017<br /></div><div class="cc-newsbody"><p>Thanks for buying, geeks! For this project in particular, it means a lot to us. For those of you who somehow haven't seen me mention <a href="http://smbc-comics.com/soonish/">the book</a>, here's a little comic exlpainer:</p>
+            <p><a href="http://smbc-comics.com/soonish/"><img src="http://smbc-comics.com/soonish/images/comic4.png" width="828" alt="" height="2066" /></a></p><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div><div class="cc-publishtime">May 31, 2017<br /></div><div class="cc-newsbody"><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div><div class="cc-publishtime">May 30, 2017<br /></div><div class="cc-newsbody"><p>Just a few days left to submit your <a href="http://sydney.bahfest.com/">BAHFest Sydney</a>&nbsp;proposal!</p><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div><div class="cc-publishtime">May 29, 2017<br /></div><div class="cc-newsbody"><p><iframe src="https://www.youtube.com/embed/0labEAJYw7g" width="560" height="315" frameborder="0" allowfullscreen="allowfullscreen"></iframe></p>
                 <p>&nbsp;</p>
-                <p><iframe width="400" height="225" src="https://www.youtube.com/embed/9LvJ7B29UpM" frameborder="0" allowfullscreen=""></iframe></p></div><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div><div class="cc-newscontent"><div class="cc-publishtime">May 3, 2015<br /></div></div><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div><div class="cc-newscontent"><div class="cc-publishtime">May 2, 2015<br /></div></div><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div><div class="cc-newscontent"><div class="cc-publishtime">May 1, 2015<br /></div></div><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div><div class="cc-newscontent"><div class="cc-publishtime">April 30, 2015<br /></div></div><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div></div>
-        <div id="blogright">
-            <div id="newinstore">
-                <div id="storetop"></div>
-                <a href="http://smbc.myshopify.com/collections/frontpage/products/marxist-shirt"><img src="http://i.imgur.com/T9BvdED.png" /></a><a href="http://smbc.myshopify.com/collections/frontpage/products/science-shirt"><img src="images/store shirt5.png" /></a>    </div>
-            <div id="videosandstuff"><iframe src="//player.vimeo.com/video/81175630
-" width="300" height="206" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="margin-top:110px; margin-left:28px;"></iframe></div>
+            <p>And there are just a few days left to get in your <a href="http://sydney.bahfest.com/">BAHFest Sydney</a>&nbsp;proposal!</p><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div><div class="cc-publishtime">May 28, 2017<br /></div><div class="cc-newsbody"><div style="padding:10px;clear:both;"><a href="http://www.smbc-comics.com/smbcforum/viewforum.php?f=40">Discuss this comic in the forum</a></div></div></div></div>
+
+            <a id="extracomic" onclick='toggleBlock("aftercomic")' class="desktophide"></a>
+                <script>
+                new Clipboard('#mobilepermalink');
+
+            $('#mobilepermalink').click(function(){
+                $(this).html('Permalink copied to clipboard!');
+            });
+            </script>
+
+
+            <div id="mobilemenu">
+                <div style="clear:both;"></div>
+
+                <div style="clear:both;"></div>
+
+                <a href="//www.thehiveworks.com/" id="mobhiveworks"><img src="/images/mobhiveworks.png" /></a>
+                <a href="https://www.patreon.com/ZachWeinersmith?ty=h" id="mobpatreon"><img src="/images/mobpatreon.png" /></a>
+                <a href="http://www.smbc-comics.com/comic/archive" id="mobarchive"><img src="/images/mobarchive.png" /></a><a href="http://www.smbc-comics.com/smbcforum" id="mobforum"><img src="/images/mobforum.png" /></a>
+                <a href="//hivemill.com/collections/smbc" id="mobstore"><img src="/images/mobstore.png" /></a>
+                <div style="clear:both; height:10px;"></div>
+            </div>
+
+            <script src="//cdn.thehiveworks.com/jumpbar.js"></script>
         </div>
 
-        <div style="clear:both; width:750px;height:20px;"></div>
-        <div id="footer">
-            <a id="footarchives" href="archives.php"></a><a id="footcontact" href="mailto:zach@smbc-comics.com"></a><a id="footforum" href="http://www.smbc-comics.com/smbcforum"></a><a id="footstore" href="http://smbc.myshopify.com/"></a><a id="foothome" href="index.php"></a><a id="footrss" href="rss.php"></a><a id="footprivacy" href="privacy.php"></a><a id="footdomain" href="index.php"></a>
-        </div>
-    </div>
-    <div id="rightside">
-        <div id="boxad"><iframe id='ac4bea1c' name='ac4bea1c' src='http://162.218.115.228/delivery/afr.php?n=ac4bea1c&amp;zoneid=143&amp;target=_blank&amp;cb=INSERT_RANDOM_NUMBER_HERE' frameborder='0' scrolling='no' width='300' height='250' allowtransparency='true'><a href='http://162.218.115.228/delivery/ck.php?n=a72c4e2c&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://162.218.115.228/delivery/avw.php?zoneid=143&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=a72c4e2c' border='0' alt='' /></a></iframe>
-            <script type='text/javascript' src='http://162.218.115.228/delivery/ag.php'></script></div>
-        <div id="linkarea">
-            <div id="linksleft">
-                <div><a href="http://zachweinersmith.tumblr.com/">Tumblr</a></div>
-                <div>&nbsp;</div>
-                <div><a href="http://cereales.lapin.org/">SMBC en Francais</a></div>
-                <div class="linkdiv">&nbsp;</div>
-                <div class="linkdiv"><a href="http://bahfest.com/">BAHFest</a></div>
-                <div class="linkdiv">&nbsp;</div>
-                <div><a href="http://www.weinersmith.com/">WEINERSMITH</a><a href="http://www.weinersmith.com/"><br />
-                    <br />
-                </a></div>
-                <div><a href="http://www.weeklyweinersmith.com/">WEEKLY WEINERSMITH</a></div>
-                <div class="linkdiv">&nbsp;</div>
-                <div><a href="http://www.theweinerworks.com/">THE WEINERWORKS</a></div>                <a href="http://www.thehiveworks.com/" id="hiveworks"></a>
-            </div>
-            <div id="linksright">
-                <a href="mailto:zach@smbc-comics.com">EMAIL ZACH</a>
-                <a href="http://www.facebook.com/smbccomics">FACEBOOK FAN CLUB</a>
-            </div>
-            <a href="https://www.facebook.com/smbccomics" id="smbconfacebook"></a>
-            <div id="upcoming">
-                <img src="images/upcomingappearances.jpg" /><br />
-                <p style="text-align: center;"><b>BAHFest West 2015</b></p>
-                <p style="text-align: center;">Oct 22, San Francisco</p>
-                <p style="text-align: center;"><strong>BAHFest East 2015</strong></p>
-                <p style="text-align: center;">September 19, MIT</p>
-                <p style="text-align: center;"><strong>BAHFest Seattle 2015</strong></p>
-                <p style="text-align: center;">Date TBD, Seattle</p>            </div>
-        </div>
-        <a id="zachontwitter" href="https://twitter.com/ZachWeiner"></a>
-        <div id="twitterbox">
-            <a class="twitter-timeline" width="355px" href="https://twitter.com/ZachWeiner"  data-widget-id="352280515333746688">Tweets by @ZachWeiner</a>
-            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-        </div>
-        <div id="towerarea">
-            <div class="tower"><iframe id='a2150812' name='a2150812' src='http://162.218.115.228/delivery/afr.php?n=a2150812&amp;zoneid=144&amp;target=_blank&amp;cb=INSERT_RANDOM_NUMBER_HERE' frameborder='0' scrolling='no' width='160' height='600' allowtransparency='true'><a href='http://162.218.115.228/delivery/ck.php?n=abf320e5&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://162.218.115.228/delivery/avw.php?zoneid=144&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=abf320e5' border='0' alt='' /></a></iframe>
-                <script type='text/javascript' src='http://162.218.115.228/delivery/ag.php'></script></div>
-            <div class="tower">
-                <!--/* SMBC 160x600 Lower */-->
+        <div id="comicright" class="mobilehide">
 
-                <iframe id='aed1444f' name='aed1444f' src='http://162.218.115.228/delivery/afr.php?n=aed1444f&amp;zoneid=145&amp;target=_blank&amp;cb=INSERT_RANDOM_NUMBER_HERE' frameborder='0' scrolling='no' width='160' height='600' allowtransparency='true'><a href='http://162.218.115.228/delivery/ck.php?n=adc7f5c4&amp;cb=INSERT_RANDOM_NUMBER_HERE' target='_blank'><img src='http://162.218.115.228/delivery/avw.php?zoneid=145&amp;cb=INSERT_RANDOM_NUMBER_HERE&amp;n=adc7f5c4' border='0' alt='' /></a></iframe>
-                <script type='text/javascript' src='http://162.218.115.228/delivery/ag.php'></script>
+            <div id="boxad1">
+                <ins data-revive-zoneid="143" data-revive-id="c1983f6607c69b6f23252f0cbc167ac1"></ins>
+            </div>
+
+            <div id="linkarea">
+                <div id="linkarealeft">
+                    <a id="weinerworks" href="//www.theweinerworks.com/"></a>
+                    <div id="sociallinks">
+                        <a href="https://twitter.com/ZachWeiner"></a>
+                        <a href="//smbc-comics.tumblr.com/"></a>
+                    </div>
+                    <p><a href="http://smbc-comics.com/soonish/">SOONISH</a></p>
+                    <p><a href="https://www.amazon.co.uk/Soonish-Emerging-Technologies-Improve-Everything/dp/1846148995/ref=sr_1_1?ie=UTF8&amp;qid=1489151548&amp;sr=8-1&amp;keywords=soonish">SOONISH (UK)</a></p>
+                    <p><a href="https://www.reddit.com/r/SMBCComics/">SMBC on Reddit</a></p>
+                    <p><a href="http://cereales.lapin.org/">SMBC en Fran&ccedil;ais</a></p>
+                    <p><a href="http://www.bahfest.com/">BAHfest</a></p>
+                    <p><a href="http://www.weinersmith.com/">Weinersmith</a></p>
+                    <p><a href="http://www.weeklyweinersmith.com/">Weekly Weinersmith</a></p>
+                    <p><a href="http://www.theweinerworks.com">The Weinerworks</a><br /><a href="http://www.theweinerworks.com">(Book reviews)</a></p>
+                </div>
+                <div id="linkarearight">
+                    <div id="contact"></div>
+                    <p><a href="mailto:zach@smbc-comics.com">Email</a></p>
+                    <p><a href="https://www.facebook.com/smbccomics">Facebook Fan Club</a></p>
+                    <div id="appearances"></div>
+                    <p style="text-align: center;"><a href="http://london.bahfest.com">BAHFest London 2017</a><br /><a href="http://london.bahfest.com">@ Imperial College</a><br /><a href="http://london.bahfest.com">March 25, 2017</a></p>
+                    <p style="text-align: center;"><a href="http://east.bahfest.com">BAHFest MIT 2017</a><br /><a href="http://east.bahfest.com">@ Kresge Auditorium</a><br /><a href="http://east.bahfest.com">April 23,&nbsp;2017</a></p>                </div>
+            </div>
+            <div style="clear:both;"></div>
+            <!--<div style="width:339px;height:50px;margin-left:10px;margin-bottom:5px;"><a href="//www.marecomic.com/comic/intro-page-1/?r=smbc"><img src="/images/mareinternvm-339x50.png"></a></div>-->
+            <a href="//www.thehiveworks.com" id="hiveworks"></a>
+            <div id="boxad2">
+                <ins data-revive-zoneid="240" data-revive-id="c1983f6607c69b6f23252f0cbc167ac1"></ins>
+            </div>
+
+            <div id="newinstoreheader"></div>
+            <div id="newinstore"><a href="http://hivemill.com/collections/smbc/products/gentlemans-monocle"><img src="http://www.smbc-comics.com/images/SMBC-hivemill-monocle.png" /></a></div>
+            <div id="hobbits">
+                <div class="tower">
+                    <ins data-revive-zoneid="145" data-revive-id="c1983f6607c69b6f23252f0cbc167ac1"></ins>
+                </div>
+                <div class="tower">
+                    <ins data-revive-zoneid="144" data-revive-id="c1983f6607c69b6f23252f0cbc167ac1"></ins>
+                </div>
             </div>
         </div>
         <div style="clear:both;"></div>
+
+        <div id="mobilefooter">
+            <a id="mobweinerworks" href="//www.theweinerworks.com/"><img src="/images/mobweinerworks.png" /></a>
+            <a href="mailto:zach@smbc-comics.com" id="mobcontact"><img src="/images/mobcontact.png" /></a>
+            <div id="mobcopyright"><img src="/images/mobcopyright.png" />
+
+            </div>
+            <div style="clear:both;"></div>
+        </div>
     </div>
-    <div style="clear:both;"></div>
+    <div id="footer" class="mobilehide">
+        <a id="footerarchive" href="http://www.smbc-comics.com/comic/archive"><a id="footerforum" href="//www.smbc-comics.com/smbcforum"></a>
+            <a id="footerstore" href="//hivemill.com/collections/smbc"></a>
+            <a id="footerfacebook" href="https://www.facebook.com/smbccomics"></a><a id="footerrss" href="http://www.smbc-comics.com/rss.php"></a><a id="privacy" href="http://www.smbc-comics.com/privacy.php"></a>
+            <a href="javascript:buildreportform();">Report an AD problem</a>
+    </div>
+
 </div>
+<!-- Quantcast Tag -->
+<script type="text/javascript">
+    var _qevents = _qevents || [];
+
+    (function() {
+        var elem = document.createElement('script');
+        elem.src = (document.location.protocol == "https:" ? "https://secure" : "http://edge") + ".quantserve.com/quant.js";
+        elem.async = true;
+        elem.type = "text/javascript";
+        var scpt = document.getElementsByTagName('script')[0];
+        scpt.parentNode.insertBefore(elem, scpt);
+    })();
+
+    _qevents.push({
+        qacct:"p-q7HpATVu6wS12"
+    });
+</script>
+
+<noscript>
+    <div style="display:none;">
+
+
+    </div>
+</noscript>
+<!-- End Quantcast tag -->
+
 </body>
 </html>

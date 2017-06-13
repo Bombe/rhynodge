@@ -42,9 +42,9 @@ public class SaturdayMorningBreakfastCerealComicFilterTest {
 		Comic comic = comicState.comics().get(0);
 		MatcherAssert.assertThat(comic.title(), Matchers.is(""));
 		MatcherAssert.assertThat(comic.strips(), Matchers.hasSize(2));
-		MatcherAssert.assertThat(comic.strips().get(0).imageUrl(), Matchers.is("http://www.smbc-comics.com/comics/1430750631-20150504.png"));
-		MatcherAssert.assertThat(comic.strips().get(0).comment(), Matchers.is("And they say there's no use for a liberal arts degree!"));
-		MatcherAssert.assertThat(comic.strips().get(1).imageUrl(), Matchers.is("http://smbc-comics.com/comics/1430750631-20150504after.png"));
+		MatcherAssert.assertThat(comic.strips().get(0).imageUrl(), Matchers.is("http://www.smbc-comics.com/comics/1496144390-soonish6%20(1).png"));
+		MatcherAssert.assertThat(comic.strips().get(0).comment(), Matchers.is("It's not an old man rant if you put it in the mouths of children!"));
+		MatcherAssert.assertThat(comic.strips().get(1).imageUrl(), Matchers.is("http://smbc-comics.com/comics/1496144435-soonish6after.png"));
 		MatcherAssert.assertThat(comic.strips().get(1).comment(), Matchers.is(""));
 	}
 
