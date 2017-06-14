@@ -1,5 +1,9 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+
 import java.io.IOException;
 
 import net.pterodactylus.rhynodge.Filter;
@@ -9,7 +13,6 @@ import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
 import net.pterodactylus.rhynodge.states.HtmlState;
 
-import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
@@ -32,20 +35,20 @@ public class SaturdayMorningBreakfastCerealComicFilterTest {
 	@Test
 	public void htmlCanBeParsed() {
 		State state = smbcFilter.filter(htmlState);
-		MatcherAssert.assertThat(state, Matchers.instanceOf(ComicState.class));
+		assertThat(state, Matchers.instanceOf(ComicState.class));
 	}
 
 	@Test
 	public void comicIsParsedCorrectly() {
 		ComicState comicState = (ComicState) smbcFilter.filter(htmlState);
-		MatcherAssert.assertThat(comicState.comics(), Matchers.hasSize(1));
+		assertThat(comicState.comics(), hasSize(1));
 		Comic comic = comicState.comics().get(0);
-		MatcherAssert.assertThat(comic.title(), Matchers.is(""));
-		MatcherAssert.assertThat(comic.strips(), Matchers.hasSize(2));
-		MatcherAssert.assertThat(comic.strips().get(0).imageUrl(), Matchers.is("http://www.smbc-comics.com/comics/1496144390-soonish6%20(1).png"));
-		MatcherAssert.assertThat(comic.strips().get(0).comment(), Matchers.is("It's not an old man rant if you put it in the mouths of children!"));
-		MatcherAssert.assertThat(comic.strips().get(1).imageUrl(), Matchers.is("http://smbc-comics.com/comics/1496144435-soonish6after.png"));
-		MatcherAssert.assertThat(comic.strips().get(1).comment(), Matchers.is(""));
+		assertThat(comic.title(), is(""));
+		assertThat(comic.strips(), hasSize(2));
+		assertThat(comic.strips().get(0).imageUrl(), is("http://www.smbc-comics.com/comics/1496144390-soonish6%20(1).png"));
+		assertThat(comic.strips().get(0).comment(), is("It's not an old man rant if you put it in the mouths of children!"));
+		assertThat(comic.strips().get(1).imageUrl(), is("http://smbc-comics.com/comics/1496144435-soonish6after.png"));
+		assertThat(comic.strips().get(1).comment(), is(""));
 	}
 
 }
