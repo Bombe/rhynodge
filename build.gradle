@@ -81,11 +81,13 @@ task createVersion() {
 
 
 import org.ajoberstar.grgit.Grgit
-createVersion << {
-    def gitRepo = Grgit.open(".")
-    version = gitRepo.describe()
-    new File("src/generated/resources").mkdirs()
-    new File("src/generated/resources/version.txt").withWriter() { it.write(version) }
+createVersion {
+    doLast {
+        def gitRepo = Grgit.open(".")
+        version = gitRepo.describe()
+        new File("src/generated/resources").mkdirs()
+        new File("src/generated/resources/version.txt").withWriter() { it.write(version) }
+    }
 }
 
 war {
