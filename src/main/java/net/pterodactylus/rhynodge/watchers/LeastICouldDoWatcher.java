@@ -66,7 +66,7 @@ public class LeastICouldDoWatcher extends DefaultWatcher {
 
 			@Override
 			protected Optional<String> extractUrl(Document document) {
-				Elements linkTag = document.select("a#feature-comic");
+				Elements linkTag = document.select("a#latest-comic");
 				return linkTag.hasAttr("href") ? Optional.of(linkTag.attr("href")) : Optional.<String>absent();
 			}
 		});
