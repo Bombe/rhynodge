@@ -16,7 +16,7 @@ import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 public class BusinessCatWatcher extends DefaultWatcher {
 
 	public BusinessCatWatcher() {
-		super(new HttpQuery("http://www.businesscat.happyjar.com/"), Arrays.asList(new HtmlFilter(), new BusinessCatComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("https://www.businesscatcomic.com/"), Arrays.asList(new HtmlFilter(), new BusinessCatComicFilter()), new NewComicTrigger());
 	}
 
 }
