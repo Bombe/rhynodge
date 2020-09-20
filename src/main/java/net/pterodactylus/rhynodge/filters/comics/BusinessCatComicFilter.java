@@ -18,13 +18,13 @@ public class BusinessCatComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		String title = document.select("#comic img").attr("title");
+		String title = document.select(".comic-title h2").text();
 		return title.isEmpty() ? Optional.<String>absent() : Optional.of(title);
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		return Arrays.asList(document.select("#comic img").attr("src"));
+		return Arrays.asList(document.select(".comic-image img").attr("src"));
 	}
 
 	@Override

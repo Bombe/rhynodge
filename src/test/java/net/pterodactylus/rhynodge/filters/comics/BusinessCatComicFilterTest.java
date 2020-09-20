@@ -19,17 +19,17 @@ public class BusinessCatComicFilterTest {
 	private final Document document;
 
 	public BusinessCatComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument(getClass(), "business-cat.html", "http://www.businesscat.happyjar.com//");
+		document = ResourceLoader.loadDocument(getClass(), "business-cat.html", "https://www.businesscatcomic.com/");
 	}
 
 	@Test
 	public void imageTitleCanBeExtracted() {
-		MatcherAssert.assertThat(filter.extractTitle(document), Matchers.is(Optional.of("Running Late")));
+		MatcherAssert.assertThat(filter.extractTitle(document), Matchers.is(Optional.of("Full Circle")));
 	}
 
 	@Test
 	public void imageUrlsCanBeExtracted() {
-		MatcherAssert.assertThat(filter.extractImageUrls(document), Matchers.contains("http://www.businesscat.happyjar.com/wp-content/uploads/2015/01/2015-01-23-Running-Late.png"));
+		MatcherAssert.assertThat(filter.extractImageUrls(document), Matchers.contains("https://www.businesscatcomic.com/wp-content/uploads/2019/11/2018-09-07-Full-Circle.png"));
 	}
 
 	@Test
