@@ -36,15 +36,7 @@ public class ComicSiteFilterTest {
 	}
 
 	@Test
-	public void htmlWithoutTitleIsNotRecognizedAsComic() {
-		State state = new HtmlState("http://foo/", null);
-		ComicSiteFilter comicSiteFilter = new TestComicSiteFilter(null, null, null);
-		State newState = comicSiteFilter.filter(state);
-		assertThat(newState.success(), is(false));
-	}
-
-	@Test
-	public void htmlWithTitleButWithoutImagesIsNotRecognizedAsComic() {
+	public void htmlWithoutImagesIsNotRecognizedAsComic() {
 		State state = new HtmlState("http://foo/", null);
 		ComicSiteFilter comicSiteFilter = new TestComicSiteFilter("Title", Collections.<String>emptyList(), null);
 		State newState = comicSiteFilter.filter(state);
