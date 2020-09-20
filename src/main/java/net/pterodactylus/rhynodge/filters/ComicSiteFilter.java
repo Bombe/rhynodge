@@ -57,12 +57,12 @@ public abstract class ComicSiteFilter implements Filter {
 		List<String> imageComments = extractImageComments(htmlState.document());
 
 		/* store comic, if found, into state. */
-		if (!title.isPresent() || imageUrls.isEmpty()) {
+		if (imageUrls.isEmpty()) {
 			return new FailedState();
 		}
 
 		ComicState comicState = new ComicState();
-		Comic comic = new Comic(title.get());
+		Comic comic = new Comic(title.or(""));
 		int imageCounter = 0;
 		for (String imageUrl : imageUrls) {
 			String imageComment = (imageCounter < imageComments.size()) ? imageComments.get(imageCounter) : "";
