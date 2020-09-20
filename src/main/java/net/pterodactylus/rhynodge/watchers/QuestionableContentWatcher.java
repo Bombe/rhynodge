@@ -33,7 +33,7 @@ import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 public class QuestionableContentWatcher extends DefaultWatcher {
 
 	public QuestionableContentWatcher() {
-		super(new HttpQuery("http://www.questionablecontent.net/"), Arrays.asList(new HtmlFilter(), new QuestionableContentComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("https://www.questionablecontent.net/"), Arrays.asList(new HtmlFilter(), new QuestionableContentComicFilter()), new NewComicTrigger());
 	}
 
 }
