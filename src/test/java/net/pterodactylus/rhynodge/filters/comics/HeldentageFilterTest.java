@@ -1,11 +1,7 @@
 package net.pterodactylus.rhynodge.filters.comics;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-
 import java.io.IOException;
 
-import net.pterodactylus.rhynodge.filters.ComicSiteFilterTest;
 import net.pterodactylus.rhynodge.filters.ResourceLoader;
 import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.HtmlState;
@@ -13,12 +9,15 @@ import net.pterodactylus.rhynodge.states.HtmlState;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
+
 /**
  * Unit test for {@link HeldentageFilter}.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class HeldentageFilterTest extends ComicSiteFilterTest {
+public class HeldentageFilterTest {
 
 	private final HeldentageFilter heldentageFilter = new HeldentageFilter();
 	private final HtmlState htmlState;
