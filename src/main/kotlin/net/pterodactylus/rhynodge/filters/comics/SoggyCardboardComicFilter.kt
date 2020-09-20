@@ -2,6 +2,7 @@ package net.pterodactylus.rhynodge.filters.comics
 
 import com.google.common.base.Optional
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter
+import net.pterodactylus.rhynodge.utils.asOptional
 import org.jsoup.nodes.Document
 
 class SoggyCardboardComicFilter : ComicSiteFilter() {
@@ -16,5 +17,3 @@ class SoggyCardboardComicFilter : ComicSiteFilter() {
 			listOf(document.select("#comic img").attr("alt"))
 
 }
-
-fun <T> T?.asOptional(): Optional<T> = Optional.fromNullable(this)
