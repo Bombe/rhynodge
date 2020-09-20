@@ -25,7 +25,9 @@ import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
 import com.google.common.base.Optional;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import org.jsoup.nodes.Element;
+
+import static java.util.Collections.singletonList;
 
 /**
  * {@link ComicSiteFilter} implementation that can parse Questionable Content.
@@ -41,8 +43,8 @@ public class QuestionableContentComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTag = document.select("#strip");
-		return imageTag.hasAttr("src") ? Arrays.asList(imageTag.attr("src")) : Collections.<String>emptyList();
+		Element firstComicNav = document.select("#comicnav").first();
+		return singletonList(firstComicNav.nextSibling().nextSibling().attr("src"));
 	}
 
 	@Override
