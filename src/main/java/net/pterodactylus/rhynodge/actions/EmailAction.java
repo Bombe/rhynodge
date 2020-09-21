@@ -118,20 +118,20 @@ public class EmailAction implements Action {
 	}
 
 	private void addPlainTextPart(Output output, MimeMultipart multipart) throws MessagingException {
-		if (output.text("text/plain", -1) == null) {
+		if (output.text("text/plain") == null) {
 			return;
 		}
 		MimeBodyPart textPart = new MimeBodyPart();
-		textPart.setContent(output.text("text/plain", -1), "text/plain;charset=utf-8");
+		textPart.setContent(output.text("text/plain"), "text/plain;charset=utf-8");
 		multipart.addBodyPart(textPart);
 	}
 
 	private void addHtmlPart(Output output, MimeMultipart multipart) throws MessagingException {
-		if (output.text("text/html", -1) == null) {
+		if (output.text("text/html") == null) {
 			return;
 		}
 		MimeBodyPart htmlPart = new MimeBodyPart();
-		htmlPart.setContent(output.text("text/html", -1), "text/html;charset=utf-8");
+		htmlPart.setContent(output.text("text/html"), "text/html;charset=utf-8");
 		multipart.addBodyPart(htmlPart);
 	}
 

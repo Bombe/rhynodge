@@ -78,7 +78,7 @@ public class DefaultOutput implements Output {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String text(String mimeType, int maxLength) {
+	public String text(String mimeType) {
 		return mimeTypeTexts.get(mimeType);
 	}
 

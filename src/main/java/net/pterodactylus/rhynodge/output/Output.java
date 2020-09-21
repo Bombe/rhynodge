@@ -21,7 +21,7 @@ import net.pterodactylus.rhynodge.Trigger;
 
 /**
  * Defines the output of a {@link Trigger}. As different output has to be
- * generated for different media, the {@link #text(String, int)} method takes as
+ * generated for different media, the {@link #text(String)} method takes as
  * an argument the MIME type of the desired output.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
@@ -45,12 +45,9 @@ public interface Output {
 	 * @param mimeType
 	 *            The MIME type of the text (“text/plain” and “text/html” should
 	 *            be supported by all {@link Trigger}s)
-	 * @param maxLength
-	 *            The maximum length of the returned text (may be &lt; {@code 0}
-	 *            to indicate no length restriction)
 	 * @return The text for the given MIME type, or {@code null} if there is no
 	 *         text defined for the given MIME type
 	 */
-	String text(String mimeType, int maxLength);
+	String text(String mimeType);
 
 }
