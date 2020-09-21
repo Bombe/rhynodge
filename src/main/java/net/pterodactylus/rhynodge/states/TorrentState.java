@@ -17,7 +17,7 @@
 
 package net.pterodactylus.rhynodge.states;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -292,7 +292,7 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 			if ((magnetUri == null) || (magnetUri.length() < 8)) {
 				return Optional.empty();
 			}
-			List<NameValuePair> parameters = URLEncodedUtils.parse(magnetUri.substring("magnet:?".length()), Charset.forName("UTF-8"));
+			List<NameValuePair> parameters = URLEncodedUtils.parse(magnetUri.substring("magnet:?".length()), StandardCharsets.UTF_8);
 			for (NameValuePair parameter : parameters) {
 				if (parameter.getName().equals("xt")) {
 					return Optional.of(parameter.getValue().toLowerCase());
