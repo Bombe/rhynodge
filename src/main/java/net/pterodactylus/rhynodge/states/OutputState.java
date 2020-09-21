@@ -2,6 +2,9 @@ package net.pterodactylus.rhynodge.states;
 
 import java.util.Optional;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.pterodactylus.rhynodge.State;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,12 +34,16 @@ public class OutputState extends AbstractState {
 		return !plainTextOutput.isPresent() && !htmlOutput.isPresent();
 	}
 
-	public Optional<String> plainTextOutput() {
-		return plainTextOutput;
+	@Nonnull
+	@Override
+	protected String plainText() {
+		return plainTextOutput.orElse("");
 	}
 
-	public Optional<String> htmlOutput() {
-		return htmlOutput;
+	@Nullable
+	@Override
+	protected String htmlText() {
+		return htmlOutput.orElse(null);
 	}
 
 }

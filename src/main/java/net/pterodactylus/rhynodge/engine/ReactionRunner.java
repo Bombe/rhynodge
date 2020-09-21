@@ -64,7 +64,7 @@ public class ReactionRunner implements Runnable {
 		reactionState.saveState(newState);
 		if (trigger.triggers()) {
 			logger.info(format("Trigger was hit for %s, executing action...", reaction.name()));
-			reaction.action().execute(trigger.output(reaction));
+			reaction.action().execute(newState.output(reaction));
 		}
 		logger.info(format("Reaction %s finished.", reaction.name()));
 	}

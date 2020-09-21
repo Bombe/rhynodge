@@ -17,6 +17,12 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import javax.annotation.Nonnull;
+
 import net.pterodactylus.rhynodge.State;
 
 /**
@@ -49,6 +55,21 @@ public class FailedState extends AbstractState {
 	@Override
 	public boolean isEmpty() {
 		return true;
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		if (exception() == null) {
+			return "Failed";
+		}
+		try (Writer stringWriter = new StringWriter();
+			 PrintWriter printWriter = new PrintWriter(stringWriter)) {
+			exception().printStackTrace(printWriter);
+			return "Failed: " + stringWriter.toString();
+		} catch (IOException ioe1) {
+			return "Failed while rendering exception";
+		}
 	}
 
 	//

@@ -58,12 +58,4 @@ public class FileStateModifiedTrigger implements Trigger {
 		return triggered;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Output output(Reaction reaction) {
-		return new DefaultOutput("File modified").addText("text/plain", "File modified").addText("text/html", "<div>File modified</div>");
-	}
-
 }

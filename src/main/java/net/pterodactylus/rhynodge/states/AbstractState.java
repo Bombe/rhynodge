@@ -17,10 +17,18 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
+import net.pterodactylus.rhynodge.output.DefaultOutput;
+import net.pterodactylus.rhynodge.output.Output;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.google.common.escape.Escaper;
+import com.google.common.html.HtmlEscapers;
 
 /**
  * Abstract implementation of a {@link State} that knows about the basic
@@ -142,5 +150,30 @@ public abstract class AbstractState implements State {
 	public Throwable exception() {
 		return exception;
 	}
+
+	@Nonnull
+	@Override
+	public Output output(Reaction reaction) {
+		return new DefaultOutput(summary(reaction))
+				.addText("text/plain", plainText())
+				.addText("text/html", htmlText());
+	}
+
+	@Nonnull
+	protected String summary(Reaction reaction) {
+		return reaction.name();
+	}
+
+	@Nonnull
+	protected abstract String plainText();
+
+	@Nullable
+	protected String htmlText() {
+		//noinspection UnstableApiUsage
+		return "<div>" + htmlEscaper.escape(plainText()) + "</div>";
+	}
+
+	@SuppressWarnings("UnstableApiUsage")
+	private static final Escaper htmlEscaper = HtmlEscapers.htmlEscaper();
 
 }

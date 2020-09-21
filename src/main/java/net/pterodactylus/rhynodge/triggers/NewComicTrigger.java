@@ -17,24 +17,15 @@
 
 package net.pterodactylus.rhynodge.triggers;
 
-import static com.google.common.base.Preconditions.*;
+import java.util.HashSet;
+import java.util.Set;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.Trigger;
-import net.pterodactylus.rhynodge.output.DefaultOutput;
-import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.ComicState;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
-import net.pterodactylus.rhynodge.states.ComicState.Strip;
 
-import com.google.common.collect.Lists;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.StringUtils;
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * {@link Trigger} implementation that detects the presence of new {@link
@@ -44,11 +35,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class NewComicTrigger implements Trigger {
 
-	/** The new comics. */
-	private final List<Comic> newComics = Lists.newArrayList();
-
-	/** The latest comic state. */
-	private ComicState mergedComicState;
+	private boolean triggered = false;
 
 	@Override
 	public State mergeStates(State previousState, State currentState) {
@@ -58,110 +45,22 @@ public class NewComicTrigger implements Trigger {
 		ComicState previousComicState = (ComicState) previousState;
 		ComicState currentComicState = (ComicState) currentState;
 
-		/* copy old state into new state. */
-		mergedComicState = new ComicState();
-		for (Comic comic : previousComicState) {
-			mergedComicState.add(comic);
-		}
+		Set<Comic> allComics = new HashSet<>(previousComicState.comics());
+		Set<Comic> newComics = new HashSet<>();
 
-		newComics.clear();
 		for (Comic comic : currentComicState) {
-			if (!mergedComicState.comics().contains(comic)) {
+			if (allComics.add(comic)) {
 				newComics.add(comic);
-				mergedComicState.add(comic);
+				triggered = true;
 			}
 		}
 
-		return mergedComicState;
+		return new ComicState(allComics, newComics);
 	}
 
 	@Override
 	public boolean triggers() {
-		return !newComics.isEmpty();
-	}
-
-	@Override
-	public Output output(Reaction reaction) {
-		DefaultOutput output = new DefaultOutput(String.format("New Comic found for “%s!”", reaction.name()));
-
-		output.addText("text/plain", generatePlainText());
-		output.addText("text/html", generateHtmlText());
-
-		return output;
-	}
-
-	//
-	// PRIVATE METHODS
-	//
-
-	/**
-	 * Generates a list of the new comics in plain text format.
-	 *
-	 * @return The list of new comics in plain text format
-	 */
-	private String generatePlainText() {
-		StringBuilder text = new StringBuilder();
-
-		for (Comic newComic : newComics) {
-			text.append("Comic Found: ").append(newComic.title()).append("\n\n");
-			for (Strip strip : newComic) {
-				text.append("Image: ").append(strip.imageUrl()).append("\n");
-				if (!StringUtils.isBlank(strip.comment())) {
-					text.append("Comment: ").append(strip.comment()).append("\n");
-				}
-			}
-			text.append("\n\n");
-		}
-
-		return text.toString();
-	}
-
-	/**
-	 * Generates a list of new comics in HTML format.
-	 *
-	 * @return The list of new comics in HTML format
-	 */
-	private String generateHtmlText() {
-		StringBuilder html = new StringBuilder();
-		html.append("<body>");
-
-		for (Comic newComic : newComics) {
-			generateComicHtml(html, newComic);
-		}
-
-		List<Comic> latestComics = new ArrayList<Comic>(mergedComicState.comics());
-		Collections.reverse(latestComics);
-		int comicCount = 0;
-		for (Comic comic : latestComics) {
-			if (newComics.contains(comic)) {
-				continue;
-			}
-			generateComicHtml(html, comic);
-			if (++comicCount == 7) {
-				break;
-			}
-		}
-
-		return html.append("</body>").toString();
-	}
-
-	/**
-	 * Generates the HTML for a single comic.
-	 *
-	 * @param html
-	 * 		The string builder to append the HTML to
-	 * @param comic
-	 * 		The comic to render
-	 */
-	private void generateComicHtml(StringBuilder html, Comic comic) {
-		html.append("<h1>").append(StringEscapeUtils.escapeHtml4(comic.title())).append("</h1>\n");
-		for (Strip strip : comic) {
-			html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(strip.imageUrl()));
-			html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
-			html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
-			html.append("\"></div>\n");
-			html.append("<div>").append(StringEscapeUtils.escapeHtml4(strip.comment())).append("</div>\n");
-		}
+		return triggered;
 	}
 
 }

@@ -17,13 +17,25 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.states.ComicState.Comic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+
+import static java.lang.String.format;
 
 /**
  * {@link net.pterodactylus.rhynodge.State} that can store an arbitrary amout of
@@ -35,6 +47,21 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 
 	@JsonProperty
 	private final List<Comic> comics = Lists.newArrayList();
+	private final Set<Comic> newComics = new HashSet<>();
+
+	@SuppressWarnings("unused")
+	// used for deserialization
+	private ComicState() {
+	}
+
+	public ComicState(Collection<Comic> allComics) {
+		this.comics.addAll(allComics);
+	}
+
+	public ComicState(Collection<Comic> allComics, Collection<Comic> newComics) {
+		this(allComics);
+		this.newComics.addAll(newComics);
+	}
 
 	@Override
 	public boolean isEmpty() {
@@ -45,11 +72,6 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		return comics;
 	}
 
-	public ComicState add(Comic comic) {
-		comics.add(comic);
-		return this;
-	}
-
 	@Override
 	public Iterator<Comic> iterator() {
 		return comics.iterator();
@@ -57,7 +79,69 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 
 	@Override
 	public String toString() {
-		return String.format("ComicState[comics=%s]", comics());
+		return format("ComicState[comics=%s]", comics());
+	}
+
+	@Nonnull
+	@Override
+	protected String summary(Reaction reaction) {
+		return format("New Comic found for “%s!”", reaction.name());
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		StringBuilder text = new StringBuilder();
+
+		for (Comic newComic : newComics) {
+			text.append("Comic Found: ").append(newComic.title()).append("\n\n");
+			for (Strip strip : newComic) {
+				text.append("Image: ").append(strip.imageUrl()).append("\n");
+				if (!StringUtils.isBlank(strip.comment())) {
+					text.append("Comment: ").append(strip.comment()).append("\n");
+				}
+			}
+			text.append("\n\n");
+		}
+
+		return text.toString();
+	}
+
+	@Nullable
+	@Override
+	protected String htmlText() {
+		StringBuilder html = new StringBuilder();
+		html.append("<body>");
+
+		for (Comic newComic : newComics) {
+			generateComicHtml(html, newComic);
+		}
+
+		List<Comic> latestComics = new ArrayList<>(comics());
+		Collections.reverse(latestComics);
+		int comicCount = 0;
+		for (Comic comic : latestComics) {
+			if (newComics.contains(comic)) {
+				continue;
+			}
+			generateComicHtml(html, comic);
+			if (++comicCount == 7) {
+				break;
+			}
+		}
+
+		return html.append("</body>").toString();
+	}
+
+	private void generateComicHtml(StringBuilder html, Comic comic) {
+		html.append("<h1>").append(StringEscapeUtils.escapeHtml4(comic.title())).append("</h1>\n");
+		for (Strip strip : comic) {
+			html.append("<div><img src=\"").append(StringEscapeUtils.escapeHtml4(strip.imageUrl()));
+			html.append("\" alt=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+			html.append("\" title=\"").append(StringEscapeUtils.escapeHtml4(strip.comment()));
+			html.append("\"></div>\n");
+			html.append("<div>").append(StringEscapeUtils.escapeHtml4(strip.comment())).append("</div>\n");
+		}
 	}
 
 	/**
@@ -111,7 +195,7 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 
 		@Override
 		public String toString() {
-			return String.format("Comic[title=%s,strips=%s]", title(), strips());
+			return format("Comic[title=%s,strips=%s]", title(), strips());
 		}
 
 	}
@@ -158,7 +242,7 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 
 		@Override
 		public String toString() {
-			return String.format("Strip[imageUrl=%s,comment=%s]", imageUrl(), comment());
+			return format("Strip[imageUrl=%s,comment=%s]", imageUrl(), comment());
 		}
 
 	}

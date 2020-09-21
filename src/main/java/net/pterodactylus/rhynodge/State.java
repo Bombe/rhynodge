@@ -17,6 +17,10 @@
 
 package net.pterodactylus.rhynodge;
 
+import javax.annotation.Nonnull;
+
+import net.pterodactylus.rhynodge.output.Output;
+
 /**
  * Defines the current state of a system.
  *
@@ -75,5 +79,8 @@ public interface State {
 	 *         exception can not be meaningfully returned
 	 */
 	Throwable exception();
+
+	@Nonnull
+	Output output(Reaction reaction);
 
 }

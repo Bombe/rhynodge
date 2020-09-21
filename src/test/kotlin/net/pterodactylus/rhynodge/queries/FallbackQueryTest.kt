@@ -4,6 +4,8 @@ import net.pterodactylus.rhynodge.Query
 import net.pterodactylus.rhynodge.State
 import net.pterodactylus.rhynodge.states.AbstractState
 import net.pterodactylus.rhynodge.states.FailedState
+import net.pterodactylus.rhynodge.states.StateManagerTest
+import net.pterodactylus.rhynodge.states.StateManagerTest.TestState
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.hamcrest.Matchers.sameInstance
@@ -37,14 +39,12 @@ class FallbackQueryTest {
 
 	@Test
 	fun `fallback query returns state of third query`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(thirdState = successState)
 		assertThat(query.state(), sameInstance<State>(successState))
 	}
 
 	@Test
 	fun `fallback query calls all three queries`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(thirdState = successState)
 		query.state()
 		verify(firstQuery).state()
@@ -54,14 +54,12 @@ class FallbackQueryTest {
 
 	@Test
 	fun `fallback query returns second state`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(secondState = successState)
 		assertThat(query.state(), sameInstance<State>(successState))
 	}
 
 	@Test
 	fun `fallback query does not query third query`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(secondState = successState)
 		query.state()
 		verify(firstQuery).state()
@@ -71,14 +69,12 @@ class FallbackQueryTest {
 
 	@Test
 	fun `fallback query returns first state`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(firstState = successState)
 		assertThat(query.state(), sameInstance<State>(successState))
 	}
 
 	@Test
 	fun `fallback query does not query second and third query`() {
-		val successState: AbstractState = object : AbstractState() {}
 		setupQueries(firstState = successState)
 		query.state()
 		verify(firstQuery).state()
@@ -99,3 +95,5 @@ class FallbackQueryTest {
 	}
 
 }
+
+private val successState: AbstractState = TestState()

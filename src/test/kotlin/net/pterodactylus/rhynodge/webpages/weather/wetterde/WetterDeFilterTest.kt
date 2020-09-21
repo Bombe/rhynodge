@@ -1,9 +1,9 @@
 package net.pterodactylus.rhynodge.webpages.weather.wetterde
 
 import net.pterodactylus.rhynodge.filters.ResourceLoader
-import net.pterodactylus.rhynodge.states.AbstractState
 import net.pterodactylus.rhynodge.states.FailedState
 import net.pterodactylus.rhynodge.states.HtmlState
+import net.pterodactylus.rhynodge.states.StateManagerTest.TestState
 import net.pterodactylus.rhynodge.webpages.weather.HourState
 import net.pterodactylus.rhynodge.webpages.weather.WeatherState
 import net.pterodactylus.rhynodge.webpages.weather.WindDirection
@@ -36,7 +36,7 @@ class WetterDeFilterTest {
 
     @Test
     fun filterThrowsExceptionIfNotGivenAnHtmlState() {
-        val successfulHonHtmlState = object : AbstractState(true) {}
+        val successfulHonHtmlState = TestState()
         expectedException.expect(IllegalArgumentException::class.java)
         filter.filter(successfulHonHtmlState)
     }

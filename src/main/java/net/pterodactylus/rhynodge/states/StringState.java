@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import javax.annotation.Nonnull;
+
 /**
  * A {@link net.pterodactylus.rhynodge.State} that stores a single {@link
  * String} value.
@@ -50,6 +52,12 @@ public class StringState extends AbstractState {
 	@Override
 	public boolean isEmpty() {
 		return value.isEmpty();
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		return value;
 	}
 
 }

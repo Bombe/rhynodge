@@ -17,7 +17,6 @@
 
 package net.pterodactylus.rhynodge;
 
-import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.FileState;
 
 /**
@@ -52,15 +51,5 @@ public interface Trigger {
 	 *         {@code false} otherwise
 	 */
 	boolean triggers();
-
-	/**
-	 * Returns the output of this trigger. This will only return a meaningful
-	 * value if {@link #triggers()} returns {@code true}.
-	 *
-	 * @param reaction
-	 *            The reaction being triggered
-	 * @return The output of this trigger
-	 */
-	Output output(Reaction reaction);
 
 }

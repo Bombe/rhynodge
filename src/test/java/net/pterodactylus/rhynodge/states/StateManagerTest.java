@@ -1,15 +1,9 @@
 package net.pterodactylus.rhynodge.states;
 
-import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.base.Objects.equal;
-import static org.apache.log4j.Level.OFF;
-import static org.apache.log4j.Logger.getLogger;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
+import javax.annotation.Nonnull;
 
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.states.StateManager.StateDirectory;
@@ -21,6 +15,13 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
+
+import static com.google.common.base.Charsets.UTF_8;
+import static com.google.common.base.Objects.equal;
+import static org.apache.log4j.Level.OFF;
+import static org.apache.log4j.Logger.getLogger;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Unit test for {@link StateManager}.
@@ -107,12 +108,24 @@ public class StateManagerTest {
 					&& (time() == testState.time());
 		}
 
+		@Nonnull
+		@Override
+		protected String plainText() {
+			return "Test";
+		}
+
 	}
 
 	public static class InvalidState extends AbstractState {
 
 		@JsonProperty
 		private final Object someObject = new Object();
+
+		@Nonnull
+		@Override
+		protected String plainText() {
+			return "Invalid";
+		}
 
 	}
 

@@ -19,9 +19,6 @@ import java.util.stream.Collectors;
 
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.State;
-import net.pterodactylus.rhynodge.filters.webpages.savoy.Movie;
-import net.pterodactylus.rhynodge.filters.webpages.savoy.MovieExtractor;
-import net.pterodactylus.rhynodge.filters.webpages.savoy.TicketLink;
 import net.pterodactylus.rhynodge.states.HtmlState;
 import net.pterodactylus.rhynodge.states.OutputState;
 

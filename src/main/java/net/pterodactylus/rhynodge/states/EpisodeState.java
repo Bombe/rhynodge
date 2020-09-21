@@ -20,9 +20,15 @@ package net.pterodactylus.rhynodge.states;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.states.EpisodeState.Episode;
@@ -30,6 +36,10 @@ import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Function;
+import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 /**
  * {@link State} implementation that stores episodes of TV shows, parsed via
@@ -39,26 +49,36 @@ import com.google.common.base.Function;
  */
 public class EpisodeState extends AbstractState implements Iterable<Episode> {
 
-	/** The episodes found in the current request. */
+	/**
+	 * The episodes found in the current request.
+	 */
 	@JsonProperty
-	private final List<Episode> episodes = new ArrayList<Episode>();
+	private final List<Episode> episodes = new ArrayList<>();
+	private final Set<Episode> newEpisodes = new HashSet<>();
+	private final Set<Episode> changedEpisodes = new HashSet<>();
+	private final Set<TorrentFile> newTorrentFiles = new HashSet<>();
 
 	/**
 	 * No-arg constructor for deserialization.
 	 */
 	@SuppressWarnings("unused")
 	private EpisodeState() {
-		this(Collections.<Episode> emptySet());
 	}
 
 	/**
 	 * Creates a new episode state.
 	 *
-	 * @param episodes
-	 *            The episodes of the request
+	 * @param episodes The episodes of the request
 	 */
 	public EpisodeState(Collection<Episode> episodes) {
 		this.episodes.addAll(episodes);
+	}
+
+	public EpisodeState(Collection<Episode> episodes, Collection<Episode> newEpisodes, Collection<Episode> changedEpisodes, Collection<TorrentFile> newTorreFiles) {
+		this(episodes);
+		this.newEpisodes.addAll(newEpisodes);
+		this.changedEpisodes.addAll(changedEpisodes);
+		this.newTorrentFiles.addAll(newTorreFiles);
 	}
 
 	//
@@ -77,6 +97,124 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 	 */
 	public Collection<Episode> episodes() {
 		return Collections.unmodifiableCollection(episodes);
+	}
+
+	@Nonnull
+	@Override
+	protected String summary(Reaction reaction) {
+		if (!newEpisodes.isEmpty()) {
+			if (!changedEpisodes.isEmpty()) {
+				return String.format("%d new and %d changed Torrent(s) for “%s!”", newEpisodes.size(), changedEpisodes.size(), reaction.name());
+			}
+			return String.format("%d new Torrent(s) for “%s!”", newEpisodes.size(), reaction.name());
+		}
+		return String.format("%d changed Torrent(s) for “%s!”", changedEpisodes.size(), reaction.name());
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		StringBuilder stringBuilder = new StringBuilder();
+		if (!newEpisodes.isEmpty()) {
+			stringBuilder.append("New Episodes\n\n");
+			for (Episode episode : newEpisodes) {
+				stringBuilder.append("- ").append(episode.identifier()).append("\n");
+				for (TorrentFile torrentFile : episode) {
+					stringBuilder.append("  - ").append(torrentFile.name()).append(", ").append(torrentFile.size()).append("\n");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					}
+				}
+			}
+		}
+		if (!changedEpisodes.isEmpty()) {
+			stringBuilder.append("Changed Episodes\n\n");
+			for (Episode episode : changedEpisodes) {
+				stringBuilder.append("- ").append(episode.identifier()).append("\n");
+				for (TorrentFile torrentFile : episode) {
+					stringBuilder.append("  - ").append(torrentFile.name()).append(", ").append(torrentFile.size()).append("\n");
+					if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+						stringBuilder.append("    Magnet: ").append(torrentFile.magnetUri()).append("\n");
+					}
+					if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+						stringBuilder.append("    Download: ").append(torrentFile.downloadUri()).append("\n");
+					}
+				}
+			}
+		}
+		/* list all known episodes. */
+		stringBuilder.append("All Known Episodes\n\n");
+		ImmutableMap<Integer, Collection<Episode>> episodesBySeason = FluentIterable.from(episodes).index(Episode::season).asMap();
+		for (Map.Entry<Integer, Collection<Episode>> seasonEntry : episodesBySeason.entrySet()) {
+			stringBuilder.append("  Season ").append(seasonEntry.getKey()).append("\n\n");
+			for (Episode episode : Ordering.natural().sortedCopy(seasonEntry.getValue())) {
+				stringBuilder.append("    Episode ").append(episode.episode()).append("\n");
+				for (TorrentFile torrentFile : episode) {
+					stringBuilder.append("      Size: ").append(torrentFile.size());
+					stringBuilder.append(" in ").append(torrentFile.fileCount()).append(" file(s): ");
+					stringBuilder.append(torrentFile.magnetUri());
+				}
+			}
+		}
+		return stringBuilder.toString();
+	}
+
+	@Nullable
+	@Override
+	protected String htmlText() {
+		StringBuilder htmlBuilder = new StringBuilder();
+		htmlBuilder.append("<html><body>\n");
+		/* show all known episodes. */
+		htmlBuilder.append("<table>\n<caption>All Known Episodes</caption>\n");
+		htmlBuilder.append("<thead>\n");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>Season</th>");
+		htmlBuilder.append("<th>Episode</th>");
+		htmlBuilder.append("<th>Filename</th>");
+		htmlBuilder.append("<th>Size</th>");
+		htmlBuilder.append("<th>File(s)</th>");
+		htmlBuilder.append("<th>Seeds</th>");
+		htmlBuilder.append("<th>Leechers</th>");
+		htmlBuilder.append("<th>Magnet</th>");
+		htmlBuilder.append("<th>Download</th>");
+		htmlBuilder.append("</tr>\n");
+		htmlBuilder.append("</thead>\n");
+		htmlBuilder.append("<tbody>\n");
+		Episode lastEpisode = null;
+		for (Map.Entry<Integer, Collection<Episode>> seasonEntry : FluentIterable.from(Ordering.natural().reverse().sortedCopy(episodes)).index(Episode.BY_SEASON).asMap().entrySet()) {
+			for (Episode episode : seasonEntry.getValue()) {
+				for (TorrentFile torrentFile : episode) {
+					if (newEpisodes.contains(episode)) {
+						htmlBuilder.append("<tr style=\"color: #008000; font-weight: bold;\">");
+					} else if (newTorrentFiles.contains(torrentFile)) {
+						htmlBuilder.append("<tr style=\"color: #008000;\">");
+					} else {
+						htmlBuilder.append("<tr>");
+					}
+					if ((lastEpisode == null) || !lastEpisode.equals(episode)) {
+						htmlBuilder.append("<td>").append(episode.season()).append("</td><td>").append(episode.episode()).append("</td>");
+					} else {
+						htmlBuilder.append("<td colspan=\"2\"></td>");
+					}
+					htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</td>");
+					htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.fileCount()).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.seedCount()).append("</td>");
+					htmlBuilder.append("<td>").append(torrentFile.leechCount()).append("</td>");
+					htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Link</a></td>");
+					htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Link</a></td>");
+					htmlBuilder.append("</tr>\n");
+					lastEpisode = episode;
+				}
+			}
+		}
+		htmlBuilder.append("</tbody>\n");
+		htmlBuilder.append("</table>\n");
+		htmlBuilder.append("</body></html>\n");
+		return htmlBuilder.toString();
 	}
 
 	//

@@ -21,6 +21,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collections;
 import java.util.List;
 
 import net.pterodactylus.rhynodge.Filter;
@@ -61,7 +62,6 @@ public abstract class ComicSiteFilter implements Filter {
 			return new FailedState();
 		}
 
-		ComicState comicState = new ComicState();
 		Comic comic = new Comic(title.or(""));
 		int imageCounter = 0;
 		for (String imageUrl : imageUrls) {
@@ -75,9 +75,8 @@ public abstract class ComicSiteFilter implements Filter {
 				throw new IllegalStateException(String.format("Could not resolve image URL “%s” against base URL “%s”.", imageUrl, htmlState.uri()), use1);
 			}
 		}
-		comicState.add(comic);
 
-		return comicState;
+		return new ComicState(Collections.singletonList(comic));
 	}
 
 	//

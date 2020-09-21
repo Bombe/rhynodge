@@ -20,18 +20,31 @@ package net.pterodactylus.rhynodge.states;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+import javax.annotation.Nonnull;
+
+import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
+import net.pterodactylus.rhynodge.output.DefaultOutput;
+import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.client.utils.URLEncodedUtils;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Ordering;
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import static com.google.common.collect.Ordering.from;
+import static java.lang.String.format;
 
 /**
  * {@link State} that contains information about an arbitrary number of torrent
@@ -45,11 +58,13 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	@JsonProperty
 	private List<TorrentFile> files = Lists.newArrayList();
 
+	private final Set<TorrentFile> newTorrentFiles = new HashSet<>();
+
 	/**
 	 * Creates a new torrent state without torrent files.
 	 */
 	public TorrentState() {
-		this(Collections.<TorrentFile> emptySet());
+		this(Collections.<TorrentFile>emptySet());
 	}
 
 	/**
@@ -60,6 +75,11 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	 */
 	public TorrentState(Collection<TorrentFile> torrentFiles) {
 		files.addAll(torrentFiles);
+	}
+
+	public TorrentState(Collection<TorrentFile> torrentFiles, Collection<TorrentFile> newTorrentFiles) {
+		files.addAll(torrentFiles);
+		this.newTorrentFiles.addAll(newTorrentFiles);
 	}
 
 	//
@@ -92,6 +112,90 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		return this;
 	}
 
+	@Nonnull
+	@Override
+	protected String summary(Reaction reaction) {
+		return format("Found %d new Torrent(s) for “%s!”", newTorrentFiles.size(), reaction.name());
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		StringBuilder plainText = new StringBuilder();
+		plainText.append("New Torrents:\n\n");
+		for (TorrentFile torrentFile : newTorrentFiles) {
+			plainText.append(torrentFile.name()).append('\n');
+			plainText.append('\t').append(torrentFile.size()).append(" in ").append(torrentFile.fileCount()).append(" file(s)\n");
+			plainText.append('\t').append(torrentFile.seedCount()).append(" seed(s), ").append(torrentFile.leechCount()).append(" leecher(s)\n");
+			if ((torrentFile.magnetUri() != null) && (torrentFile.magnetUri().length() > 0)) {
+				plainText.append('\t').append(torrentFile.magnetUri()).append('\n');
+			}
+			if ((torrentFile.downloadUri() != null) && (torrentFile.downloadUri().length() > 0)) {
+				plainText.append('\t').append(torrentFile.downloadUri()).append('\n');
+			}
+			plainText.append('\n');
+		}
+		return plainText.toString();
+	}
+
+	@Nullable
+	@Override
+	protected String htmlText() {
+		StringBuilder htmlBuilder = new StringBuilder();
+		htmlBuilder.append("<html><body>\n");
+		htmlBuilder.append("<table>\n<caption>All Known Torrents</caption>\n");
+		htmlBuilder.append("<thead>\n");
+		htmlBuilder.append("<tr>");
+		htmlBuilder.append("<th>Filename</th>");
+		htmlBuilder.append("<th>Size</th>");
+		htmlBuilder.append("<th>File(s)</th>");
+		htmlBuilder.append("<th>Seeds</th>");
+		htmlBuilder.append("<th>Leechers</th>");
+		htmlBuilder.append("<th>Magnet</th>");
+		htmlBuilder.append("<th>Download</th>");
+		htmlBuilder.append("</tr>\n");
+		htmlBuilder.append("</thead>\n");
+		htmlBuilder.append("<tbody>\n");
+		for (TorrentFile torrentFile : sortNewFirst().sortedCopy(files)) {
+			if (newTorrentFiles.contains(torrentFile)) {
+				htmlBuilder.append("<tr style=\"color: #008000; font-weight: bold;\">");
+			} else {
+				htmlBuilder.append("<tr>");
+			}
+			htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.name())).append("</td>");
+			htmlBuilder.append("<td>").append(StringEscapeUtils.escapeHtml4(torrentFile.size())).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.fileCount()).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.seedCount()).append("</td>");
+			htmlBuilder.append("<td>").append(torrentFile.leechCount()).append("</td>");
+			htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.magnetUri())).append("\">Link</a></td>");
+			htmlBuilder.append("<td><a href=\"").append(StringEscapeUtils.escapeHtml4(torrentFile.downloadUri())).append("\">Link</a></td>");
+			htmlBuilder.append("</tr>\n");
+		}
+		htmlBuilder.append("</tbody>\n");
+		htmlBuilder.append("</table>\n");
+		htmlBuilder.append("</body></html>\n");
+		return htmlBuilder.toString();
+	}
+
+	/**
+	 * Returns an ordering that sorts torrent files by whether they are new
+	 * (according to {@link #files}) or not. New files will be sorted
+	 * first.
+	 *
+	 * @return An ordering for “new files first”
+	 */
+	private Ordering<TorrentFile> sortNewFirst() {
+		return from((TorrentFile leftTorrentFile, TorrentFile rightTorrentFile) -> {
+			if (newTorrentFiles.contains(leftTorrentFile) && !newTorrentFiles.contains(rightTorrentFile)) {
+				return -1;
+			}
+			if (!newTorrentFiles.contains(leftTorrentFile) && newTorrentFiles.contains(rightTorrentFile)) {
+				return 1;
+			}
+			return 0;
+		});
+	}
+
 	//
 	// ITERABLE METHODS
 	//
@@ -113,7 +217,7 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 	 */
 	@Override
 	public String toString() {
-		return String.format("%s[files=%s]", getClass().getSimpleName(), files);
+		return format("%s[files=%s]", getClass().getSimpleName(), files);
 	}
 
 	/**
@@ -332,7 +436,7 @@ public class TorrentState extends AbstractState implements Iterable<TorrentFile>
 		 */
 		@Override
 		public String toString() {
-			return String.format("%s(%s,%s,%s)", name(), size(), magnetUri(), downloadUri());
+			return format("%s(%s,%s,%s)", name(), size(), magnetUri(), downloadUri());
 		}
 
 	}

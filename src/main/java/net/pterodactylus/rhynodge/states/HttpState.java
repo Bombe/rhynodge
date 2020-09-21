@@ -21,6 +21,8 @@ import static java.util.Arrays.copyOf;
 
 import java.io.UnsupportedEncodingException;
 
+import javax.annotation.Nonnull;
+
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 
@@ -124,6 +126,12 @@ public class HttpState extends AbstractState {
 		} catch (UnsupportedEncodingException uee1) {
 			throw new RuntimeException(String.format("Could not decode content as %s.", extractCharset(contentType())), uee1);
 		}
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		return content();
 	}
 
 	//

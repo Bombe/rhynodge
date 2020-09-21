@@ -59,12 +59,4 @@ public class FileExistenceTrigger implements Trigger {
 		return triggered;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Output output(Reaction reaction) {
-		return new DefaultOutput("File appeared/disappeared").addText("text/plain", "File appeared/disappeared").addText("text/html", "<div>File appeared/disappeared</div>");
-	}
-
 }

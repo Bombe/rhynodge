@@ -17,6 +17,8 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import javax.annotation.Nonnull;
+
 import net.pterodactylus.rhynodge.State;
 
 /**
@@ -117,6 +119,12 @@ public class FileState extends AbstractState {
 	 */
 	public long modificationTime() {
 		return modificationTime;
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		return toString();
 	}
 
 	//

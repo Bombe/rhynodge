@@ -17,12 +17,8 @@
 
 package net.pterodactylus.rhynodge.triggers;
 
-import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
 import net.pterodactylus.rhynodge.Trigger;
-import net.pterodactylus.rhynodge.output.DefaultOutput;
-import net.pterodactylus.rhynodge.output.Output;
-import net.pterodactylus.rhynodge.states.OutputState;
 
 /**
  * {@link Trigger} implementation that always triggers.
@@ -52,25 +48,6 @@ public class AlwaysTrigger implements Trigger {
 	@Override
 	public boolean triggers() {
 		return true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Output output(Reaction reaction) {
-		DefaultOutput output = new DefaultOutput(reaction.name());
-		if (currentState instanceof OutputState) {
-			OutputState outputState = (OutputState) currentState;
-			if (outputState.plainTextOutput().isPresent()) {
-				output = output.addText("text/plain", outputState.plainTextOutput().get());
-			}
-			if (outputState.htmlOutput().isPresent()) {
-				output = output.addText("text/html", outputState.htmlOutput().get());
-			}
-			return output;
-		}
-		return output.addText("text/plain", "true").addText("text/html", "<div>true</div>");
 	}
 
 }

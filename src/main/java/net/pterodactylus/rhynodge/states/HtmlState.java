@@ -17,6 +17,9 @@
 
 package net.pterodactylus.rhynodge.states;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.pterodactylus.rhynodge.State;
 
 import org.jsoup.nodes.Document;
@@ -72,6 +75,19 @@ public class HtmlState extends AbstractState {
 	 */
 	public Document document() {
 		return document;
+	}
+
+	@Nonnull
+	@Override
+	protected String plainText() {
+		//noinspection ConstantConditions
+		return htmlText();
+	}
+
+	@Nullable
+	@Override
+	protected String htmlText() {
+		return document.toString();
 	}
 
 	//
