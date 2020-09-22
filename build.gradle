@@ -1,5 +1,19 @@
-apply plugin: "java"
-apply plugin: "kotlin"
+buildscript {
+    ext.kotlinVersion = '1.4.10'
+
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath group: "org.ajoberstar", name: "gradle-git", version: "1.1.0"
+    }
+}
+
+plugins {
+    id 'java'
+    id('org.jetbrains.kotlin.jvm') version '1.4.10'
+}
+
 apply plugin: "war"
 apply plugin: "jacoco"
 apply plugin: "idea"
@@ -15,18 +29,6 @@ version = "0.1"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-
-buildscript {
-    ext.kotlinVersion = '1.4.10'
-
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "org.ajoberstar", name: "gradle-git", version: "1.1.0"
-        classpath group: "org.jetbrains.kotlin", name: "kotlin-gradle-plugin", version: "$kotlinVersion"
-    }
-}
 
 repositories {
     mavenCentral()
