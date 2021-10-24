@@ -40,18 +40,12 @@ public class SinfestComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		Elements imageCell = selectImageAttributes(document);
-		return imageCell.hasAttr("alt") ? Optional.of(imageCell.attr("alt")) : Optional.<String>absent();
+		return Optional.fromNullable(document.select("tr.style5 td.style3").text());
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageCells = selectImageAttributes(document);
-		return imageCells.stream().map(cell -> cell.attr("src")).collect(Collectors.toList());
-	}
-
-	private Elements selectImageAttributes(Document document) {
-		return document.select("tbody.style5 img");
+		return document.select("div.container img").stream().map(it -> it.attr("src")).collect(Collectors.toList());
 	}
 
 	@Override

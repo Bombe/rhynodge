@@ -30,8 +30,8 @@ public class SinfestComicFilterTest {
 	private final HtmlState htmlState;
 
 	public SinfestComicFilterTest() throws IOException {
-		Document document = ResourceLoader.loadDocument(SinfestComicFilter.class, "sinfest.html", "http://www.sinfest.net/");
-		htmlState = new HtmlState("http://www.sinfest.net/", document);
+		Document document = ResourceLoader.loadDocument(SinfestComicFilter.class, "sinfest.html", "https://sinfest.xyz/");
+		htmlState = new HtmlState("https://sinfest.xyz/", document);
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class SinfestComicFilterTest {
 	@Test
 	public void imageUrlsAreParsedCorrectly() {
 		ComicState comicState = (ComicState) sinfestFilter.filter(htmlState);
-		MatcherAssert.assertThat(comicState.comics(), Matchers.contains(matchesComic("Search 9", "http://www.sinfest.net/btphp/comics/2015-02-20.gif", "")));
+		MatcherAssert.assertThat(comicState.comics(), Matchers.contains(matchesComic("October 24, 2021: Unperson 33", "https://sinfest.xyz/btphp/comics/2021-10-24.jpg", "")));
 	}
 
 	private Matcher<Comic> matchesComic(String title, String url, String comment) {
