@@ -17,7 +17,9 @@
 
 package net.pterodactylus.rhynodge.triggers;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import net.pterodactylus.rhynodge.State;
@@ -45,11 +47,12 @@ public class NewComicTrigger implements Trigger {
 		ComicState previousComicState = (ComicState) previousState;
 		ComicState currentComicState = (ComicState) currentState;
 
-		Set<Comic> allComics = new HashSet<>(previousComicState.comics());
+		List<Comic> allComics = new ArrayList<>(previousComicState.comics());
 		Set<Comic> newComics = new HashSet<>();
 
 		for (Comic comic : currentComicState) {
-			if (allComics.add(comic)) {
+			if (!allComics.contains(comic)) {
+				allComics.add(comic);
 				newComics.add(comic);
 				triggered = true;
 			}
