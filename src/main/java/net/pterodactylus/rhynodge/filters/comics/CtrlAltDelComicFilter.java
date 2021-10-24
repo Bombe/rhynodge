@@ -17,15 +17,14 @@
 
 package net.pterodactylus.rhynodge.filters.comics;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import net.pterodactylus.rhynodge.filters.ComicSiteFilter;
 
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.FluentIterable;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 /**
@@ -37,31 +36,18 @@ public class CtrlAltDelComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected Optional<String> extractTitle(Document document) {
-		return Optional.of("");
+		return Optional.fromNullable(document.select("article.comic div#comicblog h3.title-display").text());
 	}
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTags = document.select("#content img");
-		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
-
-			@Override
-			public String apply(Element input) {
-				return input.attr("src");
-			}
-		}).toList();
+		Elements imageTags = document.select("article.comic div.comicpage img.comic-display");
+		return imageTags.stream().map(input -> input.attr("src")).collect(Collectors.toList());
 	}
 
 	@Override
 	protected List<String> extractImageComments(Document document) {
-		Elements imageTags = document.select("#content img");
-		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
-
-			@Override
-			public String apply(Element input) {
-				return input.attr("title");
-			}
-		}).toList();
+		return Collections.emptyList();
 	}
 
 }
