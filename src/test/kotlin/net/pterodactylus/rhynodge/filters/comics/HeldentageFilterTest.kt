@@ -23,7 +23,7 @@ class HeldentageFilterTest {
 	fun comicIsParsedCorrectly() {
 		val comicState = heldentageFilter.filter(htmlState) as ComicState
 		assertThat(comicState.comics(), contains(
-				Comic("").add(Strip("http://www.der-flix.de/images/heldentage/Tag_916.jpg", ""))
+				Comic("Glückskind").add(Strip("http://www.der-flix.de/media/djmediatools/cache/1-glueckskind/1500x275-towidth-100-glueckskind_301.jpg", ""))
 		))
 	}
 

@@ -16,11 +16,11 @@ import java.util.stream.Collectors
 class HeldentageFilter : ComicSiteFilter() {
 
 	override fun extractTitle(document: Document): Optional<String> =
-		if (extractImageUrls(document).isEmpty()) absent() else of("")
+		document.select("article.art-post h2").text().asOptional()
 
 	override fun extractImageUrls(document: Document): List<String> =
-		document.select("#mod_jheldentage_display_latest img")
-			.map { it.attr("src") }
+		document.select("article.art-post img.dj-image")
+			.map { it.attr("data-src") }
 
 	override fun extractImageComments(document: Document): List<String> =
 		emptyList()
