@@ -25,8 +25,8 @@ import net.pterodactylus.rhynodge.filters.ExtractUrlFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.HttpQueryFilter;
 import net.pterodactylus.rhynodge.filters.comics.LeastICouldDoComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -43,7 +43,7 @@ public class LeastICouldDoWatcher extends DefaultWatcher {
 
 	/** Creates a new “Least I Could Do” watcher. */
 	public LeastICouldDoWatcher() {
-		super(new HttpQuery("http://www.leasticoulddo.com/"), createFilters(), new NewComicTrigger());
+		super(new HttpQuery("http://www.leasticoulddo.com/"), createFilters(), new ComicMerger());
 	}
 
 	//

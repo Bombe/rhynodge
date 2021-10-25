@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.PoorlyDrawnLinesComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Poorly Drawn Lines
@@ -35,7 +35,7 @@ public class PoorlyDrawnLinesWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public PoorlyDrawnLinesWatcher() {
-		super(new HttpQuery("http://poorlydrawnlines.com/"), Arrays.asList(new HtmlFilter(), new PoorlyDrawnLinesComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://poorlydrawnlines.com/"), Arrays.asList(new HtmlFilter(), new PoorlyDrawnLinesComicFilter()), new ComicMerger());
 	}
 
 }

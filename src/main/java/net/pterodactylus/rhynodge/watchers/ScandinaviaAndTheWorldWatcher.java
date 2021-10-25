@@ -24,8 +24,8 @@ import net.pterodactylus.rhynodge.filters.ExtractUrlFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.HttpQueryFilter;
 import net.pterodactylus.rhynodge.filters.comics.ScandinaviaAndTheWorldComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
@@ -40,7 +40,7 @@ import org.jsoup.select.Elements;
 public class ScandinaviaAndTheWorldWatcher extends DefaultWatcher {
 
 	public ScandinaviaAndTheWorldWatcher() {
-		super(new HttpQuery("http://satwcomic.com/"), createFilters(), new NewComicTrigger());
+		super(new HttpQuery("http://satwcomic.com/"), createFilters(), new ComicMerger());
 	}
 
 	private static List<Filter> createFilters() {

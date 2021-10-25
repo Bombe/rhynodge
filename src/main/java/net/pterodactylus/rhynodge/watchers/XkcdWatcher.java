@@ -21,8 +21,8 @@ import java.util.Arrays;
 
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.XkcdComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link net.pterodactylus.rhynodge.Watcher} implementation that watches XKCD
@@ -34,7 +34,7 @@ public class XkcdWatcher extends DefaultWatcher {
 
 	/** Creates a new XKCD watcher. */
 	public XkcdWatcher() {
-		super(new HttpQuery("http://xkcd.com/"), Arrays.asList(new HtmlFilter(), new XkcdComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://xkcd.com/"), Arrays.asList(new HtmlFilter(), new XkcdComicFilter()), new ComicMerger());
 	}
 
 }

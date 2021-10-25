@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.CtrlAltDelComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Ctrl Alt Del comics.
@@ -34,7 +34,7 @@ public class CtrlAltDelWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public CtrlAltDelWatcher() {
-		super(new HttpQuery("http://www.cad-comic.com/cad/"), Arrays.asList(new HtmlFilter(), new CtrlAltDelComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://www.cad-comic.com/cad/"), Arrays.asList(new HtmlFilter(), new CtrlAltDelComicFilter()), new ComicMerger());
 	}
 
 }

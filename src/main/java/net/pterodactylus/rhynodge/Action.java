@@ -20,8 +20,8 @@ package net.pterodactylus.rhynodge;
 import net.pterodactylus.rhynodge.output.Output;
 
 /**
- * An action is performed when a {@link Trigger} determines that two given
- * {@link State}s of a {@link Query} signify a change.
+ * An action is performed when a {@link State} has {@link State#triggered()}
+ * a noteworthy change.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */

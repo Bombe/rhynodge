@@ -21,8 +21,8 @@ import java.util.Arrays;
 
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.SinfestComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link net.pterodactylus.rhynodge.Watcher} implementation that watches
@@ -33,7 +33,7 @@ import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 public class SinfestWatcher extends DefaultWatcher {
 
 	public SinfestWatcher() {
-		super(new HttpQuery("http://www.sinfest.net/"), Arrays.asList(new HtmlFilter(), new SinfestComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://www.sinfest.net/"), Arrays.asList(new HtmlFilter(), new SinfestComicFilter()), new ComicMerger());
 	}
 
 }

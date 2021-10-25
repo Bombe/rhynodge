@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.SaturdayMorningBreakfastCerealComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Saturday Morning
@@ -35,7 +35,7 @@ public class SaturdayMorningBreakfastCerealWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public SaturdayMorningBreakfastCerealWatcher() {
-		super(new HttpQuery("http://www.smbc-comics.com/"), Arrays.asList(new HtmlFilter(), new SaturdayMorningBreakfastCerealComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://www.smbc-comics.com/"), Arrays.asList(new HtmlFilter(), new SaturdayMorningBreakfastCerealComicFilter()), new ComicMerger());
 	}
 
 }

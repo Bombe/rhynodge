@@ -22,9 +22,9 @@
 		}
 	],
 
-	"trigger":
+	"merger":
 		{
-			"class": "NewTorrentTrigger"
+			"class": "TorrentMerger"
 		},
 
 	"action":

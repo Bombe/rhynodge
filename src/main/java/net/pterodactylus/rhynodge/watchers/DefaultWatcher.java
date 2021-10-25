@@ -22,8 +22,8 @@ import java.util.List;
 
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.Watcher;
+import net.pterodactylus.rhynodge.Merger;
 
 /**
  * Abstract base implementation of a {@link Watcher}.
@@ -38,8 +38,8 @@ public class DefaultWatcher implements Watcher {
 	/** The filters of the watcher. */
 	private final List<Filter> filters = new ArrayList<Filter>();
 
-	/** The trigger of the watcher. */
-	private final Trigger trigger;
+	/** The merger of the watcher. */
+	private final Merger merger;
 
 	/**
 	 * Creates a new default watcher.
@@ -48,13 +48,13 @@ public class DefaultWatcher implements Watcher {
 	 *            The query of the watcher
 	 * @param filters
 	 *            The filters of the watcher
-	 * @param trigger
-	 *            The trigger of the watcher
+	 * @param merger
+	 *            The merger of the watcher
 	 */
-	protected DefaultWatcher(Query query, List<Filter> filters, Trigger trigger) {
+	protected DefaultWatcher(Query query, List<Filter> filters, Merger merger) {
 		this.query = query;
 		this.filters.addAll(filters);
-		this.trigger = trigger;
+		this.merger = merger;
 	}
 
 	//
@@ -77,12 +77,8 @@ public class DefaultWatcher implements Watcher {
 		return filters;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public Trigger trigger() {
-		return trigger;
+	public Merger merger() {
+		return merger;
 	}
 
 }

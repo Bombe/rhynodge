@@ -21,7 +21,7 @@ import java.util.List;
 
 /**
  * A {@code Watcher} combines a {@link Query}, a number of {@link Filter}s, and
- * a {@link Trigger}, as these parts are closely related after all.
+ * a {@link Merger}, as these parts are closely related after all.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
@@ -42,10 +42,10 @@ public interface Watcher {
 	public List<Filter> filters();
 
 	/**
-	 * Returns the trigger of the watcher.
+	 * Returns the merger of the watcher.
 	 *
-	 * @return The trigger of the watcher
+	 * @return The merger of the watcher
 	 */
-	public Trigger trigger();
+	public Merger merger();
 
 }

@@ -27,10 +27,10 @@ import net.pterodactylus.rhynodge.Action;
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Reaction;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.loader.Chain.Parameter;
 import net.pterodactylus.rhynodge.loader.Chain.Part;
+import net.pterodactylus.rhynodge.Merger;
 
 /**
  * Creates {@link Reaction}s from {@link Chain}s.
@@ -68,7 +68,7 @@ public class ReactionLoader {
 			Watcher watcher = createObject(chain.watcher().name(), "net.pterodactylus.rhynodge.watchers", extractParameters(chain.watcher().parameters()));
 
 			/* create reaction. */
-			reaction = new Reaction(chain.name(), watcher.query(), watcher.filters(), watcher.trigger(), action);
+			reaction = new Reaction(chain.name(), watcher.query(), watcher.filters(), watcher.merger(), action);
 
 		} else {
 
@@ -81,11 +81,11 @@ public class ReactionLoader {
 				filters.add(ReactionLoader.<Filter> createObject(filterPart.name(), "net.pterodactylus.rhynodge.filters", extractParameters(filterPart.parameters())));
 			}
 
-			/* create trigger. */
-			Trigger trigger = createObject(chain.trigger().name(), "net.pterodactylus.rhynodge.triggers", extractParameters(chain.trigger().parameters()));
+			/* create merger. */
+			Merger merger = createObject(chain.merger().name(), "net.pterodactylus.rhynodge.mergers", extractParameters(chain.merger().parameters()));
 
 			/* create reaction. */
-			reaction = new Reaction(chain.name(), query, filters, trigger, action);
+			reaction = new Reaction(chain.name(), query, filters, merger, action);
 		}
 
 		reaction.setUpdateInterval(TimeUnit.SECONDS.toMillis(chain.updateInterval()));

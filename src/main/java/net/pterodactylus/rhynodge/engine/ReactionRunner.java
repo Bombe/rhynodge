@@ -15,8 +15,8 @@ import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
 import net.pterodactylus.rhynodge.Reaction;
 import net.pterodactylus.rhynodge.State;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.actions.EmailAction;
+import net.pterodactylus.rhynodge.Merger;
 import net.pterodactylus.rhynodge.output.DefaultOutput;
 import net.pterodactylus.rhynodge.output.Output;
 import net.pterodactylus.rhynodge.states.FailedState;
@@ -25,7 +25,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Runs a {@link Reaction}, starting with its {@link Query}, running the {@link
- * State} through its {@link Filter}s, and finally checking the {@link Trigger}
+ * State} through its {@link Filter}s, and finally checking the {@link Merger}
  * for whether an {@link Action} needs to be executed.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
@@ -59,10 +59,10 @@ public class ReactionRunner implements Runnable {
 			reactionState.saveState(state);
 			return;
 		}
-		Trigger trigger = reaction.trigger();
-		State newState = trigger.mergeStates(lastSuccessfulState.get(), state);
+		Merger merger = reaction.merger();
+		State newState = merger.mergeStates(lastSuccessfulState.get(), state);
 		reactionState.saveState(newState);
-		if (trigger.triggers()) {
+		if (newState.triggered()) {
 			logger.info(format("Trigger was hit for %s, executing action...", reaction.name()));
 			reaction.action().execute(newState.output(reaction));
 		}

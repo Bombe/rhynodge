@@ -25,13 +25,12 @@ import java.util.List;
 
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.SizeBlacklistFilter;
 import net.pterodactylus.rhynodge.filters.torrents.TorrentHoundFilter;
+import net.pterodactylus.rhynodge.mergers.EpisodeMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
 
 import com.google.common.collect.ImmutableList;
 
@@ -50,7 +49,7 @@ public class TorrentHoundEpisodeWatcher extends DefaultWatcher {
 	 * 		The terms to search for
 	 */
 	public TorrentHoundEpisodeWatcher(String searchTerms) {
-		super(createHttpQuery(searchTerms), createFilters(), createTrigger());
+		super(createHttpQuery(searchTerms), createFilters(), new EpisodeMerger());
 	}
 
 	//
@@ -80,15 +79,6 @@ public class TorrentHoundEpisodeWatcher extends DefaultWatcher {
 	 */
 	private static List<Filter> createFilters() {
 		return ImmutableList.of(new HtmlFilter(), new TorrentHoundFilter(), createDefaultBlacklistFilter(), new SizeBlacklistFilter(), new EpisodeFilter());
-	}
-
-	/**
-	 * Creates the trigger of the watcher.
-	 *
-	 * @return The trigger of the watcher
-	 */
-	private static Trigger createTrigger() {
-		return new NewEpisodeTrigger();
 	}
 
 }

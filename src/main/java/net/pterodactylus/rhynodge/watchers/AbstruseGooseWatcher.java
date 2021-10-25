@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.AbstruseGooseComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Abstruse Goose comics.
@@ -33,7 +33,7 @@ import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 public class AbstruseGooseWatcher extends DefaultWatcher {
 
 	public AbstruseGooseWatcher() {
-		super(new HttpQuery("http://abstrusegoose.com/"), Arrays.asList(new HtmlFilter(), new AbstruseGooseComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://abstrusegoose.com/"), Arrays.asList(new HtmlFilter(), new AbstruseGooseComicFilter()), new ComicMerger());
 	}
 
 }

@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.KevinAndKellComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Kevin and Kell comics.
@@ -34,7 +34,7 @@ public class KevinAndKellWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public KevinAndKellWatcher() {
-		super(new HttpQuery("http://www.kevinandkell.com/"), Arrays.asList(new HtmlFilter(), new KevinAndKellComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://www.kevinandkell.com/"), Arrays.asList(new HtmlFilter(), new KevinAndKellComicFilter()), new ComicMerger());
 	}
 
 }

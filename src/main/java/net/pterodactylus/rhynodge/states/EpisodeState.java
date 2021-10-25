@@ -90,6 +90,11 @@ public class EpisodeState extends AbstractState implements Iterable<Episode> {
 		return episodes.isEmpty();
 	}
 
+	@Override
+	public boolean triggered() {
+		return !newEpisodes.isEmpty() || !changedEpisodes.isEmpty() || !newTorrentFiles.isEmpty();
+	}
+
 	/**
 	 * Returns all episodes contained in this state.
 	 *

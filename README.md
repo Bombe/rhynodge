@@ -30,7 +30,7 @@ Rhynodge also periodically scans the chains directory to find changed or new cha
 
 ## Internal Concepts
 
-The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Trigger``s, and ``Action``s.
+The core of Rhynodge comprises ``Reaction``s which in turn consist of ``Query``s, ``Filter``s, ``Merger``s, and ``Action``s.
 
 ### Query
 
@@ -44,18 +44,18 @@ A filter is an optional component that turns a ``State`` into a different ``Stat
 
 The result of a ``Filter`` is a ``State``, again.
 
-### Trigger
+### Merger
 
-A trigger decides if, given the current state and the previous state, a noteworthy change has occured. It could calculate the difference between two file lists, or of two Facebook post lists.
+A merger merges two states into a new state; the new state is responsible for detecting whether a noteworthy change has occured.
 
-The result of a ``Trigger`` is an ``Output``.
+The result of a ``Merger`` is — once again — a ``State``.
 
 ### Watcher
 
-A watcher combines a query, a list of filters, and a trigger into a single unit which can be configured a lot easier than the separate components. For example, you could have a “Twitter” that finds new status updates for a username and that only needs to be configured with that username; the rest of the configuration is contained in the watcher.
+A watcher combines a query, a list of filters, and a merger into a single unit which can be configured a lot easier than the separate components. For example, you could have a “Twitter” that finds new status updates for a username and that only needs to be configured with that username; the rest of the configuration is contained in the watcher.
 
-A ``Watcher`` does not do any processing but instead offers a ``Query``, a list of ``Filter``s, and a ``Trigger``.
+A ``Watcher`` does not do any processing but instead offers a ``Query``, a list of ``Filter``s, and a ``Merger``.
 
 ### Action
 
-If a trigger found a change, the action is then executed. Again, an action can be almost anything: it can send an email, it can execute programs, print documents, initiate phone calls, take a picture from a webcam — anything you can program can be used an an action.
+If a noteworthy change has been detected, the action is then executed. Again, an action can be almost anything: it can send an email, it can execute programs, print documents, initiate phone calls, take a picture from a webcam — anything you can program can be used an an action.

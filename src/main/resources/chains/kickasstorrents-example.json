@@ -25,9 +25,9 @@
 		}
 	],
 
-	"trigger":
+	"merger":
 		{
-			"class": "NewEpisodeTrigger"
+			"class": "EpisodeMerger"
 		},
 
 	"action":

@@ -5,8 +5,8 @@ import static java.util.Arrays.asList;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.webpages.savoy.SavoyTicketsFilter;
+import net.pterodactylus.rhynodge.mergers.LastStateMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.AlwaysTrigger;
 
 /**
  * {@link Watcher} implementation that shows tickets sold in the Savoy theatre.
@@ -22,7 +22,7 @@ public class SavoyTicketWatcher extends DefaultWatcher {
 						new HtmlFilter(),
 						new SavoyTicketsFilter()
 				),
-				new AlwaysTrigger()
+				new LastStateMerger()
 		);
 	}
 

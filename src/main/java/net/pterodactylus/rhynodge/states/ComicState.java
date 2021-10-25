@@ -68,6 +68,11 @@ public class ComicState extends AbstractState implements Iterable<Comic> {
 		return comics.isEmpty();
 	}
 
+	@Override
+	public boolean triggered() {
+		return !newComics.isEmpty();
+	}
+
 	public List<Comic> comics() {
 		return comics;
 	}

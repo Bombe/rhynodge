@@ -20,7 +20,7 @@ package net.pterodactylus.rhynodge;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Defines a filter that runs between {@link Query}s and {@link Trigger}s and
+ * Defines a filter that runs between {@link Query}s and {@link Merger}s and
  * can be used to convert a {@link State} into another {@link State}. This can
  * be used to extract further information from a state.
  * <p>

@@ -1,5 +1,5 @@
 /*
- * Rhynodge - NewEpisodeTrigger.java - Copyright © 2013 David Roden
+ * Rhynodge - EpisodeMerger.java - Copyright © 2013–2021 David Roden
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.pterodactylus.rhynodge.triggers;
+package net.pterodactylus.rhynodge.mergers;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
+import net.pterodactylus.rhynodge.Merger;
 import net.pterodactylus.rhynodge.State;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.states.EpisodeState;
 import net.pterodactylus.rhynodge.states.EpisodeState.Episode;
 import net.pterodactylus.rhynodge.states.TorrentState.TorrentFile;
@@ -33,20 +35,18 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 
 /**
- * {@link Trigger} implementation that compares two {@link EpisodeState}s for
- * new and changed {@link Episode}s.
+ * {@link Merger} implementation that merges two {@link EpisodeState}s.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
  */
-public class NewEpisodeTrigger implements Trigger {
-
-	private boolean triggered = false;
+public class EpisodeMerger implements Merger {
 
 	/**
 	 * {@inheritDoc}
 	 */
+	@Nonnull
 	@Override
-	public State mergeStates(State previousState, State currentState) {
+	public State mergeStates(@Nonnull State previousState, @Nonnull State currentState) {
 		checkState(currentState instanceof EpisodeState, "currentState is not a EpisodeState but a %s", currentState.getClass().getName());
 		checkState(previousState instanceof EpisodeState, "previousState is not a EpisodeState but a %s", currentState.getClass().getName());
 
@@ -58,7 +58,6 @@ public class NewEpisodeTrigger implements Trigger {
 			if (!allEpisodes.containsKey(episode)) {
 				allEpisodes.put(episode, episode);
 				newEpisodes.add(episode);
-				triggered = true;
 			}
 			Episode existingEpisode = allEpisodes.get(episode);
 			for (TorrentFile torrentFile : new ArrayList<>(episode.torrentFiles())) {
@@ -74,14 +73,6 @@ public class NewEpisodeTrigger implements Trigger {
 			}
 		}
 		return new EpisodeState(allEpisodes.values(), newEpisodes, changedEpisodes, newTorrentFiles);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean triggers() {
-		return triggered;
 	}
 
 }

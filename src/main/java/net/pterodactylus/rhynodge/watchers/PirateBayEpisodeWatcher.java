@@ -25,15 +25,14 @@ import java.util.List;
 
 import net.pterodactylus.rhynodge.Filter;
 import net.pterodactylus.rhynodge.Query;
-import net.pterodactylus.rhynodge.Trigger;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.EpisodeFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.SizeBlacklistFilter;
 import net.pterodactylus.rhynodge.filters.torrents.PirateBayFilter;
+import net.pterodactylus.rhynodge.mergers.EpisodeMerger;
 import net.pterodactylus.rhynodge.queries.FallbackQuery;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewEpisodeTrigger;
 
 import com.google.common.collect.ImmutableList;
 
@@ -51,7 +50,7 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 	 *            The terms to search for
 	 */
 	public PirateBayEpisodeWatcher(String searchTerms, String proxy) {
-		super(createHttpQuery(searchTerms, extractProxyHost(proxy), extractProxyPort(proxy)), createFilters(), createTrigger());
+		super(createHttpQuery(searchTerms, extractProxyHost(proxy), extractProxyPort(proxy)), createFilters(), new EpisodeMerger());
 	}
 
 	private static String extractProxyHost(String proxy) {
@@ -85,15 +84,6 @@ public class PirateBayEpisodeWatcher extends DefaultWatcher {
 	 */
 	private static List<Filter> createFilters() {
 		return ImmutableList.of(new HtmlFilter(), new PirateBayFilter(), createDefaultBlacklistFilter(), new SizeBlacklistFilter(), new EpisodeFilter());
-	}
-
-	/**
-	 * Creates the trigger of the watcher.
-	 *
-	 * @return The trigger of the watcher
-	 */
-	private static Trigger createTrigger() {
-		return new NewEpisodeTrigger();
 	}
 
 }

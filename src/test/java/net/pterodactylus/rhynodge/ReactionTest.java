@@ -18,10 +18,10 @@ public class ReactionTest {
 
 	private final Query query = mock(Query.class);
 	private final Filter filter = mock(Filter.class);
-	private final Trigger trigger = mock(Trigger.class);
+	private final Merger merger = mock(Merger.class);
 	private final Action action = mock(Action.class);
-	private final Reaction reactionWithoutFilters = new Reaction("without", query, trigger, action);
-	private final Reaction reactionWithFilters = new Reaction("with", query, asList(filter), trigger, action);
+	private final Reaction reactionWithoutFilters = new Reaction("without", query, merger, action);
+	private final Reaction reactionWithFilters = new Reaction("with", query, asList(filter), merger, action);
 
 	@Test
 	public void reactionStoresNameCorrectly() {
@@ -42,9 +42,9 @@ public class ReactionTest {
 	}
 
 	@Test
-	public void reactionStoresTriggerCorrectly() {
-		assertThat(reactionWithoutFilters.trigger(), is(trigger));
-		assertThat(reactionWithFilters.trigger(), is(trigger));
+	public void reactionStoresMergerCorrectly() {
+		assertThat(reactionWithoutFilters.merger(), is(merger));
+		assertThat(reactionWithFilters.merger(), is(merger));
 	}
 
 	@Test

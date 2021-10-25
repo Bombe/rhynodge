@@ -18,11 +18,11 @@ package net.pterodactylus.rhynodge.watchers
 
 import net.pterodactylus.rhynodge.filters.HtmlFilter
 import net.pterodactylus.rhynodge.filters.comics.QuestionableContentComicFilter
+import net.pterodactylus.rhynodge.mergers.ComicMerger
 import net.pterodactylus.rhynodge.queries.HttpQuery
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger
 
-class QuestionableContentWatcher : DefaultWatcher(query, filters, trigger)
+class QuestionableContentWatcher : DefaultWatcher(query, filters, merger)
 
 private val query = HttpQuery("https://www.questionablecontent.net/")
 private val filters = listOf(HtmlFilter(), QuestionableContentComicFilter())
-private val trigger = NewComicTrigger()
+private val merger = ComicMerger()

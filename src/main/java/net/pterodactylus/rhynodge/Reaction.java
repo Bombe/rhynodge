@@ -23,7 +23,7 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 /**
- * A {@code Reaction} binds together {@link Query}s, {@link Trigger}s, and
+ * A {@code Reaction} binds together {@link Query}s, {@link Merger}s, and
  * {@link Action}s, and it stores the intermediary {@link State}s.
  *
  * @author <a href="mailto:bombe@pterodactylus.net">David ‘Bombe’ Roden</a>
@@ -39,8 +39,8 @@ public class Reaction {
 	/** The filters to run. */
 	private final List<Filter> filters = Lists.newArrayList();
 
-	/** The trigger to detect changes. */
-	private final Trigger trigger;
+	/** The merger merges old and new states. */
+	private final Merger merger;
 
 	/** The action to perform. */
 	private final Action action;
@@ -55,13 +55,13 @@ public class Reaction {
 	 *            The name of the reaction
 	 * @param query
 	 *            The query to run
-	 * @param trigger
-	 *            The trigger to detect changes
+	 * @param merger
+	 *            The merger to merge states
 	 * @param action
 	 *            The action to perform
 	 */
-	public Reaction(String name, Query query, Trigger trigger, Action action) {
-		this(name, query, Collections.<Filter> emptyList(), trigger, action);
+	public Reaction(String name, Query query, Merger merger, Action action) {
+		this(name, query, Collections.<Filter> emptyList(), merger, action);
 	}
 
 	/**
@@ -73,16 +73,16 @@ public class Reaction {
 	 *            The query to run
 	 * @param filters
 	 *            The filters to run
-	 * @param trigger
-	 *            The trigger to detect changes
+	 * @param merger
+	 *            The merger to merge states
 	 * @param action
 	 *            The action to perform
 	 */
-	public Reaction(String name, Query query, List<Filter> filters, Trigger trigger, Action action) {
+	public Reaction(String name, Query query, List<Filter> filters, Merger merger, Action action) {
 		this.name = name;
 		this.query = query;
 		this.filters.addAll(filters);
-		this.trigger = trigger;
+		this.merger = merger;
 		this.action = action;
 	}
 
@@ -119,12 +119,12 @@ public class Reaction {
 	}
 
 	/**
-	 * Returns the trigger to detect changes.
+	 * Returns the merger to merge states.
 	 *
-	 * @return The trigger to detect changes
+	 * @return The merger to merge states
 	 */
-	public Trigger trigger() {
-		return trigger;
+	public Merger merger() {
+		return merger;
 	}
 
 	/**

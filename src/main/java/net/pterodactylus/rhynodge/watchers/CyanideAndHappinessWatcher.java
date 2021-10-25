@@ -22,8 +22,8 @@ import java.util.Arrays;
 import net.pterodactylus.rhynodge.Watcher;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
 import net.pterodactylus.rhynodge.filters.comics.CyanideAndHappinessComicFilter;
+import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
-import net.pterodactylus.rhynodge.triggers.NewComicTrigger;
 
 /**
  * {@link Watcher} implementation that watches for new Cyanide and Happiness
@@ -35,7 +35,7 @@ public class CyanideAndHappinessWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public CyanideAndHappinessWatcher() {
-		super(new HttpQuery("http://www.explosm.net/comics/new/"), Arrays.asList(new HtmlFilter(), new CyanideAndHappinessComicFilter()), new NewComicTrigger());
+		super(new HttpQuery("http://www.explosm.net/comics/new/"), Arrays.asList(new HtmlFilter(), new CyanideAndHappinessComicFilter()), new ComicMerger());
 	}
 
 }

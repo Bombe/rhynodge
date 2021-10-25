@@ -143,8 +143,8 @@ public class ChainWatcher extends AbstractExecutionThreadService {
 							logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 						}
 					}
-					logger.debug(String.format(" Trigger: %s", chain.trigger().name()));
-					for (Parameter parameter : chain.trigger().parameters()) {
+					logger.debug(String.format(" Trigger: %s", chain.merger().name()));
+					for (Parameter parameter : chain.merger().parameters()) {
 						logger.debug(String.format("  Parameter: %s=%s", parameter.name(), parameter.value()));
 					}
 				}

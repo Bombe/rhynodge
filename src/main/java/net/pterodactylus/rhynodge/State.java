@@ -47,6 +47,18 @@ public interface State {
 	 */
 	boolean success();
 
+	/**
+	 * Returns whether this state triggers a change notification. This can
+	 * only return {@code true} if this state is the result of a
+	 * {@link Merger} merging two states.
+	 *
+	 * @return {@code true} if this state triggers a change notification,
+	 * {@code false} otherwise
+	 */
+	default boolean triggered() {
+		return false;
+	}
+
 	boolean isEmpty();
 
 	/**

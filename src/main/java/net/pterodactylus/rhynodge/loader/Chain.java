@@ -177,11 +177,11 @@ public class Chain {
 	@JsonProperty
 	private List<Part> filters = new ArrayList<Part>();
 
-	/** The trigger of the chain. */
+	/** The merger of the chain. */
 	@JsonProperty
-	private Part trigger;
+	private Part merger;
 
-	/** A combination of query, filters, and a trigger. */
+	/** A combination of query, filters, and a merger. */
 	@JsonProperty
 	private Part watcher;
 
@@ -230,12 +230,12 @@ public class Chain {
 	}
 
 	/**
-	 * Returns the trigger of this chain.
+	 * Returns the merger of this chain.
 	 *
-	 * @return The trigger of this chain
+	 * @return The merger of this chain
 	 */
-	public Part trigger() {
-		return trigger;
+	public Part merger() {
+		return merger;
 	}
 
 	/**
@@ -283,7 +283,7 @@ public class Chain {
 			for (Part filter : filters) {
 				hashCode ^= filter.hashCode();
 			}
-			hashCode ^= trigger.hashCode();
+			hashCode ^= merger.hashCode();
 		}
 		hashCode ^= action.hashCode();
 		hashCode ^= updateInterval;
@@ -318,7 +318,7 @@ public class Chain {
 					return false;
 				}
 			}
-			if (!trigger.equals(chain.trigger)) {
+			if (!merger.equals(chain.merger)) {
 				return false;
 			}
 		}
