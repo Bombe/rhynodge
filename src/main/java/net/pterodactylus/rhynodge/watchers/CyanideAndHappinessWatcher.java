@@ -35,7 +35,7 @@ public class CyanideAndHappinessWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public CyanideAndHappinessWatcher() {
-		super(new HttpQuery("http://www.explosm.net/comics/new/"), Arrays.asList(new HtmlFilter(), new CyanideAndHappinessComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://explosm.net/"), Arrays.asList(new HtmlFilter(), new CyanideAndHappinessComicFilter()), new ComicMerger());
 	}
 
 }

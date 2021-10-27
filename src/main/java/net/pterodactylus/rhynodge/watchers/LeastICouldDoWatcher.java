@@ -43,7 +43,7 @@ public class LeastICouldDoWatcher extends DefaultWatcher {
 
 	/** Creates a new “Least I Could Do” watcher. */
 	public LeastICouldDoWatcher() {
-		super(new HttpQuery("http://www.leasticoulddo.com/"), createFilters(), new ComicMerger());
+		super(new HttpQuery("https://leasticoulddo.com/"), createFilters(), new ComicMerger());
 	}
 
 	//

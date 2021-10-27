@@ -34,7 +34,7 @@ public class GirlGeniusWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public GirlGeniusWatcher() {
-		super(new HttpQuery("http://www.girlgeniusonline.com/comic.php"), Arrays.asList(new HtmlFilter(), new GirlGeniusComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://www.girlgeniusonline.com/comic.php"), Arrays.asList(new HtmlFilter(), new GirlGeniusComicFilter()), new ComicMerger());
 	}
 
 }

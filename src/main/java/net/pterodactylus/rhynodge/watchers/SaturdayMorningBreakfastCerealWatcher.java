@@ -35,7 +35,7 @@ public class SaturdayMorningBreakfastCerealWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public SaturdayMorningBreakfastCerealWatcher() {
-		super(new HttpQuery("http://www.smbc-comics.com/"), Arrays.asList(new HtmlFilter(), new SaturdayMorningBreakfastCerealComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://www.smbc-comics.com/"), Arrays.asList(new HtmlFilter(), new SaturdayMorningBreakfastCerealComicFilter()), new ComicMerger());
 	}
 
 }

@@ -31,8 +31,8 @@ public class ScandinaviaAndTheWorldComicFilterTest {
 
 	public ScandinaviaAndTheWorldComicFilterTest() throws IOException {
 		Document document = ResourceLoader.loadDocument(ScandinaviaAndTheWorldComicFilter.class, "scandinavia-and-the-world.html",
-				"http://satwcomic.com/");
-		htmlState = new HtmlState("http://satwcomic.com/", document);
+				"https://satwcomic.com/latest");
+		htmlState = new HtmlState("https://satwcomic.com/latest", document);
 	}
 
 	@Test

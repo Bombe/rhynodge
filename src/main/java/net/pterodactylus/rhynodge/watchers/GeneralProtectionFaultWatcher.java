@@ -35,7 +35,7 @@ public class GeneralProtectionFaultWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public GeneralProtectionFaultWatcher() {
-		super(new HttpQuery("http://www.gpf-comics.com/"), Arrays.asList(new HtmlFilter(), new GeneralProtectionFaultComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://www.gpf-comics.com/"), Arrays.asList(new HtmlFilter(), new GeneralProtectionFaultComicFilter()), new ComicMerger());
 	}
 
 }

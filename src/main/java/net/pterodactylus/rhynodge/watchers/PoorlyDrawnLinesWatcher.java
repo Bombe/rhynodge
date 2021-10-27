@@ -35,7 +35,7 @@ public class PoorlyDrawnLinesWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public PoorlyDrawnLinesWatcher() {
-		super(new HttpQuery("http://poorlydrawnlines.com/"), Arrays.asList(new HtmlFilter(), new PoorlyDrawnLinesComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://poorlydrawnlines.com/"), Arrays.asList(new HtmlFilter(), new PoorlyDrawnLinesComicFilter()), new ComicMerger());
 	}
 
 }

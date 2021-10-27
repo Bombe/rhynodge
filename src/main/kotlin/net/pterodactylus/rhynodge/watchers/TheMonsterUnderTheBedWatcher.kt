@@ -7,6 +7,6 @@ import net.pterodactylus.rhynodge.queries.*
 
 class TheMonsterUnderTheBedWatcher : DefaultWatcher(query, filters, merger)
 
-private val query = HttpQuery("http://themonsterunderthebed.net/")
+private val query = HttpQuery("https://themonsterunderthebed.net/")
 private val filters = listOf(HtmlFilter(), TheMonsterUnderTheBedFilter())
 private val merger = ComicMerger()

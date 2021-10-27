@@ -17,20 +17,12 @@
 
 package net.pterodactylus.rhynodge.watchers;
 
-import java.util.List;
-
-import net.pterodactylus.rhynodge.Filter;
-import net.pterodactylus.rhynodge.filters.ExtractUrlFilter;
 import net.pterodactylus.rhynodge.filters.HtmlFilter;
-import net.pterodactylus.rhynodge.filters.HttpQueryFilter;
 import net.pterodactylus.rhynodge.filters.comics.ScandinaviaAndTheWorldComicFilter;
 import net.pterodactylus.rhynodge.mergers.ComicMerger;
 import net.pterodactylus.rhynodge.queries.HttpQuery;
 
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableList;
-import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
+import static java.util.Arrays.asList;
 
 /**
  * {@link net.pterodactylus.rhynodge.Watcher} implementation that watches for new Scandinavia and the World comics.
@@ -40,26 +32,7 @@ import org.jsoup.select.Elements;
 public class ScandinaviaAndTheWorldWatcher extends DefaultWatcher {
 
 	public ScandinaviaAndTheWorldWatcher() {
-		super(new HttpQuery("http://satwcomic.com/"), createFilters(), new ComicMerger());
-	}
-
-	private static List<Filter> createFilters() {
-		ImmutableList.Builder<Filter> filters = ImmutableList.builder();
-
-		filters.add(new HtmlFilter());
-		filters.add(new ExtractUrlFilter() {
-
-			@Override
-			protected Optional<String> extractUrl(Document document) {
-				Elements linkTag = document.select("a.btn-success");
-				return linkTag.hasAttr("href") ? Optional.of(linkTag.attr("href")) : Optional.<String>absent();
-			}
-		});
-		filters.add(new HttpQueryFilter());
-		filters.add(new HtmlFilter());
-		filters.add(new ScandinaviaAndTheWorldComicFilter());
-
-		return filters.build();
+		super(new HttpQuery("https://satwcomic.com/latest"), asList(new HtmlFilter(), new ScandinaviaAndTheWorldComicFilter()), new ComicMerger());
 	}
 
 }

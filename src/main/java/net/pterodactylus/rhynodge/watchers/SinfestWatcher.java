@@ -33,7 +33,7 @@ import net.pterodactylus.rhynodge.queries.HttpQuery;
 public class SinfestWatcher extends DefaultWatcher {
 
 	public SinfestWatcher() {
-		super(new HttpQuery("http://www.sinfest.net/"), Arrays.asList(new HtmlFilter(), new SinfestComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://sinfest.xyz/"), Arrays.asList(new HtmlFilter(), new SinfestComicFilter()), new ComicMerger());
 	}
 
 }

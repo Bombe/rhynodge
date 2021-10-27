@@ -34,7 +34,7 @@ public class KevinAndKellWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public KevinAndKellWatcher() {
-		super(new HttpQuery("http://www.kevinandkell.com/"), Arrays.asList(new HtmlFilter(), new KevinAndKellComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://kevinandkell.com/"), Arrays.asList(new HtmlFilter(), new KevinAndKellComicFilter()), new ComicMerger());
 	}
 
 }

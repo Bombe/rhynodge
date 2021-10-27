@@ -34,7 +34,7 @@ public class CtrlAltDelWatcher extends DefaultWatcher {
 
 	/** Creates a new watcher for Cyanide and Happiness comics. */
 	public CtrlAltDelWatcher() {
-		super(new HttpQuery("http://www.cad-comic.com/cad/"), Arrays.asList(new HtmlFilter(), new CtrlAltDelComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://cad-comic.com/"), Arrays.asList(new HtmlFilter(), new CtrlAltDelComicFilter()), new ComicMerger());
 	}
 
 }

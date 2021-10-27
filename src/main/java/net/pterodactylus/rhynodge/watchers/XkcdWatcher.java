@@ -34,7 +34,7 @@ public class XkcdWatcher extends DefaultWatcher {
 
 	/** Creates a new XKCD watcher. */
 	public XkcdWatcher() {
-		super(new HttpQuery("http://xkcd.com/"), Arrays.asList(new HtmlFilter(), new XkcdComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://xkcd.com/"), Arrays.asList(new HtmlFilter(), new XkcdComicFilter()), new ComicMerger());
 	}
 
 }

@@ -33,7 +33,7 @@ import net.pterodactylus.rhynodge.queries.HttpQuery;
 public class AbstruseGooseWatcher extends DefaultWatcher {
 
 	public AbstruseGooseWatcher() {
-		super(new HttpQuery("http://abstrusegoose.com/"), Arrays.asList(new HtmlFilter(), new AbstruseGooseComicFilter()), new ComicMerger());
+		super(new HttpQuery("https://abstrusegoose.com/"), Arrays.asList(new HtmlFilter(), new AbstruseGooseComicFilter()), new ComicMerger());
 	}
 
 }
