@@ -50,7 +50,7 @@ public class CyanideAndHappinessComicFilter extends ComicSiteFilter {
 
 	@Override
 	protected List<String> extractImageUrls(Document document) {
-		Elements imageTags = document.select("img#main-comic");
+		Elements imageTags = document.select(".MainComic__ComicImage-sc-ndbx87-2 > span noscript img");
 		return FluentIterable.from(imageTags).transform(new Function<Element, String>() {
 
 			@Override

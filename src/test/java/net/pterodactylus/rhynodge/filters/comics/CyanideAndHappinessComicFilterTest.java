@@ -24,8 +24,8 @@ public class CyanideAndHappinessComicFilterTest {
 	private final HtmlState htmlState;
 
 	public CyanideAndHappinessComicFilterTest() throws IOException {
-		document = ResourceLoader.loadDocument(getClass(), "cyanide-and-happiness.html", "http://www.explosm.net/comics/new/");
-		htmlState = new HtmlState("http://files.explosm.net/comics/Kris/skeletor.png", document);
+		document = ResourceLoader.loadDocument(getClass(), "cyanide-and-happiness.html", "https://explosm.net/");
+		htmlState = new HtmlState("https://explosm.net/", document);
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class CyanideAndHappinessComicFilterTest {
 		ComicState comicState = (ComicState) comicSiteFilter.filter(htmlState);
 		assertThat(comicState.comics(), contains(
 				ComicMatchers.isComic("", contains(
-						ComicMatchers.isStrip("http://files.explosm.net/comics/Kris/skeletor.png", "")
+						ComicMatchers.isStrip("https://static.explosm.net/2022/06/11022918/bringaparent.png", "")
 				))
 		));
 	}
